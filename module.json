@@ -1,0 +1,91 @@
+{
+  "name": "NAME",
+  "title": " ",
+  "description": " ",
+  "version": "This is auto replaced",
+  "manifestPlusVersion": "1.2.0",
+  "minimumCoreVersion": "0.7.9",
+  "compatibleCoreVersion": "0.8.8",
+  "author": "arcanist",
+  "authors": [
+    {
+      "name": "arcanist",
+      "url": "https://arcanistzed.github.io/",
+      "email": "arcanistzed@gmail.com",
+      "discord": "arcanist#4317",
+      "reddit": "u/arcanistzed"
+    }
+  ],
+  "scripts": [
+    "/scripts/NAME.js"
+  ],
+  "styles": [
+    "/styles/module.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    },
+    {
+      "lang": "ru",
+      "name": "русский (Russian)",
+      "path": "languages/ru.json"
+    },
+    {
+      "lang": "ja",
+      "name": "日本語 (Japanese)",
+      "path": "languages/ja.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "languages/pt-BR.json"
+    },
+    {
+      "lang": "ko",
+      "name": "한국어 (Korean)",
+      "path": "languages/ko.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "languages/fr.json"
+    },
+    {
+      "lang": "ar",
+      "name": "Arabic",
+      "path": "languages/ar.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "languages/es.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch (German)",
+      "path": "languages/de.json"
+    },
+    {
+      "lang": "it",
+      "name": "Italian",
+      "path": "languages/it.json"
+    },
+    {
+      "lang": "cn",
+      "name": "中文 (Chinese)",
+      "path": "languages/cn.json"
+    }
+  ],
+  "dependencies": [],
+  "url": "This is auto replaced",
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
+  "readme": "https://raw.githubusercontent.com/arcanistzed/NAME/main/README.md",
+  "changelog": "https://raw.githubusercontent.com/arcanistzed/NAME/main/CHANGELOG.md",
+  "license": "https://raw.githubusercontent.com/arcanistzed/NAME/main/LICENSE",
+  "bugs": "https://github.com/arcanistzed/NAME/issues/new/choose",
+  "media": []
+}
