@@ -1,3 +1,20 @@
-:root {
-    
+
+#pdf-sheet-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#fieldList {
+  flex: 1;
+  list-style: none;
+  padding: 0;
+  margin: -10px 0;
+}
+
+#fieldList > li {
+  margin: 10px 0;
+}
+
+fieldset {
+  display: inline-block;
 }

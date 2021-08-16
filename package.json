@@ -1,0 +1,22 @@
+{
+  "name": "pdf-sheet",
+  "version": "0.1.0",
+  "description": "",
+  "main": "scripts/module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcanistzed/pdf-sheet.git"
+  },
+  "author": "arcanist",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/arcanistzed/pdf-sheet/issues"
+  },
+  "homepage": "https://github.com/arcanistzed/pdf-sheet#readme",
+  "dependencies": {
+    "pdfform.js": "^1.0.14"
+  }
+}
