@@ -1,3 +1,3 @@
 # Changelog
 
-## 0.1.0 - 16 Aug 2021 - Initial Release
+## 0.1.1 - 18 Aug 2021 - Initial Release
