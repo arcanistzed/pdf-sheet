@@ -13,7 +13,11 @@ In the setup screen, use the URL `https://github.com/arcanistzed/pdf-sheet/relea
 
 ## License
 
-This package is under an [MIT license](LICENSE)
+Copyright © 2021 arcanist
+
+This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+
+This uses some code from [pdfform.js](https://github.com/phihag/pdfform.js) which is under the [Apache 2.0 License](https://github.com/phihag/pdfform.js/blob/master/LICENSE) and heavily modified by me. You may obtain a copy of the license on the [Apache website](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Bugs
 
