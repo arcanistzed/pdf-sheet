@@ -1,9 +1,17 @@
 <form id="pdf-sheet-form">
 
-    <input id="pdf-upload" type="file" name="upload" accept="application/pdf" />
+    <header id="pdf-header">
+        <input id="pdf-upload" type="file" name="upload" accept="application/pdf" />
+        <button id="official-pdf" title="Download the official character sheet PDF for 5th edition"
+            onclick="window.open('https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf', '_blank')">
+            <i class="fas fa-download"></i> PDF for D&D 5e
+        </button>
+    </header>
 
     <ul id="fieldList"></ul>
 
-    <button id="pdf-download" disabled="disabled">Fill and download PDF</button>
+    <button id="pdf-download">
+        <i class="fas fa-print"></i>
+    </button>
 
 </form>

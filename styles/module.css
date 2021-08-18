@@ -1,17 +1,45 @@
-
 #pdf-sheet-form {
   display: flex;
   flex-direction: column;
+}
+
+#pdf-header {
+  display: flex;
+}
+
+#pdf-upload {
+  flex: 2;
+  margin: auto;
+}
+
+#official-pdf {
+  flex: 1;
+  font-size: 12px;
+}
+
+#pdf-download {
+  display: none;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  border-radius: 100px;
+  right: 20px;
+  bottom: 20px;
+  border: solid;
+}
+
+/* Fix icon margin */
+#pdf-download .fas {
+  margin: 0;
 }
 
 #fieldList {
   flex: 1;
   list-style: none;
   padding: 0;
-  margin-top: -10px;
+  margin: -10px 0;
 }
 
 #fieldList > li {
   margin: 10px 0;
 }
-
