@@ -8,13 +8,10 @@
   flex: 1;
   list-style: none;
   padding: 0;
-  margin: -10px 0;
+  margin-top: -10px;
 }
 
 #fieldList > li {
   margin: 10px 0;
 }
 
-fieldset {
-  display: inline-block;
-}
