@@ -1,3 +1,10 @@
 {
-    
+    "pdfsheet": {
+        "settings": {
+            "map": {
+                "Name": "Map",
+                "Hint": "JSON which is used to map the PDF fields to information on the Foundry character sheet. See the README for details."
+            }
+        }
+    }
 }
