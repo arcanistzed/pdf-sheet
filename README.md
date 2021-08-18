@@ -12,7 +12,7 @@ In the setup screen, use the URL `https://github.com/arcanistzed/pdf-sheet/relea
 
 Just click on the button in the header of a character sheet and then it will open the configuration window.
 Once you upload a PDF, you'll see a list of each of the PDF's fields alongside an input.
-You can either fill in the fields manually with what is on your character sheet or you can use a "map" (described later) to fill them in automatically with the values from your character sheet.
+You can either fill in the fields manually with what is on your character sheet or you can use a "mapping" (described later) to fill them in automatically with the values from your character sheet.
 
 ### Get a PDF
 
@@ -20,13 +20,13 @@ If you need a copy of the PDF for D&D 5th edition, there is a button to take you
 
 You can theoretically use this module with the PDF for any system, but some fields used on other PDFs may not be supported. File a bug if you encounter a PDF that doesn't work.
 
-### Map
+### Mapping
 
-In order to automatically fill out the sheet with values, you will need a JSON mapping of the PDF fields to the values on your character sheet. This is known as a "map" and can be edited in the module settings.
+In order to automatically fill out the sheet with values, you will need a JSON mapping of the PDF fields to the values on your character sheet. This is known as a "mapping" and can be edited in the module settings.
 
-**TIP:** Install [Ace Library](https://foundryvtt.com/packages/acelib) if you want to use a proper editor to work on creating your map.
+**TIP:** Install [Ace Library](https://foundryvtt.com/packages/acelib) if you want to use a proper editor to work on creating your mapping.
 
-The map is formatted like this:
+The mapping is formatted like this:
 
 ```json
 [
@@ -48,7 +48,7 @@ The map is formatted like this:
 This will take care of filling out the character name, strength save proficiency, and race on a D&D 5e character sheet.
 As you can see, the `@` is used to access properties of the Actor data, rather than a fixed value.
 
-Please share any maps you create with me and I will list them here for the benefit of the community.
+Please share any mappings you create with me and I will list them here for the benefit of the community.
 
 ## License
 
