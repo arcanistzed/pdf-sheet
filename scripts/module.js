@@ -162,7 +162,12 @@ class Pdfconfig extends FormApplication {
 		
 		// Get Actor Data
 		const actorData = this.actor.data;
-		console.log("PDF Sheet | Actor Data:", actorData)
+
+		// Begin grouping logs
+		console.group("PDF Sheet")
+
+		// Log Actor Data
+		console.log("Actor Data:", actorData)
 
 		// Parse values correctly
 		rawMap.forEach((entry, i) => {
@@ -179,10 +184,16 @@ class Pdfconfig extends FormApplication {
 			else {
 				rawMap[i].foundry = entry.foundry;
 			};
+			
+			// Log filled in fields
 			console.log(rawMap[i].foundry);
 		});
 
-		console.log("PDF Sheet | PDF fields:", pdfFields);
+        // Log all PDF fields
+		console.log("PDF fields:", pdfFields);
+
+		// Close console grouping
+		console.groupEnd();
 
 		for (let pdfFieldKey in pdfFields) {
 
