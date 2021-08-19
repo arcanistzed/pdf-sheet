@@ -6,6 +6,7 @@ Hooks.on("init", () => {
 		scope: "world",
 		config: true,
 		type: String,
+		default: "[]",
 	});
 });
 

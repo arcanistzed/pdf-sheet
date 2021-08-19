@@ -1,5 +1,7 @@
 # Changelog
 
-## 0.1.2 - 18 Aug 2021 - Published to Package Listing
+## 0.1.3 - 18 Aug 2021
 
-## 0.1.1 - 18 Aug 2021 - Initial Release
+Fixed no default setting for mapping (#2)
+
+## 0.1.2 - 18 Aug 2021 -  Initial Release
