@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.1.5 - 19 Aug 2021 - Publish to Package Listing
+
 ## 0.1.4 - 18 Aug 2021
 
 Fixed not bundling the library with the module
