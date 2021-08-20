@@ -154,42 +154,46 @@ class Pdfconfig extends FormApplication {
 		let rawMap;
 		try {
 			rawMap = JSON.parse(game.settings.get(Pdfconfig.ID, "map"));
-        } catch(err) {
-        	// Exit if map is invalid
-        	ui.notifications.error("PDF Sheet | Invalid JSON Map. " + err.message);
+		} catch (err) {
+			// Exit if map is invalid
+			ui.notifications.error("PDF Sheet | Invalid JSON Map. " + err.message);
 			return;
-        };
-		
+		};
+
 		// Get Actor Data
 		const actorData = this.actor.data;
 
 		// Begin grouping logs
 		console.group("PDF Sheet")
 
+		// All Data
+		console.log("All Data:", this.actor)
+
 		// Log Actor Data
 		console.log("Actor Data:", actorData)
 
+		// Helper function to parse dynamic keys
+		const parseDynamic = entry => {
+			if (entry.includes("@")) return getProperty(actorData, entry.slice(1));
+		};
 		// Parse values correctly
-		rawMap.forEach((entry, i) => {
+		rawMap.map(entry => {
+
+			// Log current entry
+			console.log("Current Mapping Entry", entry)
+
 			// Does this entry contain a dynamic key
-			if (entry.foundry.includes("@")) {
-				rawMap[i].foundry = getProperty(actorData, entry.foundry.slice(1));
-			}
+			if (parseDynamic(entry.foundry)) { entry = parseDynamic(entry.foundry) }
 
 			// Parse Booleans
-			else if (entry.foundry === "true") { rawMap[i].foundry = true }
-			else if (entry.foundry === "false") { rawMap[i].foundry = false }
+			else if (entry.foundry === "true") { entry.foundry = true }
+			else if (entry.foundry === "false") { entry.foundry = false }
 
-			// Parse regular strings
-			else {
-				rawMap[i].foundry = entry.foundry;
-			};
-			
 			// Log filled in fields
-			console.log(rawMap[i].foundry);
+			console.log(entry.foundry);
 		});
 
-        // Log all PDF fields
+		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
 		// Close console grouping
