@@ -176,6 +176,19 @@ class Pdfconfig extends FormApplication {
 		const parseDynamic = entry => {
 			if (entry.includes("@")) return getProperty(actorData, entry.slice(1));
 		};
+
+		const parseArray = array => {
+			let results = [];
+			if (Array.isArray(array)) {
+				array.forEach(item => {
+					item = parseDynamic(item); // Parse dynamic keys
+					results.push(item);
+				});
+			};
+			// Flatten, filter out empty values, and join results together
+			return results.deepFlatten().filter(String).join(", ");
+		};
+
 		// Parse values correctly
 		rawMap.map(entry => {
 
@@ -188,6 +201,9 @@ class Pdfconfig extends FormApplication {
 			// Parse Booleans
 			else if (entry.foundry === "true") { entry.foundry = true }
 			else if (entry.foundry === "false") { entry.foundry = false }
+
+			// Parse Arrays
+			else if (Array.isArray(entry.foundry)) entry.foundry = parseArray(entry.foundry);
 
 			// Log filled in fields
 			console.log(entry.foundry);
