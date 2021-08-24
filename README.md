@@ -22,31 +22,33 @@ You can theoretically use this module with the PDF for any system, but some fiel
 
 ### Mapping
 
-In order to automatically fill out the sheet with values, you will need a JSON mapping of the PDF fields to the values on your character sheet. This is known as a "mapping" and can be edited in the module settings.
+In order to automatically fill out the sheet with values, you will need a JS Object mapping of the PDF fields to the values on your character sheet. This is known as a "mapping" and can be edited in the module settings.
 
 **TIP:** Install [Ace Library](https://foundryvtt.com/packages/acelib) if you want to use a proper editor to work on creating your mapping.
 
 The mapping is formatted like this:
 
-```json
+```js
 [
     {
-        "pdf": "CharacterName",
-        "foundry": "@name"
+        pdf: "CharacterName",
+        foundry: @name
     },
     {
-        "pdf": "Check Box 11",
-        "foundry": "@data.abilities.str.proficient"
+        pdf: "Check Box 11",
+        foundry: @data.abilities.str.proficient
     },
     {
-        "pdf": "Race",
-        "foundry": "@data.details.race"
+        pdf: "Race",
+        foundry: @data.details.race
     }
 ]
 ```
 
 This will take care of filling out the character name, strength save proficiency, and race on a D&D 5e character sheet.
+
 As you can see, the `@` is used to access properties of the Actor data, rather than a fixed value.
+You may use any valid JavaScript functions or formulas in the mapping, but it should return a String or [coerce](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) into one.
 
 Please share any mappings you create with me and I will list them here for the benefit of the community.
 

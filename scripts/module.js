@@ -11,24 +11,14 @@ Hooks.on("init", () => {
 });
 
 Hooks.on("renderSettingsConfig", () => {
-
 	// Create a new text box
-	let newTextBox, oldValue, editor;
+	let newTextBox, editor;
 
 	// Get the old text box
 	let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
 
-	// Try to parse and copy the value from the old textbox into the new one
-	try {
-		oldValue = JSON.stringify(JSON.parse(oldTextBox.value), null, 4);
-	} catch (err) {
-		// Let the user know if they have invalid JSON 
-		ui.notifications.error("PDF Sheet | Value not loaded: Invalid JSON. " + err.message);
-	};
-
 	// If Ace Library is enabled use an Ace Editor
 	if (game.modules.get("acelib")?.active) {
-
 		// Create an editor
 		newTextBox = document.createElement("div");
 		editor = ace.edit(newTextBox);
@@ -36,17 +26,17 @@ Hooks.on("renderSettingsConfig", () => {
 		// Set to the default options
 		editor.setOptions(ace.userSettings);
 
-		// Set to JSON mode
-		editor.session.setMode("ace/mode/json");
+		// Set to JavaScript mode
+		editor.session.setMode("ace/mode/javscript");
 
-		// Use the oldValue
-		editor.setValue(oldValue);
+		// Copy the value from the old textbox into the Ace Editor
+		editor.setValue(oldTextBox.value);
 	} else {
 		// Otherwise create new textarea
 		newTextBox = document.createElement("textarea");
 
-		// Use the oldValue
-		newTextBox.value = oldValue;
+		// Copy the value from the old textbox into the new one
+		newTextBox.value = oldTextBox.value;
 	};
 
 	// Don't show the old textbox
@@ -65,24 +55,14 @@ Hooks.on("renderSettingsConfig", () => {
 	if (game.modules.get("acelib")?.active) {
 		// Update whenever the ace editor changes
 		editor.on("change", () => {
-			// Try to parse and copy the value from the ace editor to the old textbox
-			try {
-				oldTextBox.value = JSON.stringify(JSON.parse(editor.getValue()), null, 4);
-			} catch (err) {
-				// Let the user know if they have invalid JSON 
-				ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
-			};
+			// Copy the value from the ace editor to the old textbox
+			oldTextBox.value = editor.getValue();
 		});
 	} else {
 		// Update whenever the new textbox changes
 		newTextBox.addEventListener("change", () => {
-			// Try to parse and copy the value from the new textbox to the old one
-			try {
-				oldTextBox.value = JSON.stringify(JSON.parse(newTextBox.value), null, 4);
-			} catch (err) {
-				// Let the user know if they have invalid JSON 
-				ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
-			}
+			// Copy the value from the new textbox to the old one
+			oldTextBox.value = newTextBox.value;
 		});
 	};
 });
@@ -149,70 +129,33 @@ class Pdfconfig extends FormApplication {
 
 		// Get PDF fields
 		const pdfFields = pdfform(minipdf).list_fields(buffer);
-
-		// Try to get mapping
-		let rawMap;
-		try {
-			rawMap = JSON.parse(game.settings.get(Pdfconfig.ID, "map"));
-		} catch (err) {
-			// Exit if map is invalid
-			ui.notifications.error("PDF Sheet | Invalid JSON Map. " + err.message);
-			return;
-		};
-
-		// Get Actor Data
-		const actorData = this.actor.data;
+		// Get Actor data
+		const actor = this.actor;
 
 		// Begin grouping logs
 		console.group("PDF Sheet")
-
-		// All Data
-		console.log("All Data:", this.actor)
-
 		// Log Actor Data
-		console.log("Actor Data:", actorData)
-
-		// Helper function to parse dynamic keys
-		const parseDynamic = entry => {
-			if (entry.includes("@")) return getProperty(actorData, entry.slice(1));
-		};
-
-		const parseArray = array => {
-			let results = [];
-			if (Array.isArray(array)) {
-				array.forEach(item => {
-					item = parseDynamic(item); // Parse dynamic keys
-					results.push(item);
-				});
-			};
-			// Flatten, filter out empty values, and join results together
-			return results.deepFlatten().filter(String).join(", ");
-		};
-
-		// Parse values correctly
-		rawMap.map(entry => {
-
-			// Log current entry
-			console.log("Current Mapping Entry", entry)
-
-			// Does this entry contain a dynamic key
-			if (parseDynamic(entry.foundry)) { entry = parseDynamic(entry.foundry) }
-
-			// Parse Booleans
-			else if (entry.foundry === "true") { entry.foundry = true }
-			else if (entry.foundry === "false") { entry.foundry = false }
-
-			// Parse Arrays
-			else if (Array.isArray(entry.foundry)) entry.foundry = parseArray(entry.foundry);
-
-			// Log filled in fields
-			console.log(entry.foundry);
-		});
-
+		console.log("Actor Data:", actor);
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
-		// Close console grouping
+		// Get mapping from settings and parse dynamic keys
+		let mapping = game.settings.get(Pdfconfig.ID, "map").replace("@", "actor.data.");
+
+		// Try to parse mapping
+		try {
+			// Evaluate as JavaScript
+			mapping = Function(`"use strict"; return ${mapping}`)();
+		} catch (err) {
+			// Alert if invalid
+			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md>README</a> for more info.`);
+			console.error(err);
+			return;
+		};
+
+		// Log type of mapping
+		console.log(typeof mapping);
+		// Close log grouping
 		console.groupEnd();
 
 		for (let pdfFieldKey in pdfFields) {
@@ -267,7 +210,7 @@ class Pdfconfig extends FormApplication {
 
 				// Add values from character sheet
 				// Loop through all entries in map
-				rawMap.forEach(entry => {
+				mapping.forEach(entry => {
 					// Check if the current field in the PDF matches an entry in the map
 					if (pdfFieldKey.trim() == entry.pdf) {
 						// Set the input to what is on the character sheet
