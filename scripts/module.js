@@ -10,6 +10,7 @@ Hooks.on("init", () => {
 	});
 });
 
+// Inject editor into the settings menu
 Hooks.on("renderSettingsConfig", () => {
 	// Create a new text box
 	let newTextBox, editor;
@@ -23,8 +24,8 @@ Hooks.on("renderSettingsConfig", () => {
 		newTextBox = document.createElement("div");
 		editor = ace.edit(newTextBox);
 
-		// Set to the default options
-		editor.setOptions(ace.userSettings);
+			// Set to the default options
+			editor.setOptions(ace.userSettings);
 
 		// Set to JavaScript mode
 		editor.session.setMode("ace/mode/javscript");
@@ -39,17 +40,17 @@ Hooks.on("renderSettingsConfig", () => {
 		newTextBox.value = oldTextBox.value;
 	};
 
-	// Don't show the old textbox
-	oldTextBox.style.display = "none";
+		// Don't show the old textbox
+		oldTextBox.style.display = "none";
 
-	// Give the editor some height
-	newTextBox.style.height = "20em";
+		// Give the editor some height
+		newTextBox.style.height = "20em";
 
-	// Make the editor take up the full width
-	oldTextBox.parentElement.style.flex = "100%";
+		// Make the editor take up the full width
+		oldTextBox.parentElement.style.flex = "100%";
 
-	// Insert the new textbox right after the old one
-	oldTextBox.after(newTextBox);
+		// Insert the new textbox right after the old one
+		oldTextBox.after(newTextBox);
 
 	// Use a different event for the Ace Editor
 	if (game.modules.get("acelib")?.active) {
