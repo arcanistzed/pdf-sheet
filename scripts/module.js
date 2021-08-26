@@ -10,80 +10,83 @@ Hooks.on("init", () => {
 	});
 });
 
+// Inject editor into the settings menu
 Hooks.on("renderSettingsConfig", () => {
+	// Only if GM
+	if (game.user.isGM) {
+		// Create a new text box
+		let newTextBox, oldValue, editor;
 
-	// Create a new text box
-	let newTextBox, oldValue, editor;
+		// Get the old text box
+		let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
 
-	// Get the old text box
-	let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
+		// Try to parse and copy the value from the old textbox into the new one
+		try {
+			oldValue = JSON.stringify(JSON.parse(oldTextBox.value), null, 4);
+		} catch (err) {
+			// Let the user know if they have invalid JSON 
+			ui.notifications.error("PDF Sheet | Value not loaded: Invalid JSON. " + err.message);
+		};
 
-	// Try to parse and copy the value from the old textbox into the new one
-	try {
-		oldValue = JSON.stringify(JSON.parse(oldTextBox.value), null, 4);
-	} catch (err) {
-		// Let the user know if they have invalid JSON 
-		ui.notifications.error("PDF Sheet | Value not loaded: Invalid JSON. " + err.message);
-	};
+		// If Ace Library is enabled use an Ace Editor
+		if (game.modules.get("acelib")?.active) {
 
-	// If Ace Library is enabled use an Ace Editor
-	if (game.modules.get("acelib")?.active) {
+			// Create an editor
+			newTextBox = document.createElement("div");
+			editor = ace.edit(newTextBox);
 
-		// Create an editor
-		newTextBox = document.createElement("div");
-		editor = ace.edit(newTextBox);
+			// Set to the default options
+			editor.setOptions(ace.userSettings);
 
-		// Set to the default options
-		editor.setOptions(ace.userSettings);
+			// Set to JSON mode
+			editor.session.setMode("ace/mode/json");
 
-		// Set to JSON mode
-		editor.session.setMode("ace/mode/json");
+			// Use the oldValue
+			editor.setValue(oldValue);
+		} else {
+			// Otherwise create new textarea
+			newTextBox = document.createElement("textarea");
 
-		// Use the oldValue
-		editor.setValue(oldValue);
-	} else {
-		// Otherwise create new textarea
-		newTextBox = document.createElement("textarea");
+			// Use the oldValue
+			newTextBox.value = oldValue;
+		};
 
-		// Use the oldValue
-		newTextBox.value = oldValue;
-	};
+		// Don't show the old textbox
+		oldTextBox.style.display = "none";
 
-	// Don't show the old textbox
-	oldTextBox.style.display = "none";
+		// Give the editor some height
+		newTextBox.style.height = "20em";
 
-	// Give the editor some height
-	newTextBox.style.height = "20em";
+		// Make the editor take up the full width
+		oldTextBox.parentElement.style.flex = "100%";
 
-	// Make the editor take up the full width
-	oldTextBox.parentElement.style.flex = "100%";
+		// Insert the new textbox right after the old one
+		oldTextBox.after(newTextBox);
 
-	// Insert the new textbox right after the old one
-	oldTextBox.after(newTextBox);
-
-	// Use a different event for the Ace Editor
-	if (game.modules.get("acelib")?.active) {
-		// Update whenever the ace editor changes
-		editor.on("change", () => {
-			// Try to parse and copy the value from the ace editor to the old textbox
-			try {
-				oldTextBox.value = JSON.stringify(JSON.parse(editor.getValue()), null, 4);
-			} catch (err) {
-				// Let the user know if they have invalid JSON 
-				ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
-			};
-		});
-	} else {
-		// Update whenever the new textbox changes
-		newTextBox.addEventListener("change", () => {
-			// Try to parse and copy the value from the new textbox to the old one
-			try {
-				oldTextBox.value = JSON.stringify(JSON.parse(newTextBox.value), null, 4);
-			} catch (err) {
-				// Let the user know if they have invalid JSON 
-				ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
-			}
-		});
+		// Use a different event for the Ace Editor
+		if (game.modules.get("acelib")?.active) {
+			// Update whenever the ace editor changes
+			editor.on("change", () => {
+				// Try to parse and copy the value from the ace editor to the old textbox
+				try {
+					oldTextBox.value = JSON.stringify(JSON.parse(editor.getValue()), null, 4);
+				} catch (err) {
+					// Let the user know if they have invalid JSON 
+					ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
+				};
+			});
+		} else {
+			// Update whenever the new textbox changes
+			newTextBox.addEventListener("change", () => {
+				// Try to parse and copy the value from the new textbox to the old one
+				try {
+					oldTextBox.value = JSON.stringify(JSON.parse(newTextBox.value), null, 4);
+				} catch (err) {
+					// Let the user know if they have invalid JSON 
+					ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
+				}
+			});
+		};
 	};
 });
 
