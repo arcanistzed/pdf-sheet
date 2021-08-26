@@ -30,7 +30,7 @@ Hooks.on("renderSettingsConfig", () => {
 			editor.setOptions(ace.userSettings);
 
 			// Set to JavaScript mode
-			editor.session.setMode("ace/mode/javscript");
+			editor.session.setMode("ace/mode/javascript");
 
 			// Copy the value from the old textbox into the Ace Editor
 			editor.setValue(oldTextBox.value);
