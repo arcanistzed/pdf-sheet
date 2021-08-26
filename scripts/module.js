@@ -12,33 +12,35 @@ Hooks.on("init", () => {
 
 // Inject editor into the settings menu
 Hooks.on("renderSettingsConfig", () => {
-	// Create a new text box
-	let newTextBox, editor;
+	// Only if GM
+	if (game.user.isGM) {
+		// Create a new text box
+		let newTextBox, editor;
 
-	// Get the old text box
-	let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
+		// Get the old text box
+		let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
 
-	// If Ace Library is enabled use an Ace Editor
-	if (game.modules.get("acelib")?.active) {
-		// Create an editor
-		newTextBox = document.createElement("div");
-		editor = ace.edit(newTextBox);
+		// If Ace Library is enabled use an Ace Editor
+		if (game.modules.get("acelib")?.active) {
+			// Create an editor
+			newTextBox = document.createElement("div");
+			editor = ace.edit(newTextBox);
 
 			// Set to the default options
 			editor.setOptions(ace.userSettings);
 
-		// Set to JavaScript mode
-		editor.session.setMode("ace/mode/javscript");
+			// Set to JavaScript mode
+			editor.session.setMode("ace/mode/javscript");
 
-		// Copy the value from the old textbox into the Ace Editor
-		editor.setValue(oldTextBox.value);
-	} else {
-		// Otherwise create new textarea
-		newTextBox = document.createElement("textarea");
+			// Copy the value from the old textbox into the Ace Editor
+			editor.setValue(oldTextBox.value);
+		} else {
+			// Otherwise create new textarea
+			newTextBox = document.createElement("textarea");
 
-		// Copy the value from the old textbox into the new one
-		newTextBox.value = oldTextBox.value;
-	};
+			// Copy the value from the old textbox into the new one
+			newTextBox.value = oldTextBox.value;
+		};
 
 		// Don't show the old textbox
 		oldTextBox.style.display = "none";
@@ -52,19 +54,20 @@ Hooks.on("renderSettingsConfig", () => {
 		// Insert the new textbox right after the old one
 		oldTextBox.after(newTextBox);
 
-	// Use a different event for the Ace Editor
-	if (game.modules.get("acelib")?.active) {
-		// Update whenever the ace editor changes
-		editor.on("change", () => {
-			// Copy the value from the ace editor to the old textbox
-			oldTextBox.value = editor.getValue();
-		});
-	} else {
-		// Update whenever the new textbox changes
-		newTextBox.addEventListener("change", () => {
-			// Copy the value from the new textbox to the old one
-			oldTextBox.value = newTextBox.value;
-		});
+		// Use a different event for the Ace Editor
+		if (game.modules.get("acelib")?.active) {
+			// Update whenever the ace editor changes
+			editor.on("change", () => {
+				// Copy the value from the ace editor to the old textbox
+				oldTextBox.value = editor.getValue();
+			});
+		} else {
+			// Update whenever the new textbox changes
+			newTextBox.addEventListener("change", () => {
+				// Copy the value from the new textbox to the old one
+				oldTextBox.value = newTextBox.value;
+			});
+		};
 	};
 });
 
