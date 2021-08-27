@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 - 27 Aug 2021
+
+Updated terminology used internally
+
 ## 0.2.0 - 27 Aug 2021 - Functions
 
 * Added the abiltiy to use full JavaScript syntax in the mapping, unlocking funtionality which uses functions, arrays, and more. Consequently, you must remove the quotes around the "foundry" field's value. See the [README](https://github.com/arcanistzed/pdf-sheet/blob/main/README.md) for details
