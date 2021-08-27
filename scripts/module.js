@@ -60,7 +60,6 @@ Hooks.on("renderSettingsConfig", () => {
 		// Insert the new textbox right after the old one
 		oldTextBox.after(newTextBox);
 
-		// Use a different event for the Ace Editor
 		if (game.modules.get("acelib")?.active) {
 			// Update whenever the ace editor changes
 			editor.on("change", () => {
@@ -96,12 +95,12 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	});
 });
 
-let currentBuffer;
 class Pdfconfig extends FormApplication {
 
 	constructor(actor) {
 		super();
 		this.actor = actor;
+		this.currentBuffer;
 	};
 
 	/** The module's ID */
@@ -120,7 +119,7 @@ class Pdfconfig extends FormApplication {
 	};
 
 	/** @override */
-	activateListeners(html) {
+	activateListeners() {
 		document.getElementById("pdf-upload").addEventListener("change", event => {
 			var file = event.target.files[0];
 			var reader = new FileReader();
@@ -130,7 +129,7 @@ class Pdfconfig extends FormApplication {
 
 		document.getElementById("pdf-download").addEventListener("click", event => {
 			event.preventDefault();
-			this.download(currentBuffer);
+			this.download(this.currentBuffer);
 		});
 	};
 
@@ -275,8 +274,8 @@ class Pdfconfig extends FormApplication {
 
 	/** Manage new PDF upload */
 	onFileUpload(filename, buffer) {
-		currentBuffer = buffer;
-		this.createForm(currentBuffer);
+		this.currentBuffer = buffer;
+		this.createForm(this.currentBuffer);
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-download").style.display = "block";
