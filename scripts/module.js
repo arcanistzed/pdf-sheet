@@ -1,8 +1,8 @@
 // Store mapping
 Hooks.on("init", () => {
-	game.settings.register(Pdfconfig.ID, "map", {
-		name: game.i18n.localize("pdfsheet.settings.map.Name"),
-		hint: game.i18n.localize("pdfsheet.settings.map.Hint"),
+	game.settings.register(Pdfconfig.ID, "mapping", {
+		name: game.i18n.localize("pdfsheet.settings.mapping.Name"),
+		hint: game.i18n.localize("pdfsheet.settings.mapping.Hint"),
 		scope: "world",
 		config: true,
 		type: String,
@@ -18,7 +18,7 @@ Hooks.on("renderSettingsConfig", () => {
 		let newTextBox, editor;
 
 		// Get the old text box
-		let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
+		let oldTextBox = document.querySelector("[name='pdf-sheet.mapping']");
 
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
@@ -156,7 +156,7 @@ class Pdfconfig extends FormApplication {
 		console.log("PDF fields:", pdfFields);
 
 		// Get mapping from settings
-		let mapping = game.settings.get(Pdfconfig.ID, "map")
+		let mapping = game.settings.get(Pdfconfig.ID, "mapping")
 
 		// Parse dynamic keys
 		mapping = mapping.replaceAll("@", "actor.data.");
@@ -235,9 +235,9 @@ class Pdfconfig extends FormApplication {
 				row.appendChild(input); // Add to DOM
 
 				// Add values from character sheet
-				// Loop through all entries in map
+				// Loop through all entries in the mapping
 				mapping.forEach(entry => {
-					// Check if the current field in the PDF matches an entry in the map
+					// Check if the current field in the PDF matches an entry in the mapping
 					if (pdfFieldKey.trim() == entry.pdf) {
 						// Set the input to what is on the character sheet
 						if (field.type === "boolean") { input.checked = entry.foundry } // If it's a checkbox
