@@ -31,21 +31,25 @@ The mapping is formatted like this:
 ```js
 [
     {
-        pdf: "CharacterName",
-        foundry: @name
+        "pdf": "CharacterName",
+        "foundry": @name
     },
     {
-        pdf: "Check Box 11",
-        foundry: @data.abilities.str.proficient
+        "pdf": "Check Box 11",
+        "foundry": @data.abilities.str.proficient
     },
     {
-        pdf: "Race",
-        foundry: @data.details.race
+        "pdf": "Race",
+        "foundry": @data.details.race
+    },
+    {
+        pdf: "Speed",
+        foundry: Object.entries(actor.data.data.attributes.movement).filter(val => val[1]).map(val => val[0] === "hover" ? Object.entries(actor.data.data.attributes.movement)[6][0]: "" + val[0] !== "units" && val[0] !== "hover" ? val.join(": ") + Object.entries(actor.data.data.attributes.movement)[5][1]: "").filter(String).join(", ")
     }
 ]
 ```
 
-This will take care of filling out the character name, strength save proficiency, and race on a D&D 5e character sheet.
+This will take care of filling out the character name, strength save proficiency, race, and speed on a D&D 5e character sheet.
 
 As you can see, the `@` is used to access properties of the Actor data, rather than a fixed value.
 You may use any valid JavaScript functions or formulas in the mapping, but it should return a String or [coerce](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) into one.
