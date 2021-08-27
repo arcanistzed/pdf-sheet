@@ -15,22 +15,13 @@ Hooks.on("renderSettingsConfig", () => {
 	// Only if GM
 	if (game.user.isGM) {
 		// Create a new text box
-		let newTextBox, oldValue, editor;
+		let newTextBox, editor;
 
 		// Get the old text box
 		let oldTextBox = document.querySelector("[name='pdf-sheet.map']");
 
-		// Try to parse and copy the value from the old textbox into the new one
-		try {
-			oldValue = JSON.stringify(JSON.parse(oldTextBox.value), null, 4);
-		} catch (err) {
-			// Let the user know if they have invalid JSON 
-			ui.notifications.error("PDF Sheet | Value not loaded: Invalid JSON. " + err.message);
-		};
-
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
-
 			// Create an editor
 			newTextBox = document.createElement("div");
 			editor = ace.edit(newTextBox);
@@ -38,17 +29,23 @@ Hooks.on("renderSettingsConfig", () => {
 			// Set to the default options
 			editor.setOptions(ace.userSettings);
 
-			// Set to JSON mode
-			editor.session.setMode("ace/mode/json");
+			// Set to JavaScript mode
+			editor.session.setMode("ace/mode/javascript");
 
-			// Use the oldValue
-			editor.setValue(oldValue);
+			// Copy the value from the old textbox into the Ace Editor
+			editor.setValue(oldTextBox.value);
+
+			// After a short wait (to make sure the editor is loaded), beautify the editor contents
+			setTimeout(() => editor.execCommand("beautify"), 500);
+
+			// Hide annotations
+			editor.getSession().on("changeAnnotation", debounce(() => editor.getSession().setAnnotations(), 1));
 		} else {
 			// Otherwise create new textarea
 			newTextBox = document.createElement("textarea");
 
-			// Use the oldValue
-			newTextBox.value = oldValue;
+			// Copy the value from the old textbox into the new one
+			newTextBox.value = oldTextBox.value;
 		};
 
 		// Don't show the old textbox
@@ -63,28 +60,17 @@ Hooks.on("renderSettingsConfig", () => {
 		// Insert the new textbox right after the old one
 		oldTextBox.after(newTextBox);
 
-		// Use a different event for the Ace Editor
 		if (game.modules.get("acelib")?.active) {
 			// Update whenever the ace editor changes
 			editor.on("change", () => {
-				// Try to parse and copy the value from the ace editor to the old textbox
-				try {
-					oldTextBox.value = JSON.stringify(JSON.parse(editor.getValue()), null, 4);
-				} catch (err) {
-					// Let the user know if they have invalid JSON 
-					ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
-				};
+				// Copy the value from the ace editor to the old textbox
+				oldTextBox.value = editor.getValue();
 			});
 		} else {
 			// Update whenever the new textbox changes
 			newTextBox.addEventListener("change", () => {
-				// Try to parse and copy the value from the new textbox to the old one
-				try {
-					oldTextBox.value = JSON.stringify(JSON.parse(newTextBox.value), null, 4);
-				} catch (err) {
-					// Let the user know if they have invalid JSON 
-					ui.notifications.error("Value not saved: Invalid JSON. " + err.message);
-				}
+				// Copy the value from the new textbox to the old one
+				oldTextBox.value = newTextBox.value;
 			});
 		};
 	};
@@ -92,22 +78,29 @@ Hooks.on("renderSettingsConfig", () => {
 
 // Add button to Actor Sheet for opening app
 Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
-	if (sheet.actor.type !== "character") return;
+	// If this is not a player character sheet, return without adding the button
+	if (!["character", "PC"].includes(sheet.actor.type)) return;
 
 	buttons.unshift({
 		label: "Export to PDF",
 		class: "export-pdf",
 		icon: "fas fa-file-export",
-		onclick: () => new Pdfconfig(sheet.actor).render(true)
+		onclick: () => {
+			// Open Config window
+			new Pdfconfig(sheet.actor).render(true)
+
+			// Bring window to top
+			Object.values(ui.windows).filter(window => window instanceof Pdfconfig)[0]?.bringToTop();
+		}
 	});
 });
 
-let currentBuffer;
 class Pdfconfig extends FormApplication {
 
 	constructor(actor) {
 		super();
 		this.actor = actor;
+		this.currentBuffer;
 	};
 
 	/** The module's ID */
@@ -126,7 +119,7 @@ class Pdfconfig extends FormApplication {
 	};
 
 	/** @override */
-	activateListeners(html) {
+	activateListeners() {
 		document.getElementById("pdf-upload").addEventListener("change", event => {
 			var file = event.target.files[0];
 			var reader = new FileReader();
@@ -136,7 +129,7 @@ class Pdfconfig extends FormApplication {
 
 		document.getElementById("pdf-download").addEventListener("click", event => {
 			event.preventDefault();
-			this.download(currentBuffer);
+			this.download(this.currentBuffer);
 		});
 	};
 
@@ -152,70 +145,43 @@ class Pdfconfig extends FormApplication {
 
 		// Get PDF fields
 		const pdfFields = pdfform(minipdf).list_fields(buffer);
-
-		// Try to get mapping
-		let rawMap;
-		try {
-			rawMap = JSON.parse(game.settings.get(Pdfconfig.ID, "map"));
-		} catch (err) {
-			// Exit if map is invalid
-			ui.notifications.error("PDF Sheet | Invalid JSON Map. " + err.message);
-			return;
-		};
-
-		// Get Actor Data
-		const actorData = this.actor.data;
+		// Get Actor data
+		const actor = this.actor;
 
 		// Begin grouping logs
 		console.group("PDF Sheet")
-
-		// All Data
-		console.log("All Data:", this.actor)
-
 		// Log Actor Data
-		console.log("Actor Data:", actorData)
-
-		// Helper function to parse dynamic keys
-		const parseDynamic = entry => {
-			if (entry.includes("@")) return getProperty(actorData, entry.slice(1));
-		};
-
-		const parseArray = array => {
-			let results = [];
-			if (Array.isArray(array)) {
-				array.forEach(item => {
-					item = parseDynamic(item); // Parse dynamic keys
-					results.push(item);
-				});
-			};
-			// Flatten, filter out empty values, and join results together
-			return results.deepFlatten().filter(String).join(", ");
-		};
-
-		// Parse values correctly
-		rawMap.map(entry => {
-
-			// Log current entry
-			console.log("Current Mapping Entry", entry)
-
-			// Does this entry contain a dynamic key
-			if (parseDynamic(entry.foundry)) { entry = parseDynamic(entry.foundry) }
-
-			// Parse Booleans
-			else if (entry.foundry === "true") { entry.foundry = true }
-			else if (entry.foundry === "false") { entry.foundry = false }
-
-			// Parse Arrays
-			else if (Array.isArray(entry.foundry)) entry.foundry = parseArray(entry.foundry);
-
-			// Log filled in fields
-			console.log(entry.foundry);
-		});
-
+		console.log("Actor Data:", actor);
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
-		// Close console grouping
+		// Get mapping from settings
+		let mapping = game.settings.get(Pdfconfig.ID, "map")
+
+		// Parse dynamic keys
+		mapping = mapping.replaceAll("@", "actor.data.");
+
+		// Log un-evaluated mapping
+		console.log("Raw mapping:", mapping)
+
+		// Try to deserialize mapping
+		try {
+			// Return as evaluated JavaScript with the actor as an argument
+			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
+		} catch (err) {
+			// End console group
+			console.groupEnd();
+			// Close the application
+			this.close();
+
+			// Alert if invalid
+			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
+			throw err;
+		};
+
+		// Log mapping
+		console.log("Mapping:", mapping);
+		// Close log grouping
 		console.groupEnd();
 
 		for (let pdfFieldKey in pdfFields) {
@@ -270,7 +236,7 @@ class Pdfconfig extends FormApplication {
 
 				// Add values from character sheet
 				// Loop through all entries in map
-				rawMap.forEach(entry => {
+				mapping.forEach(entry => {
 					// Check if the current field in the PDF matches an entry in the map
 					if (pdfFieldKey.trim() == entry.pdf) {
 						// Set the input to what is on the character sheet
@@ -308,8 +274,8 @@ class Pdfconfig extends FormApplication {
 
 	/** Manage new PDF upload */
 	onFileUpload(filename, buffer) {
-		currentBuffer = buffer;
-		this.createForm(currentBuffer);
+		this.currentBuffer = buffer;
+		this.createForm(this.currentBuffer);
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-download").style.display = "block";
