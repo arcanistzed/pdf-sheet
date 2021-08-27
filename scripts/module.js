@@ -34,6 +34,12 @@ Hooks.on("renderSettingsConfig", () => {
 
 			// Copy the value from the old textbox into the Ace Editor
 			editor.setValue(oldTextBox.value);
+
+			// After a short wait (to make sure the editor is loaded), beautify the editor contents
+			setTimeout(() => editor.execCommand("beautify"), 500);
+
+			// Hide annotations
+			editor.getSession().on("changeAnnotation", debounce(() => editor.getSession().setAnnotations(), 1));
 		} else {
 			// Otherwise create new textarea
 			newTextBox = document.createElement("textarea");
