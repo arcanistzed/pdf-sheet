@@ -3,7 +3,7 @@
         "settings": {
             "mapping": {
                 "Name": "Mapping",
-                "Hint": "JSON which is used to map the PDF fields to information on the Foundry character sheet. See the README for details."
+                "Hint": "JSON which is used to map the PDF fields to information on the Foundry character sheet. See the <a href= 'https://github.com/arcanistzed/pdf-sheet/blob/main/README.md' target='_blank'>README</a> for details."
             }
         }
     }
