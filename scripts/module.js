@@ -86,7 +86,13 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 		label: "Export to PDF",
 		class: "export-pdf",
 		icon: "fas fa-file-export",
-		onclick: () => new Pdfconfig(sheet.actor).render(true)
+		onclick: () => {
+			// Open Config window
+			new Pdfconfig(sheet.actor).render(true)
+
+			// Bring window to top
+			Object.values(ui.windows).filter(window => window instanceof Pdfconfig)[0]?.bringToTop();
+		}
 	});
 });
 
