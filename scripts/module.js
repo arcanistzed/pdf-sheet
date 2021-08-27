@@ -156,22 +156,32 @@ class Pdfconfig extends FormApplication {
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
-		// Get mapping from settings and parse dynamic keys
-		let mapping = game.settings.get(Pdfconfig.ID, "map").replace("@", "actor.data.");
+		// Get mapping from settings
+		let mapping = game.settings.get(Pdfconfig.ID, "map")
 
-		// Try to parse mapping
+		// Parse dynamic keys
+		mapping = mapping.replaceAll("@", "actor.data.");
+
+		// Log un-evaluated mapping
+		console.log("Raw mapping:", mapping)
+
+		// Try to deserialize mapping
 		try {
-			// Evaluate as JavaScript
-			mapping = Function(`"use strict"; return ${mapping}`)();
+			// Return as evaluated JavaScript with the actor as an argument
+			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
 		} catch (err) {
+			// End console group
+			console.groupEnd();
+			// Close the application
+			this.close();
+
 			// Alert if invalid
-			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md>README</a> for more info.`);
-			console.error(err);
-			return;
+			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
+			throw err;
 		};
 
-		// Log type of mapping
-		console.log(typeof mapping);
+		// Log mapping
+		console.log("Mapping:", mapping);
 		// Close log grouping
 		console.groupEnd();
 
