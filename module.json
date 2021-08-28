@@ -37,9 +37,9 @@
   "url": "This is auto replaced",
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
-  "readme": "https://raw.githubusercontent.com/arcanistzed/pdf-sheet/main/README.md",
-  "changelog": "https://raw.githubusercontent.com/arcanistzed/pdf-sheet/main/CHANGELOG.md",
-  "license": "https://raw.githubusercontent.com/arcanistzed/pdf-sheet/main/LICENSE",
+  "readme": "https://github.com/arcanistzed/pdf-sheet/blob/main/README.md",
+  "changelog": "https://github.com/arcanistzed/pdf-sheet/blob/main/CHANGELOG.md",
+  "license": "https://github.com/arcanistzed/pdf-sheet/blob/main/LICENSE",
   "bugs": "https://github.com/arcanistzed/pdf-sheet/issues/new/choose",
   "media": []
 }
