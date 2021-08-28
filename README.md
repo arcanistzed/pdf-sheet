@@ -74,4 +74,4 @@ You can submit bugs via [Github Issues](https://github.com/arcanistzed/pdf-sheet
 
 ## Contact me
 
-Come hang out on my [my Discord server](https://discord.gg/AAkZWWqVav) or [click here to send me an email](mailto:arcanistzed@gmail.com?subject=pdf-sheet%20module%20for%20Foundry%20VTT).
+Come hang out on my [my Discord server](https://discord.gg/AAkZWWqVav) or [click here to send me an email](mailto:arcanistzed@gmail.com?subject=Export%20Sheet%20to%20PDF%20module).
