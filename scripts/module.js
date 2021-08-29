@@ -111,8 +111,8 @@ class Pdfconfig extends FormApplication {
 		return mergeObject(super.defaultOptions, {
 			template: "modules/pdf-sheet/templates/module.hbs",
 			id: "pdf-sheet",
-			height: 600,
-			width: 400,
+			height: window.innerHeight * 7 / 8,
+			width: window.innerWidth > 1000 ? window.innerWidth * 1 / 4 : 400,
 			resizable: true,
 			title: "Export to PDF"
 		});
