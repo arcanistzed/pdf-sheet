@@ -26,6 +26,7 @@
   right: 20px;
   bottom: 20px;
   border: solid;
+  background-image: url(/ui/parchment.jpg);
 }
 
 /* Fix icon margin */
@@ -42,4 +43,17 @@
 
 #fieldList > li {
   margin: 10px 0;
+  display: flex;
+}
+
+#fieldList > li > label {
+  flex: 1;
+  margin: auto;
+}
+
+#fieldList > li > textarea {
+  resize: vertical;
+  flex: 2;
+  min-height: 2em;
+  height: 2em;
 }
