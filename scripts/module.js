@@ -179,8 +179,8 @@ class Pdfconfig extends FormApplication {
 			throw err;
 		};
 
-		// Log mapping
-		console.log("Mapping:", mapping);
+		// Log parsed mapping
+		console.log("Parsed mapping:", mapping);
 		// Close log grouping
 		console.groupEnd();
 
@@ -252,7 +252,6 @@ class Pdfconfig extends FormApplication {
 				mapping.forEach(entry => {
 					// Check if the current field in the PDF matches an entry in the mapping
 					if (pdfFieldKey.trim() == entry.pdf) {
-						console.log(entry.foundry); debugger
 						// Set the input to what is on the character sheet
 						if (field.type === "boolean") { input.checked = entry.foundry } // If it's a checkbox
 						else if (field.type === "string") { input.innerHTML = entry.foundry } // If it's a textarea
