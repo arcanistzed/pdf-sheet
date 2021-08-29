@@ -18,7 +18,7 @@ Hooks.on("renderSettingsConfig", () => {
 		let newTextBox, editor;
 
 		// Get the old text box
-		let oldTextBox = document.querySelector("[name='pdf-sheet.mapping']");
+		const oldTextBox = document.querySelector("[name='pdf-sheet.mapping']");
 
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
@@ -184,19 +184,27 @@ class Pdfconfig extends FormApplication {
 		// Close log grouping
 		console.groupEnd();
 
-		for (let pdfFieldKey in pdfFields) {
+		// Loop through each key
+		Object.keys(pdfFields).forEach(pdfFieldKey => {
 
-			let row = document.createElement("li");
-			row.innerText = `${pdfFieldKey}: `;
+			// Create row
+			const row = document.createElement("li");
+
+			// Create label
+			const label = document.createElement("label");
+			label.innerText = `${pdfFieldKey}: `;
+
+			// Insert label
+			row.prepend(label);
 			inputForm.appendChild(row);
 
 			pdfFields[pdfFieldKey].forEach((field, i) => {
 				if ((field.type === "radio") && field.options) {
-					let fieldSet = document.createElement("fieldset");
+					const fieldSet = document.createElement("div");
 
 					field.options.forEach((value) => {
-						let radioLabel = document.createElement("label");
-						let radio = document.createElement("input");
+						const radioLabel = document.createElement("label");
+						const radio = document.createElement("input");
 
 						radio.setAttribute("type", "radio");
 						radio.setAttribute("value", value);
@@ -213,7 +221,12 @@ class Pdfconfig extends FormApplication {
 					return;
 				};
 
-				let input = document.createElement((field.type === "select") ? "select" : "input");
+				// Create an input
+				const input = document.createElement(
+					field.type === "select" ? "select" :
+						field.type === "string" ? "textarea" :
+							"input"
+				);
 				input.setAttribute("data-idx", i);
 				input.setAttribute("data-key", pdfFieldKey);
 
@@ -226,7 +239,7 @@ class Pdfconfig extends FormApplication {
 
 					field.options.forEach((value) => {
 
-						let option = document.createElement("option");
+						const option = document.createElement("option");
 						option.innerText = value;
 						option.setAttribute("value", value);
 						input.appendChild(option);
@@ -239,30 +252,38 @@ class Pdfconfig extends FormApplication {
 				mapping.forEach(entry => {
 					// Check if the current field in the PDF matches an entry in the mapping
 					if (pdfFieldKey.trim() == entry.pdf) {
+						console.log(entry.foundry); debugger
 						// Set the input to what is on the character sheet
 						if (field.type === "boolean") { input.checked = entry.foundry } // If it's a checkbox
+						else if (field.type === "string") { input.innerHTML = entry.foundry } // If it's a textarea
 						else { input.setAttribute('value', entry.foundry) }; // If it's anything else
 					};
 				});
 			});
-		};
+		});
 	};
 
 	/** Get values and download PDF */
 	download(buffer) {
-		var fieldList = document.getElementById("fieldList");
-		var fields = {};
-		fieldList.querySelectorAll("input, select").forEach((input) => {
+		const fieldList = document.getElementById("fieldList");
+		const fields = {};
+		fieldList.querySelectorAll("input, textarea, select").forEach((input) => {
 			if ((input.getAttribute("type") === "radio") && !input.checked) {
 				return;
 			};
 
-			var key = input.getAttribute("data-key");
+			const key = input.getAttribute("data-key");
 			if (!fields[key]) {
 				fields[key] = [];
 			};
-			var index = parseInt(input.getAttribute("data-idx"), 10);
-			var value = (input.getAttribute("type") === "checkbox") ? input.checked : input.value;
+			const index = parseInt(input.getAttribute("data-idx"), 10);
+
+			const value = (
+				input.type === "textarea" ? input.innerHTML :
+					input.getAttribute("type") === "checkbox" ? input.checked :
+						input.value
+			);
+			console.log(`%cValue: ${value}`, "font-size: 48px; color: blue;")
 			fields[key][index] = value;
 		});
 
