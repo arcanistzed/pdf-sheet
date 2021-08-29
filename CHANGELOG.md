@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 - 29 Aug 2021 - Text Areas
+
+* Switched to `textarea`s for strings to allow them to be multiline
+* Made application size more dynamic
+* Lined up the inputs & labels in the form and assigned the labels to their inputs
+* Improved information displayed in the logs
+
 ## 0.2.1 - 27 Aug 2021
 
 Updated terminology used internally
