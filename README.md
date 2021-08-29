@@ -44,11 +44,11 @@ The mapping is formatted like this:
     },
     {
         pdf: "Speed",
-        foundry: Object.entries(actor.data.data.attributes.movement).filter(val => val[1]).map(val => val[0] === "hover" ? Object.entries(actor.data.data.attributes.movement)[6][0]: "" + val[0] !== "units" && val[0] !== "hover" ? val.join(": ") + Object.entries(actor.data.data.attributes.movement)[5][1]: "").filter(String).join(", ")
+        foundry: Object.entries(actor.data.data.attributes.movement).filter(val => val[1]).map(val => val[0] === "hover" ? Object.entries(actor.data.data.attributes.movement)[6][0] : "" + val[0] !== "units" && val[0] !== "hover" ? val.join(": ") + Object.entries(actor.data.data.attributes.movement)[5][1] : "").filter(String).join(", ")
     },
     {
         pdf: "Backstory",
-        foundry: @data.details.biography.value.replaceAll(/<[^>]*>/g, "\n").trim()
+        foundry: @data.details.biography.value?.replaceAll(/<[^>]*>/g, "").trim()
     }
 ]
 ```
