@@ -285,7 +285,6 @@ class Pdfconfig extends FormApplication {
 					input.getAttribute("type") === "checkbox" ? input.checked :
 						input.value
 			);
-			console.log(`%cValue: ${value}`, "font-size: 48px; color: blue;")
 			fields[key][index] = value;
 		});
 
