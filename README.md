@@ -49,7 +49,8 @@ The mapping is formatted like this:
     {
         pdf: "Backstory",
         foundry: @data.details.biography.value?.replaceAll(/<[^>]*>/g, "").trim()
-    }
+    },
+    { "pdf": "PlayerName", foundry: Object.entries(@permission).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") }
 ]
 ```
 
