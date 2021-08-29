@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 - 29 Aug 2021
+
+Removed log
+
 ## 0.3.0 - 29 Aug 2021 - Text Areas
 
 * Switched to `textarea`s for strings to allow them to be multiline
