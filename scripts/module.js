@@ -193,6 +193,7 @@ class Pdfconfig extends FormApplication {
 			// Create label
 			const label = document.createElement("label");
 			label.innerText = `${pdfFieldKey}: `;
+			label.htmlFor = pdfFieldKey;
 
 			// Insert label
 			row.prepend(label);
@@ -201,6 +202,7 @@ class Pdfconfig extends FormApplication {
 			pdfFields[pdfFieldKey].forEach((field, i) => {
 				if ((field.type === "radio") && field.options) {
 					const fieldSet = document.createElement("div");
+					fieldSet.id = pdfFieldKey;
 
 					field.options.forEach((value) => {
 						const radioLabel = document.createElement("label");
@@ -229,6 +231,7 @@ class Pdfconfig extends FormApplication {
 				);
 				input.setAttribute("data-idx", i);
 				input.setAttribute("data-key", pdfFieldKey);
+				input.id = pdfFieldKey;
 
 				// Make a checkbox if the type is boolean
 				if (field.type === "boolean") {
