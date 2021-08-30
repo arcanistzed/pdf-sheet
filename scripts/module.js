@@ -73,6 +73,37 @@ Hooks.on("renderSettingsConfig", () => {
 				oldTextBox.value = newTextBox.value;
 			});
 		};
+
+		// Create mapping select menu
+		const mappingSelect = document.createElement("select");
+		mappingSelect.style.margin = "10px 0";
+		oldTextBox.parentNode.before(mappingSelect);
+
+		// Add options for each finished mapping
+		Pdfconfig.MAPPINGS.forEach(name => {
+			// Create the option
+			const option = document.createElement("option");
+			mappingSelect.append(option);
+
+			// Add text
+			option.innerHTML = name;
+		});
+
+		// Add an event listener
+		mappingSelect.addEventListener("change", async () => {
+			const mapping = await fetch(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`)
+				.then(response => response.text());
+
+			// Copy the mapping to the old text box
+			oldTextBox.value = mapping;
+			if (game.modules.get("acelib")?.active) {
+				// Copy the mapping to the ace editor
+				editor.setValue(mapping);
+			} else {
+				// Copy the mapping to the new textbox
+				newTextBox.value = mapping;
+			};
+		});
 	};
 });
 
@@ -105,6 +136,9 @@ class Pdfconfig extends FormApplication {
 
 	/** The module's ID */
 	static ID = "pdf-sheet";
+
+	/** Finished mappings */
+	static MAPPINGS = ["", "cyphersystem"];
 
 	/** @override */
 	static get defaultOptions() {
