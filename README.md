@@ -24,6 +24,8 @@ You can theoretically use this module with the PDF for any system, but some fiel
 
 In order to automatically fill out the sheet with values, you will need a JS Object mapping of the PDF fields to the values on your character sheet. This is known as a "mapping" and can be edited in the module settings.
 
+If a mapping has been created for your system, you can select it with the dropdown to load it in.
+
 **TIP:** Install [Ace Library](https://foundryvtt.com/packages/acelib) if you want to use a proper editor to work on creating your mapping.
 
 The mapping is formatted like this:
@@ -59,7 +61,7 @@ This will take care of filling out the character name, strength save proficiency
 As you can see, the `@` is used to access properties of the Actor data, rather than a fixed value.
 You may use any valid JavaScript functions or formulas in the mapping, but it should return a String or [coerce](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) into one.
 
-Please share any mappings you create with me and I will list them here for the benefit of the community.
+Please share any mappings you create with me and I will include them in the module for the benefit of the community. [See the mappings here](./mappings/README.md).
 
 ## License
 

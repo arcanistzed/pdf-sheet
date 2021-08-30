@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 - 29 Aug 2021 - Load Mappings & Cypher System
+
+* Added Cypher System mapping (thanks to @Fashtas)
+* Added dropdown menu to the module settings to allow you to load in finished mappings
+
 ## 0.3.1 - 29 Aug 2021
 
 Removed log
