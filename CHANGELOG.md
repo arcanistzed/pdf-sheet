@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1 - 29 Aug 2021
+
+Removed comments from Cypher Mapping, since they were causing issues and normalized formatting
+
 ## 0.4.0 - 29 Aug 2021 - Load Mappings & Cypher System
 
 * Added Cypher System mapping (thanks to @Fashtas)
