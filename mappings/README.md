@@ -4,4 +4,4 @@ This directory contains mappings created by the community. Feel free to contribu
 
 ## Current Mappings
 
-* [Cypher System](./cyphersystem-mapping.js) by Fashtas (@Fashtas#5092) - [PDF LINK](https://www.montecookgames.com/store/product/cypher-system-character-and-campaign-sheets/)
+* [Cypher System](./cyphersystem.js) by Fashtas (@Fashtas#5092) - [PDF LINK](https://www.montecookgames.com/store/product/cypher-system-character-and-campaign-sheets/)
