@@ -61,6 +61,10 @@ This will take care of filling out the character name, strength save proficiency
 As you can see, the `@` is used to access properties of the Actor data, rather than a fixed value.
 You may use any valid JavaScript functions or formulas in the mapping, but it should return a String or [coerce](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) into one.
 
+While creating a mapping, it's very helpful to work in the browser console (F12):
+
+https://user-images.githubusercontent.com/82790112/131598024-cfb300d9-57d3-4768-bd01-28b8b93c89be.mp4
+
 Please share any mappings you create with me and I will include them in the module for the benefit of the community. [See the mappings here](./mappings/README.md).
 
 ## License
