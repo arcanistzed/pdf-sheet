@@ -65,7 +65,7 @@ While creating a mapping, it's very helpful to work in the browser console (F12)
 
 https://user-images.githubusercontent.com/82790112/131598024-cfb300d9-57d3-4768-bd01-28b8b93c89be.mp4
 
-Please share any mappings you create with me and I will include them in the module for the benefit of the community. [See the mappings here](./mappings/README.md).
+Please share any mappings you create with me and I will include them in the module for the benefit of the community. [See the mappings here](https://github.com/arcanistzed/pdf-sheet/blob/main/mappings/README.md).
 
 ## License
 
