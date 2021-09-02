@@ -33,6 +33,13 @@
       "path": "languages/en.json"
     }
   ],
+  "keywords": [
+    "export",
+    "PDF",
+    "sheet",
+    "actor",
+    "mapping"
+  ],
   "dependencies": [],
   "url": "This is auto replaced",
   "manifest": "This is auto replaced",
