@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/arcanistzed/pdf-sheet#readme",
   "dependencies": {
+    "file-saver": "^2.0.5",
+    "pako": "^2.0.4",
     "pdfform.js": "^1.0.14"
   }
 }

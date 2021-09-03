@@ -1,2 +1,3 @@
 *.lock
 mapping.js
+node_modules
