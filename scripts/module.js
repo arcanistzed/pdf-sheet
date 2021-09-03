@@ -235,7 +235,7 @@ class Pdfconfig extends FormApplication {
 
 			pdfFields[pdfFieldKey].forEach((field, i) => {
 				if ((field.type === "radio") && field.options) {
-					const fieldSet = document.createElement("div");
+					const fieldSet = document.createElement("fieldset");
 					fieldSet.id = pdfFieldKey;
 
 					field.options.forEach((value) => {
