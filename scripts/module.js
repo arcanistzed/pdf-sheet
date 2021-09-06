@@ -273,7 +273,7 @@ class Pdfconfig extends FormApplication {
 				if (field.type === "boolean") {
 					input.setAttribute("type", "checkbox");
 
-					// Make a drop down menu if the type is seelect and it has options
+					// Make a drop down menu if the type is select and it has options
 				} else if ((field.type === "select") && field.options) {
 
 					field.options.forEach((value) => {
