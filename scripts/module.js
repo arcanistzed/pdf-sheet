@@ -138,7 +138,7 @@ class Pdfconfig extends FormApplication {
 	static ID = "pdf-sheet";
 
 	/** Finished mappings */
-	static MAPPINGS = ["", "cyphersystem"];
+	static MAPPINGS = ["", "cyphersystem", "dnd5e"];
 
 	/** @override */
 	static get defaultOptions() {
