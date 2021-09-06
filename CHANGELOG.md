@@ -1,12 +1,18 @@
 # Changelog
 
+## 0.5.1 - 6 Sept 2021 - D&D 5e & Error Handling
+
+* Added WIP D&D 5e mapping (thanks to `@Pluto Anatole`)
+* Fixed some typos
+* Improved error feedback in console to allow you to browse to the location of the error in the evaluated mapping by clicking on the link in the top right of the error message
+
 ## 0.4.1 - 29 Aug 2021
 
 Removed comments from Cypher Mapping, since they were causing issues and normalized formatting
 
 ## 0.4.0 - 29 Aug 2021 - Load Mappings & Cypher System
 
-* Added Cypher System mapping (thanks to @Fashtas)
+* Added Cypher System mapping (thanks to `@Fashtas`)
 * Added dropdown menu to the module settings to allow you to load in finished mappings
 
 ## 0.3.1 - 29 Aug 2021
