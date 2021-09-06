@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0 - 6 Sept 2021 - Auto-load mappings
+
+`.mapping` files placed in `Data/modules/pdf-sheet/mappings` are automatically loaded into the list in settings
+
 ## 0.5.1 - 6 Sept 2021 - D&D 5e & Error Handling
 
 * Added WIP D&D 5e mapping (thanks to `@Pluto Anatole`)
