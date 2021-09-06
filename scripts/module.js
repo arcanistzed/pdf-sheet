@@ -210,7 +210,9 @@ class Pdfconfig extends FormApplication {
 
 			// Alert if invalid
 			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
-			throw err;
+
+			// Evaluate the JS again to throw the error
+			Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
 		};
 
 		// Log parsed mapping
