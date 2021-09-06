@@ -79,20 +79,31 @@ Hooks.on("renderSettingsConfig", () => {
 		mappingSelect.style.margin = "10px 0";
 		oldTextBox.parentNode.before(mappingSelect);
 
-		// Add options for each finished mapping
-		Pdfconfig.MAPPINGS.forEach(name => {
-			// Create the option
-			const option = document.createElement("option");
-			mappingSelect.append(option);
+		// Browse and get list of included mapping files
+		FilePicker.browse("data", "modules/pdf-sheet/mappings", { extensions: [".mapping"] })
+			.then(results => {
+				// Add the default option first
+				results.files.unshift("");
 
-			// Add text
-			option.innerHTML = name;
-		});
+				// Add options for each included mapping
+				results.files.forEach(name => {
+					// Create the option
+					const option = document.createElement("option");
+					mappingSelect.append(option);
+
+					// Add just the name of the system as the text
+					name = name.replace(".mapping", "").replace("modules/pdf-sheet/mappings/", "");
+					option.innerHTML = name;
+				});
+			});
 
 		// Add an event listener
 		mappingSelect.addEventListener("change", async () => {
-			const mapping = await fetch(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`)
-				.then(response => response.text());
+			// Fetch selected mapping if not empty
+			const mapping = mappingSelect.value ?
+				await fetch(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`)
+					.then(response => response.text())
+				: "";
 
 			// Copy the mapping to the old text box
 			oldTextBox.value = mapping;
@@ -136,9 +147,6 @@ class Pdfconfig extends FormApplication {
 
 	/** The module's ID */
 	static ID = "pdf-sheet";
-
-	/** Finished mappings */
-	static MAPPINGS = ["", "cyphersystem", "dnd5e"];
 
 	/** @override */
 	static get defaultOptions() {
