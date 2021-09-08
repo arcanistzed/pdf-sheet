@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.1 - 7 Sept 2021
+## 0.6.2 - 7 Sept 2021
 
 Revert/fix node modules not getting included in package
 
