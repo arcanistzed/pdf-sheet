@@ -2,7 +2,7 @@
 
 ## 0.6.1 - 7 Sept 2021
 
-Fix node modules not getting included in package
+Revert/fix node modules not getting included in package
 
 ## 0.6.0 - 6 Sept 2021 - Auto-load mappings
 
