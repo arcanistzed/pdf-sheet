@@ -2,9 +2,9 @@
 
     <header id="pdf-header">
         <input id="pdf-upload" type="file" name="upload" accept="application/pdf" />
-        <button id="official-pdf" title="Download the official character sheet PDF for 5th edition"
+        <button id="official-pdf" title={{localize pdfsheet.download.Hint}}
             onclick="window.open('https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf', '_blank')">
-            <i class="fas fa-download"></i> PDF for D&D 5e
+            <i class="fas fa-download"></i> {{localize pdfsheet.download.Name}}
         </button>
     </header>
 
