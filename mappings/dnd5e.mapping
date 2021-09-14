@@ -3,7 +3,7 @@
 
 [
     /* Page #1 */
-    { "pdf": "ClassLevel", "foundry": "" }, /* Need to get individual classes for multi-class and transform the array of Objects into a string. */
+    { "pdf": "ClassLevel", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.data.data.levels}`).join(' / ') },
     { "pdf": "Background", "foundry": @data.details.background },
     { "pdf": "PlayerName", "foundry": Object.entries(@permission).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
     { "pdf": "CharacterName", "foundry": @name },
@@ -45,14 +45,14 @@
     { "pdf": "Athletics", "foundry": @data.skills.ath.total },
     { "pdf": "Deception", "foundry": @data.skills.dec.total },
     { "pdf": "History", "foundry": @data.skills.his.total },
-    { "pdf": "Wpn Name", "foundry": "" },
+    { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
     { "pdf": "Wpn1 AtkBonus", "foundry": "" },
-    { "pdf": "Wpn1 Damage", "foundry": "" },
+    { "pdf": "Wpn1 Damage", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.data?.data?.damage?.parts[0][0] || "" },
     { "pdf": "Insight", "foundry": @data.skills.ins.total },
     { "pdf": "Intimidation", "foundry": @data.skills.itm.total },
-    { "pdf": "Wpn Name 2", "foundry": "" },
+    { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
     { "pdf": "Wpn2 AtkBonus", "foundry": "" },
-    { "pdf": "Wpn Name 3", "foundry": "" },
+    { "pdf": "Wpn Name 3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
     { "pdf": "Wpn3 AtkBonus", "foundry": "" },
     { "pdf": "Check Box 11", "foundry": @data.abilities.str.proficient },
     { "pdf": "Check Box 18", "foundry": @data.abilities.dex.proficient },
@@ -61,7 +61,7 @@
     { "pdf": "Check Box 21", "foundry": @data.abilities.wis.proficient },
     { "pdf": "Check Box 22", "foundry": @data.abilities.cha.proficient },
     { "pdf": "INTmod", "foundry": @data.abilities.int.mod },
-    { "pdf": "Wpn2 Damage", "foundry": "" },
+    { "pdf": "Wpn2 Damage", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[1]?.data?.data?.damage?.parts[0][0] || "" },
     { "pdf": "Investigation", "foundry": @data.skills.inv.total },
     { "pdf": "WIS", "foundry": @data.abilities.wis.value },
     { "pdf": "Arcana", "foundry": @data.skills.arc.total },
@@ -95,7 +95,7 @@
     { "pdf": "HPMax", "foundry": @data.attributes.hp.max },
     { "pdf": "HPCurrent", "foundry": @data.attributes.hp.value },
     { "pdf": "HPTemp", "foundry": @data.attributes.hp.temp },
-    { "pdf": "Wpn3 Damage", "foundry": "" },
+    { "pdf": "Wpn3 Damage", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[2]?.data?.data?.damage?.parts[0][0] || "" },
     { "pdf": "SleightofHand", "foundry": @data.skills.slt.total },
     { "pdf": "CHamod", "foundry": @data.abilities.cha.mod },
     { "pdf": "Survival", "foundry": @data.skills.sur.total },
@@ -114,28 +114,28 @@
             actor.data.data.traits.armorProf.custom,
         ].filter(String).join(", ")
     },
-    { "pdf": "SP", "foundry": @data.currency.sp },
-    { "pdf": "EP", "foundry": @data.currency.ep },
-    { "pdf": "GP", "foundry": @data.currency.gp },
-    { "pdf": "PP", "foundry": @data.currency.pp },
-    { "pdf": "Equipment", "foundry": "" },
-    { "pdf": "Features and Traits", "foundry": "" },
+    { "pdf": "SP", "foundry": @data.currency.sp || "" },
+    { "pdf": "EP", "foundry": @data.currency.ep || "" },
+    { "pdf": "GP", "foundry": @data.currency.gp || "" },
+    { "pdf": "PP", "foundry": @data.currency.pp || "" },
+    { "pdf": "Equipment", "foundry": @items.filter(i => !['feat', 'class', 'weapon', 'loot'].includes(i.type)).map(i => `${i.name} (${i.data.data.quantity})`).join(', ') },
+    { "pdf": "Features and Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.data.data.source}`).join('\n') },
 
     /* Page #2 */
 
-    { "pdf": "CharacterName 2", "foundry": @name },
-    { "pdf": "Age", "foundry": @data.details.appearance },
-    { "pdf": "Height", "foundry": @data.details.appearance },
-    { "pdf": "Weight", "foundry": @data.details.appearance },
-    { "pdf": "Eyes", "foundry": @data.details.appearance },
-    { "pdf": "Skin", "foundry": @data.details.appearance },
-    { "pdf": "Hair", "foundry": @data.details.appearance },
+    { "pdf": "CharacterName 2", "foundry": @name || "" },
+    { "pdf": "Age", "foundry": @data.details.appearance || "" },
+    { "pdf": "Height", "foundry": @data.details.appearance || "" },
+    { "pdf": "Weight", "foundry": @data.details.appearance || "" },
+    { "pdf": "Eyes", "foundry": @data.details.appearance || "" },
+    { "pdf": "Skin", "foundry": @data.details.appearance || "" },
+    { "pdf": "Hair", "foundry": @data.details.appearance || "" },
     { "pdf": "Faction Symbol Image", "foundry": "" }, /* Images are not supported */
     { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
     { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
     { "pdf": "Backstory", "foundry": @data.details.biography.value?.replaceAll(/<[^>]*>/g, "").trim() },
-    { "pdf": "Feat+Traits", "foundry": "" },
-    { "pdf": "Treasure", "foundry": "" },
+    { "pdf": "Feat+Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(16).map(i => `${i.name} - ${i.data.data.source}`).join('\n') },
+    { "pdf": "Treasure", "foundry": @items.filter(i => ['loot'].includes(i.type)).map(i => `${i.name} (${i.data.data.quantity})`).join(', ') },
 
     /* Page #3 */
     { "pdf": "", "foundry": "" }
