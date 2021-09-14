@@ -3,7 +3,7 @@
 ## 0.7.0 - 13 Sept 2021
 
 * Localization for the download PDF button
-* Update to the `dnd5e` mapping (thanks to @blair)
+* Update to the `dnd5e` mapping (thanks to @sneat)
   * Support for classes, weapons, currency, features, equipment, and treasure
   * Fix appearance fields showing `undefined`
 
