@@ -173,6 +173,8 @@ class Pdfconfig extends FormApplication {
 			event.preventDefault();
 			this.download(this.currentBuffer);
 		});
+
+		document.getElementById("pdf-official").addEventListener("click", event => event.preventDefault());
 	};
 
 	/** Create a form with inputs for each PDF field and fill them in with Actor data */
@@ -345,9 +347,5 @@ class Pdfconfig extends FormApplication {
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-download").style.display = "block";
-	};
-
-	async _updateObject(...args) {
-		console.log(...args);
 	};
 };
