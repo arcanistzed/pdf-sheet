@@ -165,7 +165,7 @@ class Pdfconfig extends FormApplication {
 		document.getElementById("pdf-upload").addEventListener("change", event => {
 			var file = event.target.files[0];
 			var reader = new FileReader();
-			reader.onload = ev => this.onFileUpload(file.name, ev.target.result);
+			reader.onload = ev => this.onFileUpload(ev.target.result);
 			reader.readAsArrayBuffer(file);
 		});
 
@@ -339,11 +339,15 @@ class Pdfconfig extends FormApplication {
 	};
 
 	/** Manage new PDF upload */
-	onFileUpload(filename, buffer) {
+	onFileUpload(buffer) {
 		this.currentBuffer = buffer;
 		this.createForm(this.currentBuffer);
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-download").style.display = "block";
+	};
+
+	async _updateObject(...args) {
+		console.log(...args);
 	};
 };
