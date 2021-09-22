@@ -154,7 +154,7 @@ class Pdfconfig extends FormApplication {
 			template: "modules/pdf-sheet/templates/module.hbs",
 			id: "pdf-sheet",
 			height: window.innerHeight * 7 / 8,
-			width: window.innerWidth > 1600 ? window.innerWidth * 1 / 4 : 400,
+			width: window.innerWidth > 1000 ? window.innerWidth * 1 / 4 : 400,
 			resizable: true,
 			title: "Export to PDF"
 		});
@@ -163,8 +163,8 @@ class Pdfconfig extends FormApplication {
 	/** @override */
 	activateListeners() {
 		document.getElementById("pdf-upload").addEventListener("change", event => {
-			var file = event.target.files[0];
-			var reader = new FileReader();
+			const file = event.target.files[0];
+			const reader = new FileReader();
 			reader.onload = ev => this.onFileUpload(ev.target.result);
 			reader.readAsArrayBuffer(file);
 		});
