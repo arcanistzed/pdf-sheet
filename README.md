@@ -82,3 +82,10 @@ You can submit bugs via [Github Issues](https://github.com/arcanistzed/pdf-sheet
 ## Contact me
 
 Come hang out on my [my Discord server](https://discord.gg/AAkZWWqVav) or [click here to send me an email](mailto:arcanistzed@gmail.com?subject=Export%20Sheet%20to%20PDF%20module).
+
+## TODO
+
+- Use PDFlib library instead of pdfform.js (since it's not maintained and can't support images)
+- Change the mapping to JSON, evaluating each value instead of the whole file
+- Store the JSON as an Object rather than serialized text
+- Add a field to the JSON mapping for a link to the PDF which can be put in the App instead of only the D&D link
