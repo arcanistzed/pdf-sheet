@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.1 - 22 Sept 2021
+
+* Fix for Cypher System mapping (thanks to @Fashtas)
+* Fix issues with localization of the download PDF button
+* Fix window sizing & inner margin
+
 ## 0.7.0 - 13 Sept 2021
 
 * Localization for the download PDF button
