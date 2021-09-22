@@ -1,9 +1,9 @@
 [
     { "pdf": "Name","foundry": @name},  
-    { "pdf": "Descriptor", "foundry": @data.basic.descriptor },
-    { "pdf": "Type", "foundry": @data.basic.type },
-    { "pdf": "Focus", "foundry": @data.basic.focus },
-    { "pdf": "Type_Focus_or_Other", "foundry": @data.basic.additionalSentence },	
+    { "pdf": "Descriptor", "foundry": @data.basic.descriptor.replace(/{\w*}/, "") },
+    { "pdf": "Type", "foundry": @data.basic.type.replace(/{\w*}/, "") },
+    { "pdf": "Focus", "foundry": @data.basic.focus.replace(/{\w*}/, "") },
+    { "pdf": "Type_Focus_or_Other", "foundry": @data.basic.additionalSentence.replace(/{\w*}/, "") },	
     { "pdf": "Tier", "foundry": @data.basic.tier },
     { "pdf": "Effort", "foundry": @data.basic.effort },
     { "pdf": "Cyphers_Limit", "foundry": @data.basic.cypherLimit },
