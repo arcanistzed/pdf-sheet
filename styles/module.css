@@ -38,7 +38,14 @@
   flex: 1;
   list-style: none;
   padding: 0;
-  margin: -10px 0;
+}
+
+#fieldList > li:first-child {
+  margin-top: 0;
+}
+
+#fieldList > li:last-child {
+  margin-bottom: 0;
 }
 
 #fieldList > li {
