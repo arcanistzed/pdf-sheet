@@ -2,7 +2,7 @@
 
 ## 0.7.2 - 6 Oct 2021
 
-dnd5e mapping: more specific properties for appearance (thanks to @jocolomarco)
+dnd5e mapping: more specific properties for appearance (thanks to @jocolamarco)
 
 ## 0.7.1 - 22 Sept 2021
 
