@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.2 - 6 Oct 2021
+
+dnd5e mapping: more specific properties for appearence (thanks to @jocolomarco)
+
 ## 0.7.1 - 22 Sept 2021
 
 * Fix for Cypher System mapping (thanks to @Fashtas)
