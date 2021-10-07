@@ -124,12 +124,12 @@
     /* Page #2 */
 
     { "pdf": "CharacterName 2", "foundry": @name || "" },
-    { "pdf": "Age", "foundry": @data.details.appearance || "" },
-    { "pdf": "Height", "foundry": @data.details.appearance || "" },
-    { "pdf": "Weight", "foundry": @data.details.appearance || "" },
-    { "pdf": "Eyes", "foundry": @data.details.appearance || "" },
-    { "pdf": "Skin", "foundry": @data.details.appearance || "" },
-    { "pdf": "Hair", "foundry": @data.details.appearance || "" },
+    { "pdf": "Age", "foundry": @data.details.age || "" },
+    { "pdf": "Height", "foundry": @data.details.height || "" },
+    { "pdf": "Weight", "foundry": @data.details.weight || "" },
+    { "pdf": "Eyes", "foundry": @data.details.eyes || "" },
+    { "pdf": "Skin", "foundry": @data.details.skin || "" },
+    { "pdf": "Hair", "foundry": @data.details.hair || "" },
     { "pdf": "Faction Symbol Image", "foundry": "" }, /* Images are not supported */
     { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
     { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
