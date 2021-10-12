@@ -23,8 +23,14 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Foundry VTT version:**
-Ex: 0.8.8
+**Details**
+Foundry VTT version:
+Module version:
+
+**Mapping**
+```
+Please paste your mapping here
+```
 
 **Additional context**
 Add any other context about the problem here.
