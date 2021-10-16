@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+Disabled inputs, since changing their values does nothing anyways
+
 ## 0.7.2 - 6 Oct 2021
 
 dnd5e mapping: more specific properties for appearance (thanks to @jocolamarco)
