@@ -1,14 +1,14 @@
 {
-    "pdfsheet": {
-        "settings": {
-            "mapping": {
-                "Name": "Mapping",
-                "Hint": "JSON which is used to map the PDF fields to information on the Foundry character sheet. See the README for details."
-            }
-        },
-        "download": {
-            "Name": "PDF for D&D 5e",
-            "Hint": "Download the official character sheet PDF for 5th edition"
-        }
+  "pdfsheet": {
+    "settings": {
+      "mapping": {
+        "Name": "Mapping",
+        "Hint": "JSON which is used to map the PDF fields to information on the Foundry character sheet. See the README for details."
+      }
+    },
+    "download": {
+      "Name": "PDF for D&D 5e",
+      "Hint": "Download the official character sheet PDF for 5th edition"
     }
+  }
 }

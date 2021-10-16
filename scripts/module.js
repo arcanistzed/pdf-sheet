@@ -142,7 +142,7 @@ class Pdfconfig extends FormApplication {
 	constructor(actor) {
 		super();
 		this.actor = actor;
-		this.currentBuffer;
+		this.currentBuffer = new ArrayBuffer();
 	};
 
 	/** The module's ID */
@@ -253,6 +253,7 @@ class Pdfconfig extends FormApplication {
 					field.options.forEach((value) => {
 						const radioLabel = document.createElement("label");
 						const radio = document.createElement("input");
+						radio.disabled = true;
 
 						radio.setAttribute("type", "radio");
 						radio.setAttribute("value", value);
@@ -275,6 +276,7 @@ class Pdfconfig extends FormApplication {
 						field.type === "string" ? "textarea" :
 							"input"
 				);
+				input.disabled = true;
 				input.setAttribute("data-idx", i);
 				input.setAttribute("data-key", pdfFieldKey);
 				input.id = pdfFieldKey;
