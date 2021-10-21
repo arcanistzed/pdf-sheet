@@ -1,8 +1,9 @@
 # Changelog
 
-## unreleased
+## 0.7.3 - 20 Oct 2021
 
-Disabled inputs, since changing their values does nothing anyways
+* CoC7 Mapping (thanks to @Dick-K)
+* Disabled inputs as they do nothing currently
 
 ## 0.7.2 - 6 Oct 2021
 
