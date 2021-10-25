@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.4 - 25 Oct 2021
+
+D&D 5e mapping: Added mapping for Spell Casting Class (basic), Spell Casting Ability, Spell Save DC, Spell Attack Bonus, Cantrips and 1st level spell slots
+
 ## 0.7.3 - 20 Oct 2021
 
 * CoC7 Mapping (thanks to @Dick-K)
