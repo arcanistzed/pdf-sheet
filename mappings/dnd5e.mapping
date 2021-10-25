@@ -138,41 +138,40 @@
     { "pdf": "Treasure", "foundry": @items.filter(i => ['loot'].includes(i.type)).map(i => `${i.name} (${i.data.data.quantity})`).join(', ') },
 
     /* Page #3 */
-    { "pdf": "", "foundry": "" },
-    { "pdf": "Spellcasting Class 2", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name}`).join(' / ') } }, /* Doesn't work with multiple classes properly */
+    { "pdf": "Spellcasting Class 2", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name}`).join(' / ') }, /* Doesn't work with multiple classes properly */
     { "pdf": "SpellcastingAbility 2", "foundry": @data.attributes.spellcasting.capitalize() || "" },
-    { "pdf": "SpellSaveDC 2", "foundry": @data.attributes.spellcasting.spelldc || "" },
-    { "pdf": "SpellAtkBonus 2", "foundry": "+" + String(@data.attributes.spellcasting.spelldc - 8) }, /* Doesn't account for negative values */
+    { "pdf": "SpellSaveDC 2", "foundry": String(@data.attributes.spelldc) || "" },
+    { "pdf": "SpellAtkBonus 2", "foundry": "+" + String(@data.attributes.spelldc - 8) }, /* Doesn't account for negative values */
     /* Spellslots Max + counts*/
-    { "pdf": "SlotTotal 19, "foundry": @data.spells.spell1.max || "" },
-    { "pdf": "SlotsRemaining 19, "foundry": @data.spells.spell1.value || "" },
-    { "pdf": "SlotTotal 20, "foundry": @data.spells.spell2.max || "" }, 
+    /**{ "pdf": "SlotTotal 19", "foundry": @data.spells.spell1.max || "" },
+    { "pdf": "SlotsRemaining 19", "foundry": @data.spells.spell1.value || "" },
+    { "pdf": "SlotTotal 20", "foundry": @data.spells.spell2.max || "" }, 
     { "pdf": "SlotsRemaining 20, "foundry": @data.spells.spell2.value || "" },
-    { "pdf": "SlotTotal 21, "foundry": @data.spells.spell3.max || "" }, 
+    { "pdf": "SlotTotal 21", "foundry": @data.spells.spell3.max || "" }, 
     { "pdf": "SlotsRemaining 21, "foundry": @data.spells.spell3.value || "" },
-    { "pdf": "SlotTotal 22, "foundry": @data.spells.spell4.max || "" }, 
-    { "pdf": "SlotsRemaining 22, "foundry": @data.spells.spell4.value || "" },
-    { "pdf": "SlotTotal 23, "foundry": @data.spells.spell5.max || "" }, 
-    { "pdf": "SlotsRemaining 23, "foundry": @data.spells.spell5.value || "" },
-    { "pdf": "SlotTotal 24, "foundry": @data.spells.spell6.max || "" }, 
-    { "pdf": "SlotsRemaining 24, "foundry": @data.spells.spell6.value || "" },
-    { "pdf": "SlotTotal 25, "foundry": @data.spells.spell7.max || "" }, 
-    { "pdf": "SlotsRemaining 25, "foundry": @data.spells.spell7.value || "" },
-    { "pdf": "SlotTotal 26, "foundry": @data.spells.spell8.max || "" }, 
-    { "pdf": "SlotsRemaining 26, "foundry": @data.spells.spell8.value || "" },
-    { "pdf": "SlotTotal 27, "foundry": @data.spells.spell9.max || "" }, 
-    { "pdf": "SlotsRemaining 27, "foundry": @data.spells.spell9.value || "" },
+    { "pdf": "SlotTotal 22", "foundry": @data.spells.spell4.max || "" }, 
+    { "pdf": "SlotsRemaining 22", "foundry": @data.spells.spell4.value || "" },
+    { "pdf": "SlotTotal 23", "foundry": @data.spells.spell5.max || "" }, 
+    { "pdf": "SlotsRemaining 23", "foundry": @data.spells.spell5.value || "" },
+    { "pdf": "SlotTotal 24", "foundry": @data.spells.spell6.max || "" }, 
+    { "pdf": "SlotsRemaining 24", "foundry": @data.spells.spell6.value || "" },
+    { "pdf": "SlotTotal 25", "foundry": @data.spells.spell7.max || "" }, 
+    { "pdf": "SlotsRemaining 25", "foundry": @data.spells.spell7.value || "" },
+    { "pdf": "SlotTotal 26", "foundry": @data.spells.spell8.max || "" }, 
+    { "pdf": "SlotsRemaining 26", "foundry": @data.spells.spell8.value || "" },
+    { "pdf": "SlotTotal 27", "foundry": @data.spells.spell9.max || "" }, 
+    { "pdf": "SlotsRemaining 27", "foundry": @data.spells.spell9.value || "" },*/
     /* Cantrips */
-    { "pdf": "Spells 1014", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[1]?.name || "" },
+    /**{ "pdf": "Spells 1014", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[1]?.name || "" },
     { "pdf": "Spells 1016", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[1]?.name || "" },
     { "pdf": "Spells 1017", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[2]?.name || "" },
     { "pdf": "Spells 1018", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[3]?.name || "" },
     { "pdf": "Spells 1019", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[4]?.name || "" },
     { "pdf": "Spells 1020", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[5]?.name || "" },
     { "pdf": "Spells 1021", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[6]?.name || "" },
-    { "pdf": "Spells 1022", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[7]?.name || "" },
+    { "pdf": "Spells 1022", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 0)[7]?.name || "" },*/
     /* 1st Level Spells */
-    { "pdf": "Spells 1015", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[2]?.name || "" },
+    /**{ "pdf": "Spells 1015", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[2]?.name || "" },
     { "pdf": "Check Box 251", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[2]?.preparation.prepared === true ? "x" : "" || "" },
     { "pdf": "Spells 1022", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[3]?.name || "" },
     { "pdf": "Check Box 309", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[3]?.preparation.prepared === true ? "x" : "" || "" },
@@ -195,7 +194,7 @@
     { "pdf": "Spells 1032", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[10]?.name || "" },
     { "pdf": "Check Box 3018", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[10]?.preparation.prepared === true ? "x" : "" || "" },
     { "pdf": "Spells 1033", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[11]?.name || "" },
-    { "pdf": "Check Box 3019", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[11]?.preparation.prepared === true ? "x" : "" || "" },
+    { "pdf": "Check Box 3019", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[11]?.preparation.prepared === true ? "x" : "" || "" },*/
     
-    { "pdf": "", "foundry": "" },
+    { "pdf": "", "foundry": "" }
 ]
