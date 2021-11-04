@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.6 - 4 Nov 2021
+
+Rename `node_modules` to `libraries` to work on The Forge
+
 ## 0.7.5 - 27 Oct 2021
 
 D&D 5e mapping: Added all spells (thanks to @cadowtin)
