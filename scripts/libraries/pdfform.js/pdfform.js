@@ -8,7 +8,7 @@ if (typeof window == 'undefined') {
 	var TextEncoder = text_encoding.TextEncoder;
 	var TextDecoder = text_encoding.TextDecoder;
 
-	var pako = require('pako');
+	var pako = require('../pako');
 }
 
 function pdfform(minipdf_lib) {
@@ -366,7 +366,7 @@ function pdfform(minipdf_lib) {
 		var out = new BytesIO();
 		out.write_buf(new Uint8Array(buf));
 
-        // Change AcroForms
+		// Change AcroForms
 		visit_acroform_fields(doc, function (n) {
 			var value = acroform_match_spec(n, fields);
 			if (value === undefined) {
@@ -431,7 +431,7 @@ function pdfform(minipdf_lib) {
 			}
 		}
 
-        // Change XFA
+		// Change XFA
 		modify_xfa(doc, objects, out, 'datasets', function (str) {
 			// Fix up XML
 			str = str.replace(/\n(\/?>)/g, '$1\n');

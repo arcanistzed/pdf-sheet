@@ -718,6 +718,6 @@ return {
 })();
 
 if ((typeof module != 'undefined') && (typeof require != 'undefined')) {
-	var pako = require('pako');
+	var pako = require('../pako');
 	module.exports = minipdf;
 }

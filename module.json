@@ -18,10 +18,10 @@
   ],
   "scripts": [
     "scripts/module.js",
-    "node_modules/pdfform.js/minipdf.js",
-    "node_modules/pdfform.js/pdfform.js",
-    "node_modules/pako/dist/pako.min.js",
-    "node_modules/file-saver/dist/FileSaver.min.js"
+    "scripts/libraries/pdfform.js/minipdf.js",
+    "scripts/libraries/pdfform.js/pdfform.js",
+    "scripts/libraries/pako/dist/pako.min.js",
+    "scripts/libraries/file-saver/dist/FileSaver.min.js"
   ],
   "styles": [
     "/styles/module.css"
