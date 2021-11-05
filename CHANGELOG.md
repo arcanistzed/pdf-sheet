@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.6 - 4 Nov 2021
+## 0.7.7 - 4 Nov 2021
 
 Rename `node_modules` to `libraries` to work on The Forge
 
