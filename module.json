@@ -1,16 +1,16 @@
 {
   "name": "pdf-sheet",
   "title": "Export Sheet to PDF",
-  "description": " ",
+  "description": "A system agnostic module for exporting character sheets to a form-fillable and printable PDF!",
   "version": "This is auto replaced",
   "manifestPlusVersion": "1.2.0",
-  "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "9.224",
+  "minimumCoreVersion": "0.7.9",
+  "compatibleCoreVersion": 9,
   "author": "arcanist",
   "authors": [
     {
       "name": "arcanist",
-      "url": "https://arcanistzed.github.io/",
+      "url": "https://arcanist.me",
       "email": "arcanistzed@gmail.com",
       "discord": "arcanist#4317",
       "reddit": "u/arcanistzed"
