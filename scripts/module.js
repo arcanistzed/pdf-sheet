@@ -9,7 +9,7 @@ Hooks.on("init", () => {
 		default: "[]",
 	});
 
-	if (isNewerVersion(game.version, "9.230")) game.keybindings.register(Pdfconfig.ID, "showConfig", {
+	if (game.version && isNewerVersion(game.version, "9.230")) game.keybindings.register(Pdfconfig.ID, "showConfig", {
 		name: "Show Config",
 		hint: "Show PDF config menu for the character currently open",
 		editable: [
