@@ -17,14 +17,14 @@
     }
   ],
   "scripts": [
-    "scripts/module.js",
+    "scripts/pdfsheet.js",
     "scripts/libraries/pdfform.js/minipdf.js",
     "scripts/libraries/pdfform.js/pdfform.js",
     "scripts/libraries/pako/dist/pako.min.js",
     "scripts/libraries/file-saver/dist/FileSaver.min.js"
   ],
   "styles": [
-    "/styles/module.css"
+    "/styles/pdfsheet.css"
   ],
   "languages": [
     {
