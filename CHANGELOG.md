@@ -1,5 +1,11 @@
 # Changelog
 
+## unreleased
+
+### Added
+
+* Press `P` with a character sheet open to show the config (requires v9d2 or later)
+
 ## 0.7.7 - 4 Nov 2021
 
 Rename `node_modules` to `libraries` to work on The Forge

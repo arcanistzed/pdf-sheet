@@ -8,6 +8,21 @@ Hooks.on("init", () => {
 		type: String,
 		default: "[]",
 	});
+
+	if (isNewerVersion(game.version, "9.230")) game.keybindings.register(Pdfconfig.ID, "showConfig", {
+		name: "Show Config",
+		hint: "Show PDF config menu for the character currently open",
+		editable: [
+			{
+				key: "P"
+			}
+		],
+		onDown: () => {
+			// If the currently opened sheet is an Actor sheet, open the PDF config for the actor
+			if (ui.activeWindow instanceof ActorSheet)
+				new Pdfconfig(ui.activeWindow.object).render(true);
+		},
+	});
 });
 
 // Inject editor into the settings menu
@@ -129,7 +144,7 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 		icon: "fas fa-file-export",
 		onclick: () => {
 			// Open Config window
-			new Pdfconfig(sheet.actor).render(true)
+			new Pdfconfig(sheet.actor).render(true);
 
 			// Bring window to top
 			Object.values(ui.windows).filter(window => window instanceof Pdfconfig)[0]?.bringToTop();
