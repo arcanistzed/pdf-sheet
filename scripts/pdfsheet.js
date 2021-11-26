@@ -116,7 +116,7 @@ Hooks.on("renderSettingsConfig", () => {
 		mappingSelect.addEventListener("change", async () => {
 			// Fetch selected mapping if not empty
 			const mapping = mappingSelect.value ?
-				await fetch(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`)
+				await fetch(getRoute(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`))
 					.then(response => response.text())
 				: "";
 
