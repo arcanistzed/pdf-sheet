@@ -287,21 +287,47 @@ function pdfform(minipdf_lib) {
 	};
 
 	function visit_acroform_fields(doc, callback) {
-		var pages = doc.fetch(doc.root.map.Pages);
-		pages.map.Kids.forEach(function (page_ref) {
-			var page = doc.fetch(page_ref);
-			var annots_ref = page.map.Annots;
-			var annots = doc.fetch(annots_ref);
+		if (Array.isArray(doc.acroForm.map.Fields)) {
+			var to_visit = doc.acroForm.map.Fields.slice();
+			while (to_visit.length > 0) {
+				var n = to_visit.shift();
+				if (minipdf_lib.isRef(n)) {
+					var ref = n;
+					n = doc.fetch(n);
+					n._pdfform_ref = ref;
+				}
 
-			annots.forEach(function (annot_ref) {
-				var n = doc.fetch(annot_ref);
-				n._pdfform_ref = annot_ref;
-				n._inpage_annot = true;
-				if (n.map && n.map.Type && n.map.Type.name == 'Annot' && n.map.T) {
+				if (n.map && n.map.Kids && n.map.Opt && n.map.FT && (n.map.FT.name === 'Btn')) {
+					// Radio button
+					n._pdfform_spec = {
+						type: 'radio',
+						options: n.map.Opt,
+					};
+					callback(n);
+				} else if (n.map && n.map.Kids) {
+					to_visit.push.apply(to_visit, n.map.Kids);
+				} else if (n.map && n.map.Type && n.map.Type.name == 'Annot' && n.map.T) {
 					callback(n);
 				}
+			}
+		} else {
+			// No AcroForm? Look in the pages themselves
+			var pages = doc.fetch(doc.root.map.Pages);
+			pages.map.Kids.forEach(function (page_ref) {
+				var page = doc.fetch(page_ref);
+				var annots_ref = page.map.Annots;
+				var annots = doc.fetch(annots_ref);
+
+				annots.forEach(function (annot_ref) {
+					var n = doc.fetch(annot_ref);
+					n._pdfform_ref = annot_ref;
+					n._inpage_annot = true;
+					if (n.map && n.map.Type && n.map.Type.name == 'Annot' && n.map.T) {
+						callback(n);
+					}
+				});
 			});
-		});
+		}
 	}
 
 	function pdf_decode_str(str) {

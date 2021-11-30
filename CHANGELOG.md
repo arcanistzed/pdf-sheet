@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## 0.8.0 - 30 Nov 2021
 
 ### Added
 
@@ -9,6 +9,7 @@
 ### Fixed
 
 * Loading mappings into Foundry VTT instances using a route prefix
+* Fixed dealing with PDFs containing Acrobat forms
 
 ## 0.7.7 - 4 Nov 2021
 
