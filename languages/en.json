@@ -7,8 +7,16 @@
       }
     },
     "download": {
-      "Name": "PDF for D&D 5e",
-      "Hint": "Download the official character sheet PDF for 5th edition"
+      "dnd5e": {
+        "Name": "PDF for D&D 5e",
+        "Hint": "Download the official character sheet PDF for 5th edition",
+        "url": "https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf"
+      },
+      "starwars-ffg": {
+        "Name": "PDF for Star Wars FFG",
+        "Hint": "Download the unofficial character sheet for Star Wars FFG",
+        "url": "http://holocast.terceiraterra.com/wp-content/uploads/EotE-CharacterSheet-Fillable-v4.pdf"
+      }
     }
   }
 }
