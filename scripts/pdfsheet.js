@@ -192,6 +192,16 @@ class Pdfconfig extends FormApplication {
 		document.getElementById("pdf-official").addEventListener("click", event => event.preventDefault());
 	};
 
+	/** @override */
+	getData() {
+		const system = game.system.id;
+		return {
+			label: game.i18n.localize(`pdfsheet.download.${system}.label`),
+			title: game.i18n.localize(`pdfsheet.download.${system}.title`),
+			url: game.i18n.localize(`pdfsheet.download.${system}.url`),
+		};
+	};
+
 	/** Create a form with inputs for each PDF field and fill them in with Actor data */
 	createForm(buffer) {
 		const inputForm = document.getElementById("fieldList");

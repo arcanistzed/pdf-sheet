@@ -2,9 +2,8 @@
 
     <header id="pdf-header">
         <input id="pdf-upload" type="file" name="upload" accept="application/pdf" />
-        <button id="pdf-official" title="{{localize "pdfsheet.download.dnd5e.Hint"}}"
-            onclick="window.open('{{localize "pdfsheet.download.dnd5e.url"}}', '_blank')">
-            <i class="fas fa-download"></i> {{localize "pdfsheet.download.dnd5e.Name"}}
+        <button id="pdf-official" title="{{title}}" onclick="window.open('{{url}}', '_blank')">
+            <i class="fas fa-download"></i> {{label}}
         </button>
     </header>
 
