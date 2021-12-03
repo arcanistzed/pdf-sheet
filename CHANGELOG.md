@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0 - 2 Dec 2021
+
+### Added
+
+* Star Wars EOTE (FFG) mapping (thanks to @HaxxonHax)
+* Support for other systems in the PDF downloading button
+
 ## 0.8.0 - 30 Nov 2021
 
 ### Added
