@@ -12,12 +12,12 @@
   margin: auto;
 }
 
-#pdf-official {
+#pdf-download {
   flex: 1;
   font-size: 12px;
 }
 
-#pdf-download {
+#pdf-export {
   display: none;
   position: absolute;
   height: 40px;
@@ -30,7 +30,7 @@
 }
 
 /* Fix icon margin */
-#pdf-download .fas {
+#pdf-export .fas {
   margin: 0;
 }
 

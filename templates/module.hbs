@@ -2,14 +2,17 @@
 
     <header id="pdf-header">
         <input id="pdf-upload" type="file" name="upload" accept="application/pdf" />
-        <button id="pdf-official" title="{{title}}" onclick="window.open('{{url}}', '_blank')">
-            <i class="fas fa-download"></i> {{label}}
+        {{log download.show}}
+        {{#if download.show}}
+        <button id="pdf-download" title="{{download.title}}" onclick="window.open('{{download.url}}', '_blank')">
+            <i class="fas fa-download"></i> {{download.label}}
         </button>
+        {{/if}}
     </header>
 
     <ul id="fieldList"></ul>
 
-    <button id="pdf-download">
+    <button id="pdf-export">
         <i class="fas fa-print"></i>
     </button>
 

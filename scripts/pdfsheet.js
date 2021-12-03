@@ -184,21 +184,24 @@ class Pdfconfig extends FormApplication {
 			reader.readAsArrayBuffer(file);
 		});
 
-		document.getElementById("pdf-download").addEventListener("click", event => {
+		document.getElementById("pdf-export").addEventListener("click", event => {
 			event.preventDefault();
 			this.download(this.currentBuffer);
 		});
 
-		document.getElementById("pdf-official").addEventListener("click", event => event.preventDefault());
+		document.getElementById("pdf-download")?.addEventListener("click", event => event.preventDefault());
 	};
 
 	/** @override */
 	getData() {
 		const system = game.system.id;
 		return {
-			label: game.i18n.localize(`pdfsheet.download.${system}.label`),
-			title: game.i18n.localize(`pdfsheet.download.${system}.title`),
-			url: game.i18n.localize(`pdfsheet.download.${system}.url`),
+			download: {
+				show: !!game.i18n.translations.pdfsheet.download[system],
+				label: game.i18n.localize(`pdfsheet.download.${system}.label`),
+				title: game.i18n.localize(`pdfsheet.download.${system}.title`),
+				url: game.i18n.localize(`pdfsheet.download.${system}.url`),
+			}
 		};
 	};
 
@@ -233,22 +236,22 @@ class Pdfconfig extends FormApplication {
 		// Log un-evaluated mapping
 		console.log("Raw mapping:", mapping)
 
-		// Try to deserialize mapping
-		try {
-			// Return as evaluated JavaScript with the actor as an argument
+			// Try to deserialize mapping
+			try {
+				// Return as evaluated JavaScript with the actor as an argument
 			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
-		} catch (err) {
-			// End console group
-			console.groupEnd();
-			// Close the application
-			this.close();
+			} catch (err) {
+				// End console group
+				console.groupEnd();
+				// Close the application
+				this.close();
 
-			// Alert if invalid
-			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
+				// Alert if invalid
+				ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
 
-			// Evaluate the JS again to throw the error
+				// Evaluate the JS again to throw the error
 			Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
-		};
+			};
 
 		// Log parsed mapping
 		console.log("Parsed mapping:", mapping);
@@ -373,6 +376,6 @@ class Pdfconfig extends FormApplication {
 		this.createForm(this.currentBuffer);
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
-		document.getElementById("pdf-download").style.display = "block";
+		document.getElementById("pdf-export").style.display = "block";
 	};
 };
