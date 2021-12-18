@@ -1,6 +1,6 @@
 # Mappings
 
-This directory contains mappings created by the community. Feel free to contribute to this as well! Please also write your info below.
+This directory contains mappings created by the community. Feel free to contribute to this as well! Please also write your info below and optionally update [this section of the language file](https://github.com/arcanistzed/pdf-sheet/blob/main/languages/en.json#L9) if you want users to see a button for downloading the right PDF.
 
 ## Current Mappings
 
