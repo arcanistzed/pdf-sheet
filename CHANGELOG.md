@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.0 - 18 Dec 2021
+
+### Added
+
+* Shadowrun 5e unofficial mapping (thanks to @BlauKreuz)
+
 ## 0.9.0 - 2 Dec 2021
 
 ### Added
