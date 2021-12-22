@@ -16,6 +16,11 @@
         "label": "PDF for Star Wars FFG",
         "title": "Download the unofficial character sheet for Star Wars FFG",
         "url": "http://holocast.terceiraterra.com/wp-content/uploads/EotE-CharacterSheet-Fillable-v4.pdf"
+      },
+      "shadowrun5e": {
+        "label": "PDF for SR5e",
+        "title": "Download an unoficial character sheet PDF for Shadowrun 5e",
+        "url": "https://drive.google.com/uc?export=download&id=1Gkaoi3JR6bfjhhq1PcgFpqGZlhTWv2oV"
       }
     }
   }
