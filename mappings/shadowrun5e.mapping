@@ -1,11 +1,7 @@
 [ /*
-
 Shadowrun 5e character sheet mapping for Foundry VTT module 'Export Sheet to PDF'
-
-12-2021
-
-Kurko#1535
-
+ 20-12-2021
+ Kurko#1535
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -530,8 +526,8 @@ Kurko#1535
 { "pdf": "SIN3", "foundry": @items .filter(i => i.type === "sin").map(i => [i.name])[3] || "" },
 { "pdf": "SIN4", "foundry": @items .filter(i => i.type === "sin").map(i => [i.name])[4] || "" },
 
-{ "pdf": "SINrule0", "foundry": ("SR5 444") [0] || "" },
-{ "pdf": "SINrule1", "foundry": ("SR5 444") [1] || "" },
+{ "pdf": "SINrule0", "foundry": @items .filter(i => i.type === "sin").map(i => [`SR5 444`])[0] || "" },
+{ "pdf": "SINrule1", "foundry": @items .filter(i => i.type === "sin").map(i => [`SR5 444`])[1] || "" },
 { "pdf": "SINrule2", "foundry": @items .filter(i => i.type === "sin").map(i => [`SR5 444`])[2] || "" },
 { "pdf": "SINrule3", "foundry": @items .filter(i => i.type === "sin").map(i => [`SR5 444`])[3] || "" },
 { "pdf": "SINrule4", "foundry": @items .filter(i => i.type === "sin").map(i => [`SR5 444`])[4] || "" },
