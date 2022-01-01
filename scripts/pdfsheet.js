@@ -12,11 +12,6 @@ Hooks.on("init", () => {
 	if (game.version && isNewerVersion(game.version, "9.230")) game.keybindings.register(Pdfconfig.ID, "showConfig", {
 		name: "Show Config",
 		hint: "Show PDF config menu for the character currently open",
-		editable: [
-			{
-				key: "P"
-			}
-		],
 		onDown: () => {
 			// If the currently opened sheet is an Actor sheet, open the PDF config for the actor
 			if (ui.activeWindow instanceof ActorSheet)
