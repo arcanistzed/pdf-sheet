@@ -1,5 +1,13 @@
 # Changelog
 
+## unreleased
+
+I have remove the default keys for keybindings so users can define their own for better compatibility.
+
+### Fixed
+
+Shadowrun 5 mapping: fixed SINs lines 1 and 2
+
 ## 0.10.1 - 18 Dec 2021
 
 ### Fixed
