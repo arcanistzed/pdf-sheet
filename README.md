@@ -12,19 +12,19 @@ In the setup screen, use the URL `https://github.com/arcanistzed/pdf-sheet/relea
 
 Just click on the button in the header of a character sheet and then it will open the configuration window.
 Once you upload a PDF, you'll see a list of each of the PDF's fields alongside an input.
-You can either fill in the fields manually with what is on your character sheet or you can use a "mapping" (described later) to fill them in automatically with the values from your character sheet.
+If you have a mapping configured correctly, those fields will automatically be filled out with the values from your character sheet.
 
 ### Get a PDF
 
-If you need a copy of the PDF for D&D 5th edition, there is a button to take you to the official one.
+This module requires you to upload a form-fillable PDF which it will fill out for you. If you need a copy of the PDF, there is a button which will download the correct one for some systems.
 
 You can theoretically use this module with the PDF for any system, but some fields used on other PDFs may not be supported. File a bug if you encounter a PDF that doesn't work.
 
 ### Mapping
 
-In order to automatically fill out the sheet with values, you will need a JS Object mapping of the PDF fields to the values on your character sheet. This is known as a "mapping" and can be edited in the module settings.
+A mapping is *required* for the module to function as expected. You can edit the current mapping in module settings and there is also a dropdown menu with some [community contributed mappings](https://github.com/arcanistzed/pdf-sheet/tree/main/mappings) which you can load in.
 
-If a mapping has been created for your system, you can select it with the dropdown to load it in.
+A mapping is a JavaScript object (not JSON) which is saved with a `.mapping` file extension. The mapping provides the information needed to know which PDF fields to associate with which values from your actor. It is also responsible for formatting, calculating, concatenating, etc. those values for display on the PDF character sheet.
 
 **TIP:** Install [Ace Library](https://foundryvtt.com/packages/acelib) if you want to use a proper editor to work on creating your mapping.
 
@@ -60,6 +60,8 @@ This will take care of filling out the character name, strength save proficiency
 
 As you can see, the `@` is used to access properties of the Actor data, rather than a fixed value.
 You may use any valid JavaScript functions or formulas in the mapping, but it should return a String or [coerce](https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion) into one.
+
+**⚠️WARNING:** Do not use line comments (you can use block comments) since the mapping is saved on one line.
 
 While creating a mapping, it's very helpful to work in the browser console (F12):
 
