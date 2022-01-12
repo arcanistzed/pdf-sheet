@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.1 - 12 Jan 2022
+
+### Fixed
+
+* Removed console log
+* Works with other languages that don't have localizations
+
 ## 0.11.0 - 11 Jan 2022
 
 Removed the default keys for the keybinding for better compatibility (users can define their own)
