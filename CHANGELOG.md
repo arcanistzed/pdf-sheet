@@ -1,12 +1,13 @@
 # Changelog
 
-## unreleased
+## 0.11.0 - 11 Jan 2022
 
-I have remove the default keys for keybindings so users can define their own for better compatibility.
+I have remove the default keys for keybindings so users can define their own for better compatibility
 
 ### Fixed
 
 Shadowrun 5 mapping: fixed SINs lines 1 and 2
+Starwars FFG mapping: skip career skill check if removed
 
 ## 0.10.1 - 18 Dec 2021
 
