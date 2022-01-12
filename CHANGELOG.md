@@ -2,7 +2,7 @@
 
 ## 0.11.0 - 11 Jan 2022
 
-I have remove the default keys for keybindings so users can define their own for better compatibility
+Removed the default keys for the keybinding for better compatibility (users can define their own)
 
 ### Fixed
 
