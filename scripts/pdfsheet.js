@@ -192,7 +192,7 @@ class Pdfconfig extends FormApplication {
 		const system = game.system.id;
 		return {
 			download: {
-				show: !!game.i18n.translations.pdfsheet.download[system],
+				show: !!game.i18n.translations.pdfsheet?.download[system],
 				label: game.i18n.localize(`pdfsheet.download.${system}.label`),
 				title: game.i18n.localize(`pdfsheet.download.${system}.title`),
 				url: game.i18n.localize(`pdfsheet.download.${system}.url`),
