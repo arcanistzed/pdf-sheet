@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.2 - 23 Jan 2022
+
+* 0.7.9 compatibility
+
 ## 0.11.1 - 12 Jan 2022
 
 ### Fixed
