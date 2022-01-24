@@ -6,10 +6,10 @@
   "manifestPlusVersion": "1.2.0",
   "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": 9,
-  "author": "arcanist",
+  "author": "Arcanist",
   "authors": [
     {
-      "name": "arcanist",
+      "name": "Arcanist",
       "url": "https://arcanist.me",
       "email": "arcanistzed@gmail.com",
       "discord": "arcanist#4317",
@@ -24,7 +24,7 @@
     "scripts/libraries/file-saver/dist/FileSaver.min.js"
   ],
   "styles": [
-    "/styles/pdfsheet.css"
+    "styles/pdfsheet.css"
   ],
   "languages": [
     {
@@ -32,13 +32,6 @@
       "name": "English",
       "path": "languages/en.json"
     }
-  ],
-  "keywords": [
-    "export",
-    "PDF",
-    "sheet",
-    "actor",
-    "mapping"
   ],
   "dependencies": [],
   "url": "This is auto replaced",
