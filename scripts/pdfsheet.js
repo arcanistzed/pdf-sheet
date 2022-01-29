@@ -362,7 +362,7 @@ class Pdfconfig extends FormApplication {
 		const filled_pdf = pdfform(minipdf).transform(buffer, fields);
 
 		const blob = new Blob([filled_pdf], { type: "application/pdf" });
-		saveAs(blob, `${this.actor.name}.pdf`);
+		saveAs(blob, `${this.actor.name ?? "character"}.pdf`);
 	};
 
 	/** Manage new PDF upload */

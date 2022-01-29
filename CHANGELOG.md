@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0 - 28 Jan 2022
+
+### Added
+
+* Name downloaded PDFs with the actor name
+
 ## 0.11.2 - 23 Jan 2022
 
 * 0.7.9 compatibility
