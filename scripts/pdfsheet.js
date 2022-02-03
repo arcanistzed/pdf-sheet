@@ -1,8 +1,8 @@
 // Store mapping
 Hooks.on("init", () => {
 	game.settings.register(Pdfconfig.ID, "mapping", {
-		name: game.i18n.localize("pdfsheet.settings.mapping.Name"),
-		hint: game.i18n.localize("pdfsheet.settings.mapping.Hint"),
+		name: "pdfsheet.settings.mapping.Name",
+		hint: "pdfsheet.settings.mapping.Hint",
 		scope: "world",
 		config: true,
 		type: String,
