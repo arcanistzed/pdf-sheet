@@ -4,7 +4,7 @@
 
 ### Added
 
-* PF1 mapping (thanks to @Mira)
+* PF1 mapping (thanks to `@Mira#2306`)
 
 ### Fixed
 
