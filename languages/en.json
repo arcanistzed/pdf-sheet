@@ -19,8 +19,13 @@
       },
       "shadowrun5e": {
         "label": "PDF for SR5e",
-        "title": "Download an unoficial character sheet PDF for Shadowrun 5e",
+        "title": "Download an unofficial character sheet PDF for Shadowrun 5e",
         "url": "https://drive.google.com/uc?export=download&id=1Gkaoi3JR6bfjhhq1PcgFpqGZlhTWv2oV"
+      },
+      "pf1": {
+        "label": "PDF for Pathfinder 1",
+        "title": "Download an unofficial character sheet PDF for Pathfinder 1",
+        "url": "https://cdn.discordapp.com/attachments/877667041119731734/940318362146308127/Pf1e-Foundry_to_PDF.pdf"
       }
     }
   }
