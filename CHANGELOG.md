@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.13.0 - 7 Feb 2022
+
+### Added
+
+* PF1 mapping (thanks to @Mira)
+
+### Fixed
+
+* Resize module settings window to fit mapping settings
+
 ## 0.12.0 - 28 Jan 2022
 
 ### Added
