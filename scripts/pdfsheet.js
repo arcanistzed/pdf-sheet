@@ -21,14 +21,14 @@ Hooks.on("init", () => {
 });
 
 // Inject editor into the settings menu
-Hooks.on("renderSettingsConfig", () => {
+Hooks.on("renderSettingsConfig", (app, html) => {
 	// Only if GM
 	if (game.user.isGM) {
 		// Create a new text box
 		let newTextBox, editor;
 
 		// Get the old text box
-		const oldTextBox = document.querySelector("[name='pdf-sheet.mapping']");
+		const oldTextBox = html[0].querySelector("[name='pdf-sheet.mapping']");
 
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
