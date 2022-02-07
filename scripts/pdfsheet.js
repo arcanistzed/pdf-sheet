@@ -107,6 +107,9 @@ Hooks.on("renderSettingsConfig", () => {
 				});
 			});
 
+		// Resize the Settings Config App
+		app.setPosition();
+
 		// Add an event listener
 		mappingSelect.addEventListener("change", async () => {
 			// Fetch selected mapping if not empty
