@@ -234,22 +234,22 @@ class Pdfconfig extends FormApplication {
 		// Log un-evaluated mapping
 		console.log("Raw mapping:", mapping)
 
-			// Try to deserialize mapping
-			try {
-				// Return as evaluated JavaScript with the actor as an argument
+		// Try to deserialize mapping
+		try {
+			// Return as evaluated JavaScript with the actor as an argument
 			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
-			} catch (err) {
-				// End console group
-				console.groupEnd();
-				// Close the application
-				this.close();
+		} catch (err) {
+			// End console group
+			console.groupEnd();
+			// Close the application
+			this.close();
 
-				// Alert if invalid
-				ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
+			// Alert if invalid
+			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
 
-				// Evaluate the JS again to throw the error
+			// Evaluate the JS again to throw the error
 			Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
-			};
+		};
 
 		// Log parsed mapping
 		console.log("Parsed mapping:", mapping);
