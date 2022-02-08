@@ -1,1 +1,5 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Discord Support
+    url: https://discord.gg/AAkZWWqVav
+    about: Join my Discord server for support and help with troubleshooting.
