@@ -10,3 +10,4 @@ This directory contains mappings created by the community. Feel free to contribu
 * [Star Wars EOTE (FFG)](./starwars-ffg.mapping) by `@HaxxonHax#9261` - [PDF](http://holocast.terceiraterra.com/wp-content/uploads/EotE-CharacterSheet-Fillable-v4.pdf)
 * [Shadowrun 5e (unofficial)](./shadowrun5e.mapping) by `@Kurko#1535` - [PDF](https://drive.google.com/uc?export=download&id=1Gkaoi3JR6bfjhhq1PcgFpqGZlhTWv2oV)
 * [Pathfinder 1e](./pf1.mapping) by `@Mira#2306` - [PDF](https://cdn.discordapp.com/attachments/877667041119731734/940318362146308127/Pf1e-Foundry_to_PDF.pdf)
+* [D&D 5e - German](./dnd5e-charakterbogen_ataendler_v2.8.0.mapping) by `@manolitto` - [PDF](https://www.dnddeutsch.de/wp-content/uploads/2020/10/charakterbogen_ataendler_v2.8.0.pdf)
