@@ -69,13 +69,9 @@ https://user-images.githubusercontent.com/82790112/131598024-cfb300d9-57d3-4768-
 
 Please share any mappings you create with me and I will include them in the module for the benefit of the community. [See the mappings here](https://github.com/arcanistzed/pdf-sheet/blob/main/mappings/README.md).
 
-## License
+## Support
 
-Copyright © 2021 arcanist
-
-This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
-
-This uses some code from [pdfform.js](https://github.com/phihag/pdfform.js) which is under the [Apache 2.0 License](https://github.com/phihag/pdfform.js/blob/master/LICENSE) and heavily modified by me. You may obtain a copy of the license on the [Apache website](http://www.apache.org/licenses/LICENSE-2.0).
+Please consider supporting me on [my Patreon](https://patreon.com/arcanistzed) if you like my work. You can see a list of all my projects on [my website](https://arcanist.me).
 
 ## Bugs
 
@@ -91,3 +87,11 @@ Come hang out on my [my Discord server](https://discord.gg/AAkZWWqVav) or [click
 - Change the mapping to JSON, evaluating each value instead of the whole file
 - Store the JSON as an Object rather than serialized text
 - Add a field to the JSON mapping for a link to the PDF which can be put in the App instead of only the D&D link
+
+## License
+
+Copyright © 2021 arcanist
+
+This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+
+This uses some code from [pdfform.js](https://github.com/phihag/pdfform.js) which is under the [Apache 2.0 License](https://github.com/phihag/pdfform.js/blob/master/LICENSE) and heavily modified by me. You may obtain a copy of the license on the [Apache website](http://www.apache.org/licenses/LICENSE-2.0).
