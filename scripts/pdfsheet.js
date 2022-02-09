@@ -317,8 +317,8 @@ class Pdfconfig extends FormApplication {
 					field.options.forEach((value) => {
 
 						const option = document.createElement("option");
-						option.innerText = value;
-						option.setAttribute("value", value);
+						option.innerText = Array.isArray(value) ? value[1] : value;
+						option.setAttribute("value", Array.isArray(value) ? value[0] : value);
 						input.appendChild(option);
 					});
 				};
@@ -332,6 +332,7 @@ class Pdfconfig extends FormApplication {
 						// Set the input to what is on the character sheet
 						if (field.type === "boolean") { input.checked = entry.foundry } // If it's a checkbox
 						else if (field.type === "string") { input.innerHTML = entry.foundry } // If it's a textarea
+						else if (field.type === "select") { input.value = entry.foundry } // If it's a selectbox
 						else { input.setAttribute('value', entry.foundry) }; // If it's anything else
 					};
 				});
