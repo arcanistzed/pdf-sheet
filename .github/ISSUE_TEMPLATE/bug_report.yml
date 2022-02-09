@@ -1,0 +1,104 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - arcanistzed
+body:
+  - type: markdown
+    attributes:
+      value:  "Thanks for taking the time to fill out this bug report!"
+  - type: markdown
+    attributes:
+      value: "## Issue Description"
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What is the behavior that you expected?
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Behavior
+      description: What is the current behavior, i.e., what happens actually?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: What are the steps to reproduce the problem?
+      placeholder: |
+        1.
+        2.
+        3.
+        4.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Please provide any additional context that might be helpful, e.g. log messages, screenshots, videos, or exports of problematic scenes or worlds.
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment Details
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which version of this module are you seeing the problem on?
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: foundry-version
+    attributes:
+      label: Foundry VTT Version
+      description: Which version and build of Foundry VTT are you seeing the problem on?
+      placeholder: "9.249"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: Which operating system are you using? (Windows, OS X, Linux (which distro))
+      placeholder: Windows
+    validations:
+      required: true
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser / App
+      description: Are you using a Browser or the native Electron application? (Select all that apply)
+      multiple: true
+      options:
+        - Native Electron App
+        - Chrome
+        - Firefox
+        - Microsoft Edge
+        - Safari
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Game System
+      description: Which game systems (including their versions) are you seeing the problem on?
+      placeholder: dnd5e (1.5.6), pf2e (3.1.3), …
+    validations:
+      required: true
+  - type: checkboxes
+    id: modules
+    attributes:
+      label: Modules Disabled
+      description: A lot of the time issues arise because of incompatibilities with other active modules.
+      options:
+        - label: I can confirm that disabling all of my other modules doesn't fix this issue.  
