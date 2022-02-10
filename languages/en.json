@@ -26,6 +26,11 @@
         "label": "PDF for Pathfinder 1",
         "title": "Download an unofficial character sheet PDF for Pathfinder 1",
         "url": "https://cdn.discordapp.com/attachments/877667041119731734/940318362146308127/Pf1e-Foundry_to_PDF.pdf"
+      },
+      "pf2e": {
+        "label": "PDF for Pathfinder 2e",
+        "title": "Download an unofficial character sheet PDF for Pathfinder 2e",
+        "url": "https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo"
       }
     }
   }
