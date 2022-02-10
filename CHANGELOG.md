@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.14.0 - 10 Feb 2022
+
+### Added
+
+* Mapping for a german dnd5e character sheet (thanks to @manolitto)
+* Pathfinder 2e mapping (thanks to @BlauKreuz)
+
+### Fixed
+
+* PDF select boxes (thanks to @manolitto)
+
 ## 0.13.0 - 7 Feb 2022
 
 ### Added
