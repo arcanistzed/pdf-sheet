@@ -11,3 +11,4 @@ This directory contains mappings created by the community. Feel free to contribu
 * [Shadowrun 5e (unofficial)](./shadowrun5e.mapping) by `@Kurko#1535` - [PDF](https://drive.google.com/uc?export=download&id=1Gkaoi3JR6bfjhhq1PcgFpqGZlhTWv2oV)
 * [Pathfinder 1e](./pf1.mapping) by `@Mira#2306` - [PDF](https://cdn.discordapp.com/attachments/877667041119731734/940318362146308127/Pf1e-Foundry_to_PDF.pdf)
 * [D&D 5e - German](./dnd5e-charakterbogen_ataendler_v2.8.1.mapping) by `@manolito#9369` - [PDF](https://www.dnddeutsch.de/wp-content/uploads/2020/10/charakterbogen_ataendler_v2.8.0.pdf)
+* [Pathfinder 2e](./pathfinder2e.mapping) by `@Kurko#1535` - [PDF](https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo)
