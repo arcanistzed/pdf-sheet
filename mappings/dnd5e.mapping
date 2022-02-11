@@ -47,7 +47,7 @@
     { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit || "" },
     { "pdf": "Wpn1 Damage", "foundry": (function() {
             const dda = Array.from(actor.items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage))[0]?.labels.derivedDamage;
-            return dda?.[0].formula + (dda?.length > 1 ? " *" : "") ?? "";
+            return dda?.[0].formula ?? "" + (dda?.length > 1 ? " *" : "") ?? "";
         })()},
     { "pdf": "Insight", "foundry": @data.skills.ins.total },
     { "pdf": "Intimidation", "foundry": @data.skills.itm.total },
@@ -64,7 +64,7 @@
     { "pdf": "INTmod", "foundry": @data.abilities.int.mod },
     { "pdf": "Wpn2 Damage", "foundry": (function() {
             const dda = Array.from(actor.items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage))[1]?.labels.derivedDamage;
-            return dda?.[0].formula + (dda?.length > 1 ? " *" : "") ?? "";
+            return dda?.[0].formula ?? "" + (dda?.length > 1 ? " *" : "") ?? "";
         })() },
     { "pdf": "Investigation", "foundry": @data.skills.inv.total },
     { "pdf": "WIS", "foundry": @data.abilities.wis.value },
@@ -101,7 +101,7 @@
     { "pdf": "HPTemp", "foundry": @data.attributes.hp.temp },
     { "pdf": "Wpn3 Damage", "foundry": (function() {
             const dda = Array.from(actor.items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage))[2]?.labels.derivedDamage;
-            return dda?.[0].formula + (dda?.length > 1 ? " *" : "") ?? "";
+            return dda?.[0].formula ?? "" + (dda?.length > 1 ? " *" : "") ?? "";
         })()},
     { "pdf": "SleightofHand", "foundry": @data.skills.slt.total },
     { "pdf": "CHamod", "foundry": @data.abilities.cha.mod },
