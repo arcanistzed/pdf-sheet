@@ -19,9 +19,9 @@
             let mt = Object.entries(game.dnd5e.config.movementTypes).map(e => e[0]);
             let ma = Object.entries(mo).filter(e => e[1] && mt.includes(e[0]));
             if (mo.walk && ma.length === 1) {
-                return `${ma[0][1]}${mo.units}${mo.hover ? "\n(hover)" : ""}`
+                return `${ma[0][1]}${mo.units}${mo.hover ? "\n(hover)" : ""}`;
             } else {
-                return ma.map(m => `${m[0].substring(0,2)}:${m[1]}${mo.units}`).join('\n').concat(mo.hover ? "\n(hover)" : "")
+                return ma.map(m => `${m[0].substring(0,2)}:${m[1]}${mo.units}`).join('\n').concat(mo.hover ? "\n(hover)" : "");
             }
         })() },
     { "pdf": "PersonalityTraits", "foundry": (function(h) { let d = document.createElement("div"); d.innerHTML = h; return d.textContent || d.innerText || ""; })(@data.details.trait) },
@@ -127,7 +127,7 @@
             a = @data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
                 .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x.length);
             if (a.length > 0) { s = `${s}Languages: ${a.join(", ")}\n` }
-            return s
+            return s;
         })()
     },
     { "pdf": "SP", "foundry": @data.currency.sp || "" },
