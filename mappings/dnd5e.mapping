@@ -112,20 +112,20 @@
     { "pdf": "ProficienciesLang", "foundry":
         [
             "Weapons: ", 
-            actor.data.data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x] 
+            @data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x] 
                     || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name)
-                .concat(actor.data.data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x.length).join(", "),
+                .concat(@data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x.length).join(", "),
             "\nArmor: ",
-            actor.data.data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x] 
+            @data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x] 
                     || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)
-                .concat(actor.data.data.traits.armorProf.custom.split(";")).filter(x => String(x) && x.length).join(", "),
+                .concat(@data.traits.armorProf.custom.split(";")).filter(x => String(x) && x.length).join(", "),
             "\nTools: ",
-            actor.data.data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x] 
+            @data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x] 
                     || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)
-                .concat(actor.data.data.traits.toolProf.custom.split(";")).filter(x => String(x) && x.length).join(", "),
+                .concat(@data.traits.toolProf.custom.split(";")).filter(x => String(x) && x.length).join(", "),
             "\nLanguages: ",
-            actor.data.data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
-                .concat(actor.data.data.traits.languages.custom.split(";")).filter(x => String(x) && x.length).join(", ")
+            @data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
+                .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x.length).join(", ")
         ].join("")
     },
     { "pdf": "SP", "foundry": @data.currency.sp || "" },
