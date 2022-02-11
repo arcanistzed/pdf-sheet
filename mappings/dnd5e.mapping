@@ -45,7 +45,7 @@
     { "pdf": "History", "foundry": @data.skills.his.total },
     { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
     { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
-    { "pdf": "Wpn1 Damage", "foundry": (function() { let dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
+    { "pdf": "Wpn1 Damage", "foundry": (function() { const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
     { "pdf": "Insight", "foundry": @data.skills.ins.total },
     { "pdf": "Intimidation", "foundry": @data.skills.itm.total },
     { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
@@ -59,7 +59,7 @@
     { "pdf": "Check Box 21", "foundry": @data.abilities.wis.proficient },
     { "pdf": "Check Box 22", "foundry": @data.abilities.cha.proficient },
     { "pdf": "INTmod", "foundry": @data.abilities.int.mod },
-    { "pdf": "Wpn2 Damage", "foundry": (function() { let dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
+    { "pdf": "Wpn2 Damage", "foundry": (function() { const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
     { "pdf": "Investigation", "foundry": @data.skills.inv.total },
     { "pdf": "WIS", "foundry": @data.abilities.wis.value },
     { "pdf": "Arcana", "foundry": @data.skills.arc.total },
@@ -93,7 +93,7 @@
     { "pdf": "HPMax", "foundry": @data.attributes.hp.max },
     { "pdf": "HPCurrent", "foundry": @data.attributes.hp.value },
     { "pdf": "HPTemp", "foundry": @data.attributes.hp.temp },
-    { "pdf": "Wpn3 Damage", "foundry": (function() { let dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
+    { "pdf": "Wpn3 Damage", "foundry": (function() { const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
     { "pdf": "SleightofHand", "foundry": @data.skills.slt.total },
     { "pdf": "CHamod", "foundry": @data.abilities.cha.mod },
     { "pdf": "Survival", "foundry": @data.skills.sur.total },
@@ -102,20 +102,20 @@
     { "pdf": "CP", "foundry": @data.currency.cp || "" },
     { "pdf": "ProficienciesLang", "foundry": (function() {
             let s = "";
-            let a = actor.data.data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
+            let a = @data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name)
-                .concat(actor.data.data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x.length);
+                .concat(@data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x.length);
             if (a.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n` }
-            a = actor.data.data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
+            a = @data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)
-                .concat(actor.data.data.traits.armorProf.custom.split(";")).filter(x => String(x) && x.length);
+                .concat(@data.traits.armorProf.custom.split(";")).filter(x => String(x) && x.length);
             if (a.length > 0) { s = `${s}Armor: ${a.join(", ")}\n` }
-            a = actor.data.data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
+            a = @data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)
-                .concat(actor.data.data.traits.toolProf.custom.split(";")).filter(x => String(x) && x.length);
+                .concat(@data.traits.toolProf.custom.split(";")).filter(x => String(x) && x.length);
             if (a.length > 0) { s = `${s}Tools: ${a.join(", ")}\n` }
-            a = actor.data.data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
-                .concat(actor.data.data.traits.languages.custom.split(";")).filter(x => String(x) && x.length);
+            a = @data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
+                .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x.length);
             if (a.length > 0) { s = `${s}Languages: ${a.join(", ")}\n` }
             return s
         })()
