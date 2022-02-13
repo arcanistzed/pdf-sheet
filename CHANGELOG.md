@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.15.0 - 12 Feb 2022
+
+All thanks to @manolitto:
+
+* Translate and organize proficiencies, respect semicolon in custom lists (#20)
+* Use `derivedDamage` strings in attacks (#19)
+* Strip HTML chars from personality traits, ideals, bonds, and flaws (compatibility with Tidy5e)
+* Include to-hit bonus in attacks
+* Asterisk indicates there is additional damage from attack (more than one damage part)
+* Equipment sheet includes only weapons, equipment, and tools; containers and consumables moved to treasure for space management
+* Spells removed from equipment list
+* Strip html from all fields using DOM methods
+* Show all damage types, indicating type
+* All movement types shown if non-walking or multiple types
+
 ## 0.14.0 - 10 Feb 2022
 
 ### Added
