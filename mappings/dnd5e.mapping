@@ -13,24 +13,39 @@
     { "pdf": "ProfBonus", "foundry": @data.attributes.prof },
     { "pdf": "AC", "foundry": @data.attributes.ac.value },
     { "pdf": "Initiative", "foundry": @data.attributes.init.total },
-    { "pdf": "Speed", "foundry":
-        (function() {
+    { "pdf": "Speed", "foundry": (function() {
             const mo = actor.data.data.attributes.movement;
-            let mt = Object.entries(game.dnd5e.config.movementTypes).map(e => e[0]);
-            let ma = Object.entries(mo).filter(e => e[1] && mt.includes(e[0]));
+            const mt = Object.entries(game.dnd5e.config.movementTypes).map(e => e[0]);
+            const ma = Object.entries(mo).filter(e => e[1] && mt.includes(e[0]));
             if (mo.walk && ma.length === 1) {
                 return `${ma[0][1]}${mo.units}${mo.hover ? "\n(hover)" : ""}`;
             } else {
                 return ma.map(m => `${m[0].substring(0,2)}:${m[1]}${mo.units}`).join('\n').concat(mo.hover ? "\n(hover)" : "");
             }
-        })() },
-    { "pdf": "PersonalityTraits", "foundry": (function(h) { let d = document.createElement("div"); d.innerHTML = h; return d.textContent || d.innerText || ""; })(@data.details.trait) },
+        })()
+    },
+    { "pdf": "PersonalityTraits", "foundry": (function(h) {
+            const d = document.createElement("div");
+            d.innerHTML = h;
+            return d.textContent || d.innerText || "";
+        })(@data.details.trait)
+    },
     { "pdf": "STRmod", "foundry": @data.abilities.str.mod },
     { "pdf": "ST Strength", "foundry": @data.abilities.str.save },
     { "pdf": "DEX", "foundry": @data.abilities.dex.value },
-    { "pdf": "Ideals", "foundry": (function(h) { let d = document.createElement("div"); d.innerHTML = h; return d.textContent || d.innerText || ""; })(@data.details.ideal) },
+    { "pdf": "Ideals", "foundry": (function(h) {
+            const d = document.createElement("div");
+            d.innerHTML = h;
+            return d.textContent || d.innerText || "";
+        })(@data.details.ideal)
+    },
     { "pdf": "DEXmod", "foundry": @data.abilities.dex.mod },
-    { "pdf": "Bonds", "foundry": (function(h) { let d = document.createElement("div"); d.innerHTML = h; return d.textContent || d.innerText || ""; })(@data.details.bond) },
+    { "pdf": "Bonds", "foundry": (function(h) {
+            const d = document.createElement("div");
+            d.innerHTML = h;
+            return d.textContent || d.innerText || "";
+        })(@data.details.bond)
+    },
     { "pdf": "CON", "foundry": @data.abilities.con.value },
     { "pdf": "HDTotal", "foundry": @data.attributes.hd },
     { "pdf": "Check Box 12", "foundry": @data.attributes.death.success },
@@ -41,7 +56,12 @@
     { "pdf": "Check Box 16", "foundry": @data.attributes.death.failure },
     { "pdf": "Check Box 17", "foundry": @data.attributes.death.failure },
     { "pdf": "HD", "foundry": @data.attributes.hd },
-    { "pdf": "Flaws", "foundry": (function(h) { let d = document.createElement("div"); d.innerHTML = h; return d.textContent || d.innerText || ""; })(@data.details.flaw) },
+    { "pdf": "Flaws", "foundry": (function(h) {
+            const d = document.createElement("div");
+            d.innerHTML = h;
+            return d.textContent || d.innerText || "";
+        })(@data.details.flaw)
+    },
     { "pdf": "INT", "foundry": @data.abilities.int.value },
     { "pdf": "ST Dexterity", "foundry": @data.abilities.dex.save },
     { "pdf": "ST Constitution", "foundry": @data.abilities.con.save },
@@ -55,7 +75,11 @@
     { "pdf": "History", "foundry": @data.skills.his.total },
     { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
     { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
-    { "pdf": "Wpn1 Damage", "foundry": (function() { const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
+    { "pdf": "Wpn1 Damage", "foundry": (function() {
+            const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
+            return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+        })()
+    },
     { "pdf": "Insight", "foundry": @data.skills.ins.total },
     { "pdf": "Intimidation", "foundry": @data.skills.itm.total },
     { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
@@ -69,7 +93,11 @@
     { "pdf": "Check Box 21", "foundry": @data.abilities.wis.proficient },
     { "pdf": "Check Box 22", "foundry": @data.abilities.cha.proficient },
     { "pdf": "INTmod", "foundry": @data.abilities.int.mod },
-    { "pdf": "Wpn2 Damage", "foundry": (function() { const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
+    { "pdf": "Wpn2 Damage", "foundry": (function() {
+            const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage;
+            return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+        })()
+    },
     { "pdf": "Investigation", "foundry": @data.skills.inv.total },
     { "pdf": "WIS", "foundry": @data.abilities.wis.value },
     { "pdf": "Arcana", "foundry": @data.skills.arc.total },
@@ -103,7 +131,11 @@
     { "pdf": "HPMax", "foundry": @data.attributes.hp.max },
     { "pdf": "HPCurrent", "foundry": @data.attributes.hp.value },
     { "pdf": "HPTemp", "foundry": @data.attributes.hp.temp },
-    { "pdf": "Wpn3 Damage", "foundry": (function() { const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage; return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n')})()},
+    { "pdf": "Wpn3 Damage", "foundry": (function() {
+            const dda = Array.from(actor.itemTypes.weapon.filter(i => i.data.data.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage;
+            return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+        })()
+    },
     { "pdf": "SleightofHand", "foundry": @data.skills.slt.total },
     { "pdf": "CHamod", "foundry": @data.abilities.cha.mod },
     { "pdf": "Survival", "foundry": @data.skills.sur.total },
@@ -115,18 +147,18 @@
             let a = @data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name)
                 .concat(@data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x.length);
-            if (a.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n` }
+            if (a.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n`; }
             a = @data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)
                 .concat(@data.traits.armorProf.custom.split(";")).filter(x => String(x) && x.length);
-            if (a.length > 0) { s = `${s}Armor: ${a.join(", ")}\n` }
+            if (a.length > 0) { s = `${s}Armor: ${a.join(", ")}\n`; }
             a = @data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)
                 .concat(@data.traits.toolProf.custom.split(";")).filter(x => String(x) && x.length);
-            if (a.length > 0) { s = `${s}Tools: ${a.join(", ")}\n` }
+            if (a.length > 0) { s = `${s}Tools: ${a.join(", ")}\n`; }
             a = @data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
                 .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x.length);
-            if (a.length > 0) { s = `${s}Languages: ${a.join(", ")}\n` }
+            if (a.length > 0) { s = `${s}Languages: ${a.join(", ")}\n`; }
             return s;
         })()
     },
@@ -149,7 +181,12 @@
     { "pdf": "Faction Symbol Image", "foundry": "" }, /* Images are not supported */
     { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
     { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
-    { "pdf": "Backstory", "foundry": (function(h) {let d = document.createElement("div"); d.innerHTML = h; return d.textContent || d.innerText || "" })(@data.details.biography.value) },
+    { "pdf": "Backstory", "foundry": (function(h) {
+            const d = document.createElement("div");
+            d.innerHTML = h;
+            return d.textContent || d.innerText || "";
+        })(@data.details.biography.value)
+    },
     { "pdf": "Feat+Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(16).map(i => `${i.name} - ${i.data.data.source}`).join('\n') },
     { "pdf": "Treasure", "foundry": @items.filter(i => ['backpack', 'consumable', 'loot'].includes(i.type)).map(i => (i.data.data.quantity <= 1) ? i.name : `${i.name} (${i.data.data.quantity})`).join(', ') },
 
@@ -158,7 +195,7 @@
     { "pdf": "SpellcastingAbility 2", "foundry": @data.attributes.spellcasting.capitalize() || "" },
     { "pdf": "SpellSaveDC  2", "foundry": @data.attributes.spelldc || "" },
     { "pdf": "SpellAtkBonus 2", "foundry": "+" + String(@data.attributes.spelldc - 8) }, /* Doesn't account for negative values */
-    /* Spellslots Max + counts*/
+    /* Spellslots Max + counts */
     { "pdf": "SlotsTotal 19", "foundry": @data.spells.spell1.max || "" },
     { "pdf": "SlotsRemaining 19", "foundry": @data.spells.spell1.value || "" },
     { "pdf": "SlotsTotal 20", "foundry": @data.spells.spell2.max || "" }, 
