@@ -41,10 +41,10 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
     { "pdf": "AC_DexCap", "foundry": ('+'+@data.attributes.ac.dexCap.value).replace('+Infinity', '') || ''},
     { "pdf": "AC_DexMod", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier) },
     { "pdf": "AC_ProfMod", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier) },
-    { "pdf": "AC_T", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name.substring(i.name.length - 1))[0] === '1' },
-    { "pdf": "AC_E", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name.substring(i.name.length - 1))[0]   === '2'  },
-    { "pdf": "AC_M", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name.substring(i.name.length - 1))[0]  === '3'  },
-    { "pdf": "AC_L", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name.substring(i.name.length - 1))[0]  === '4'  },
+    { "pdf": "AC_T", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name? i.name.substring(i.name.length - 1) === '1' : i.label === 'Trained' )[0] || '' },
+    { "pdf": "AC_E", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name? i.name.substring(i.name.length - 1) === '2' : i.label === 'Expert' )[0] || '' },
+    { "pdf": "AC_M", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name? i.name.substring(i.name.length - 1) === '3' : i.label === 'Master' )[0] || '' },
+    { "pdf": "AC_L", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name? i.name.substring(i.name.length - 1) === '4' : i.label === 'Legendary' )[0] || '' },
     { "pdf": "AC_ItemMod", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 
 'item').map(i => '+'+ i.modifier || '') },
 
