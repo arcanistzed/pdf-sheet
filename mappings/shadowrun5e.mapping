@@ -1,7 +1,5 @@
 [ /*
-Shadowrun 5e character sheet mapping for Foundry VTT module 'Export Sheet to PDF'
- 20-12-2021
- Kurko#1535
+Shadowrun 5e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - update 15-02-2022 - Kurko#1535
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -21,6 +19,87 @@ Shadowrun 5e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
     { "pdf": "CKarma", "foundry": @data.karma.max},
 
     { "pdf": "Metatype", "foundry": @data.metatype },
+
+
+/* CONDITION TRACKS  max. P12/S18/E8  */
+
+    { "pdf": "stun_01", "foundry": @data.track.stun.value >= 1 || ''},
+    { "pdf": "stun_02", "foundry": @data.track.stun.value  >= 2 || ''},
+    { "pdf": "stun_03", "foundry": @data.track.stun.value  >= 3 || ''},
+    { "pdf": "stun_04", "foundry": @data.track.stun.value  >= 4 || ''},
+    { "pdf": "stun_05", "foundry": @data.track.stun.value  >= 5 || ''},
+    { "pdf": "stun_06", "foundry": @data.track.stun.value  >= 6 || ''},
+    { "pdf": "stun_07", "foundry": @data.track.stun.value  >= 7 || ''},
+    { "pdf": "stun_08", "foundry": @data.track.stun.value  >= 8 || ''},
+    { "pdf": "stun_09", "foundry": @data.track.stun.value  >= 9 || ''},
+    { "pdf": "stun_10", "foundry": @data.track.stun.value  >= 10 || ''},
+    { "pdf": "stun_11", "foundry": @data.track.stun.value  >= 11 || ''},
+    { "pdf": "stun_12", "foundry": @data.track.stun.value  >= 12 || ''},
+
+    { "pdf": "stunMax_09", "foundry": (@data.track.stun.base  < 9) ? '---' : ''},
+    { "pdf": "stunMax_10", "foundry": (@data.track.stun.base  < 10) ? '---' : ''},
+    { "pdf": "stunMax_11", "foundry": (@data.track.stun.base  < 11) ? '---' : ''},
+    { "pdf": "stunMax_12", "foundry": (@data.track.stun.base  < 12) ? '---' : ''},
+
+    { "pdf": "conditionPenalty", "foundry": (@data.modifiers.wound_tolerance < 1)?
+'-1                      -2                      -3                      -4                      -5                      -6' :
+((@data.modifiers.wound_tolerance === 1)?
+'        -1                      -2                      -3                      -4                      -5' :
+ ((@data.modifiers.wound_tolerance === 2)?
+'                 -1                      -2                      -3                      -4                      -5' :
+(@data.modifiers.wound_tolerance === 3)?
+'                         -1                      -2                      -3                      -4                      -5' :
+ ((@data.modifiers.wound_tolerance === 4)?
+'                                 -1                      -2                      -3                      -4' : ''
+)))
+},
+
+    { "pdf": "phys_01", "foundry": @data.track.physical.value >= 1 || ''},
+    { "pdf": "phys_02", "foundry": @data.track.physical.value  >= 2 || ''},
+    { "pdf": "phys_03", "foundry": @data.track.physical.value  >= 3 || ''},
+    { "pdf": "phys_04", "foundry": @data.track.physical.value  >= 4 || ''},
+    { "pdf": "phys_05", "foundry": @data.track.physical.value  >= 5 || ''},
+    { "pdf": "phys_06", "foundry": @data.track.physical.value  >= 6 || ''},
+    { "pdf": "phys_07", "foundry": @data.track.physical.value  >= 7 || ''},
+    { "pdf": "phys_08", "foundry": @data.track.physical.value  >= 8 || ''},
+    { "pdf": "phys_09", "foundry": @data.track.physical.value  >= 9 || ''},
+    { "pdf": "phys_10", "foundry": @data.track.physical.value  >= 10 || ''},
+    { "pdf": "phys_11", "foundry": @data.track.physical.value  >= 11 || ''},
+    { "pdf": "phys_12", "foundry": @data.track.physical.value  >= 12 || ''},
+    { "pdf": "phys_13", "foundry": @data.track.physical.value  >= 13 || ''},
+    { "pdf": "phys_14", "foundry": @data.track.physical.value  >= 14 || ''},
+    { "pdf": "phys_15", "foundry": @data.track.physical.value  >= 15 || ''},
+    { "pdf": "phys_16", "foundry": @data.track.physical.value  >= 16 || ''},
+    { "pdf": "phys_17", "foundry": @data.track.physical.value  >= 17 || ''},
+    { "pdf": "phys_18", "foundry": @data.track.physical.value  >= 18 || ''},
+
+    { "pdf": "physMax_09", "foundry": (@data.track.physical.base  < 9) ? '---' : ''},
+    { "pdf": "physMax_10", "foundry": (@data.track.physical.base  < 10 ) ? '---' : ''},
+    { "pdf": "physMax_11", "foundry": (@data.track.physical.base  < 11 ) ? '---' : ''},
+    { "pdf": "physMax_12", "foundry": (@data.track.physical.base  < 12 ) ? '---' : ''},
+    { "pdf": "physMax_13", "foundry": (@data.track.physical.base  < 13 ) ? '---' : ''},
+    { "pdf": "physMax_14", "foundry": (@data.track.physical.base  < 14 ) ? '---' : ''},
+    { "pdf": "physMax_15", "foundry": (@data.track.physical.base  < 15 ) ? '---' : ''},
+    { "pdf": "physMax_16", "foundry": (@data.track.physical.base  < 16 ) ? '---' : ''},
+    { "pdf": "physMax_17", "foundry": (@data.track.physical.base  < 17 ) ? '---' : ''},
+    { "pdf": "physMax_18", "foundry": (@data.track.physical.base  < 18 ) ? '---' : ''},
+
+    { "pdf": "edge_01", "foundry": @data.attributes.edge.uses >= 1 || ''},
+    { "pdf": "edge_02", "foundry": @data.attributes.edge.uses >= 2 || ''},
+    { "pdf": "edge_03", "foundry": @data.attributes.edge.uses >= 3 || ''},
+    { "pdf": "edge_04", "foundry": @data.attributes.edge.uses >= 4 || ''},
+    { "pdf": "edge_05", "foundry": @data.attributes.edge.uses >= 5 || ''},
+    { "pdf": "edge_06", "foundry": @data.attributes.edge.uses >= 6 || ''},
+    { "pdf": "edge_07", "foundry": @data.attributes.edge.uses >= 7 || ''},
+    { "pdf": "edge_08", "foundry": @data.attributes.edge.uses >= 8 || ''},
+
+    { "pdf": "edgeMax_02", "foundry": (@data.attributes.edge.value  < 2 ) ? '---' : ''},
+    { "pdf": "edgeMax_03", "foundry": (@data.attributes.edge.value  < 3 ) ? '---' : ''},
+    { "pdf": "edgeMax_04", "foundry": (@data.attributes.edge.value  < 4 ) ? '---' : ''},
+    { "pdf": "edgeMax_05", "foundry": (@data.attributes.edge.value  < 5 ) ? '---' : ''},
+    { "pdf": "edgeMax_06", "foundry": (@data.attributes.edge.value  < 6 ) ? '---' : ''},
+    { "pdf": "edgeMax_07", "foundry": (@data.attributes.edge.value  < 7 ) ? '---' : ''},
+    { "pdf": "edgeMax_08", "foundry": (@data.attributes.edge.value  < 8 ) ? '---' : ''},
 
 
 /* ATTRIBUTES */
