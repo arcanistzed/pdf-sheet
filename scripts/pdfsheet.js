@@ -134,7 +134,7 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 // Add button to Actor Sheet for opening app
 Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	// If this is not a player character sheet, return without adding the button
-	if (!["character", "PC"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
+	if (!["character", "PC", "Player"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
 
 	buttons.unshift({
 		label: "Export to PDF",
