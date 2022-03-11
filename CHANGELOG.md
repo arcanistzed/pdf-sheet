@@ -1,11 +1,15 @@
 # Changelog
 
+## 0.15.2 - 11 Mar 2022
+
+* Pathfinder 2e mapping: further updates for v9 (thanks to @BlauKreuz)
+
 ## 0.15.1 - 20 Feb 2022
 
 ### Fixed
 
 * Shadownrun 5e mapping: added condition tracks which had been forgotten (thanks to @BlauKreuz)
-* Shadownrun 5e mapping: update for v9 (thanks to @BlauKreuz)
+* Pathfinder 2e mapping: update for v9 (thanks to @BlauKreuz)
 
 ## 0.15.0 - 12 Feb 2022
 
