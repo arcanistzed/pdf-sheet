@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.15.3 - 11 Mar 2022
+
+### Fixed
+
+* Cases where certain properties don't exist
+* Spell mappings on 5e character sheet and added spell component indicators (VSMC)
+
 ## 0.15.2 - 11 Mar 2022
 
 * Pathfinder 2e mapping: further updates for v9 (thanks to @BlauKreuz)
