@@ -17,7 +17,7 @@
             const mo = actor.data.data.attributes.movement;
             const mt = Object.entries(game.dnd5e.config.movementTypes).map(e => e[0]);
             const ma = Object.entries(mo).filter(e => e[1] && mt.includes(e[0]));
-            if (mo.walk && ma && ma.length === 1) {
+            if (mo.walk && ma?.length === 1) {
                 return `${ma[0][1]}${mo.units}${mo.hover ? "\n(hover)" : ""}`;
             } else {
                 return ma.map(m => `${m[0].substring(0,2)}:${m[1]}${mo.units}`).join('\n').concat(mo.hover ? "\n(hover)" : "");
@@ -146,19 +146,19 @@
             let s = "";
             let a = @data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name)
-                .concat(@data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x && x.length);
-            if (a && a.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n`; }
+                .concat(@data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x?.length);
+            if (a?.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n`; }
             a = @data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)
-                .concat(@data.traits.armorProf.custom.split(";")).filter(x => String(x) && x && x.length);
-            if (a && a.length > 0) { s = `${s}Armor: ${a.join(", ")}\n`; }
+                .concat(@data.traits.armorProf.custom.split(";")).filter(x => String(x) && x?.length);
+            if (a?.length > 0) { s = `${s}Armor: ${a.join(", ")}\n`; }
             a = @data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
                 || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)
-                .concat(@data.traits.toolProf.custom.split(";")).filter(x => String(x) && x && x.length);
-            if (a && a.length > 0) { s = `${s}Tools: ${a.join(", ")}\n`; }
+                .concat(@data.traits.toolProf.custom.split(";")).filter(x => String(x) && x?.length);
+            if (a?.length > 0) { s = `${s}Tools: ${a.join(", ")}\n`; }
             a = @data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
-                .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x && x.length);
-            if (a && a.length > 0) { s = `${s}Languages: ${a.join(", ")}\n`; }
+                .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x?.length);
+            if (a?.length > 0) { s = `${s}Languages: ${a.join(", ")}\n`; }
             return s;
         })()
     },
