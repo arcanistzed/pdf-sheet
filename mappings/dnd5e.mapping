@@ -167,7 +167,12 @@
     { "pdf": "GP", "foundry": @data.currency.gp || "" },
     { "pdf": "PP", "foundry": @data.currency.pp || "" },   
     { "pdf": "Equipment", "foundry": @items.filter(i => ['weapon', 'equipment', 'tool'].includes(i.type)).map(i => (i.data.data.quantity <= 1) ? i.name : `${i.name} (${i.data.data.quantity})`).join(', ') },
-    { "pdf": "Features and Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.data.data.source}`).join('\n') },
+    { "pdf": "Features and Traits", "foundry": @items.filter(i => ["feat", "trait"].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.data.data.source}: \n${((h) => {
+	   const d = document.createElement("div");
+	   d.innerHTML = h;
+	   return d.textContent || d.innerText || "";
+       })(i.data.data.description.value)}\n`).join("\n")
+		},
 
     /* Page #2 */
 
