@@ -1,5 +1,5 @@
 [ /*
-Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 23/02/2022 - Kurko#1535
+Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 19/03/2022 - Kurko#1535
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -599,20 +599,21 @@ Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => s
 
 /*---------------------------INVENTORY-----------------------------*/
 
-    { "pdf": "Containers", "foundry": 'In Eq --- Containers ---\n\n'  + @items.filter(i => i.type === 'backpack').map(i =>(i.data.data.invested.value? ' ¤' : (i.data.isMagical? ' ! ' : '    ')) + ((i.data.data.equipped.value || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name + '   ' + i.data.containerData.formattedHeldItemBulk + ' / ' + i.data.data.bulkCapacity.value  + '\n' + i.data.containerData.heldItems.map(i=>(i.isMagical? ' !  ' : '    ') + '         ' + i.name + ( (i.data.quantity.value > 1)?   ' (' + i.data.quantity.value + ')'  : '' )).join('\n')  || '') .join('\n --------- \n') },
+    { "pdf": "Containers", "foundry": 'In Eq --- Containers ---\n\n'  + @items.filter(i => i.type === 'backpack').map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' ! ' : '    ')) + ((i.data.data.equipped.value || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name + '   ' + i.data.containerData.formattedHeldItemBulk + ' / ' + i.data.data.bulkCapacity.value  + '\n' + i.data.containerData.heldItems.map(i=>(i.isMagical? ' !  ' : '    ') + '         ' + i.name + ( (i.data.quantity.value > 1)?   ' (' + i.data.quantity.value + ')'  : '' )).join('\n')  || '') .join('\n --------- \n') },
 
-    { "pdf": "Inventory", "foundry": [('In Eq --- Weapons / Worn Items ---\n'),
-(@items.filter(i => i.type === 'weapon' && !i.data.data.containerId.value ).map(i => (i.data.data.invested.value? ' !' : (i.data.isMagical? ' ! ' : '   ')) + ( ( i.data.data.equipped.value || i.data.data.equipped.carryType === 'held' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), 
+    { "pdf": "Inventory", "foundry": [('In Eq --- Weapons / Armor / Items ---\n'),
+(@items.filter(i => i.type === 'weapon' && (!i.data.data.containerId || i.data.data.containerId?.value === null) ).map(i => (i.data.isInvested? ' !' : (i.data.isMagical? ' ! ' : '   ')) + ( ( i.data.data.equipped.value || i.data.data.equipped.carryType === 'held' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), 
 '---------' ,
-(@items.filter(i => i.type === 'armor' && !i.data.data.containerId.value ).map(i =>(i.data.data.invested.value? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.data.equipped.value || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   (i.data.data.equipped.value? ' (B: ' + i.data.data.equippedBulk.value +')' : ' (B: ' + i.data.data.weight.value +')'   ) : '' )   || '').join('\n') ), 
+(@items.filter(i => i.type === 'armor' && (!i.data.data.containerId || i.data.data.containerId?.value === null)  ).map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.data.equipped.value || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   (i.data.data.equipped.value? ' (B: ' + i.data.data.equippedBulk.value +')' : ' (B: ' + i.data.data.weight.value +')'   ) : '' )   || '').join('\n') ), 
 '---------' ,
-(@items.filter(i => i.type === 'equipment' && !i.data.data.containerId.value ).map(i =>(i.data.data.invested.value? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.data.equipped.value? i.data.data.equipped.value : (i.data.data.equipped.carryType === 'worn' && i.data.data.usage.value === 'worn') )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ),
+(@items.filter(i => i.type === 'equipment' && (!i.data.data.containerId || i.data.data.containerId?.value === null)  ).map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.data.equipped.value? i.data.data.equipped.value : (i.data.data.equipped.carryType === 'worn' && i.data.data.usage.value === 'worn') )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') )
 ].filter(x => String(x)).join('\n') },
 
     { "pdf": "Consumables", "foundry": 'M Eq --- Consumables ---\n\n'  +
-(@items.filter(i => i.type === 'consumable' && !i.data.data.containerId.value).map(i =>(i.data.isMagical? ' ! ' : '   ') + ( i.data.data.equipped.value? ' [x] ' : ' [  ] ') + i.name.replace('Level', 'lvl') + ' ' +    
+(@items.filter(i => i.type === 'consumable' && (!i.data.data.containerId || i.data.data.containerId?.value === null)  ).map(i =>(i.data.isMagical? ' ! ' : '   ') + ( i.data.data.equipped.value? ' [x] ' : ' [  ] ') + i.name.replace('Level', 'lvl') + ' ' +    
 (( i.data.data.quantity.value > 1)?   '(x' + i.data.data.quantity.value + ')'  : '' )
-+ ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), },
++ ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ) },
+
 
     { "pdf": "Copper", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Copper Pieces').map(i => i.data.data.quantity.value).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
     { "pdf": "Silver", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Silver Pieces').map(i => i.data.data.quantity.value).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
