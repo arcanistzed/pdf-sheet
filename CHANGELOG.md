@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.16.0 - 19 Mar 2022
+
+### Added
+
+DnD5e mapping: Export entire text from the description field of feats and traits
+
+### Fixed
+
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.7.2.10819
+
 ## 0.15.3 - 11 Mar 2022
 
 ### Fixed
