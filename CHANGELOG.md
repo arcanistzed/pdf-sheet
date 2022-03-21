@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0 - 20 Mar 2022
+
+### Added
+
+DCC mapping: add 0 level character sheet mapping (thanks to @mphagan)
+
 ## 0.16.0 - 19 Mar 2022
 
 ### Added
