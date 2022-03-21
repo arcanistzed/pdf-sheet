@@ -1,13 +1,138 @@
-/* PDF: https://www.dnddeutsch.de/wp-content/uploads/2020/10/charakterbogen_ataendler_v2.8.0.pdf */
+/* PDF: https://www.dnddeutsch.de/wp-content/uploads/2022/03/charakterbogen_ataendler_v2.8.1.pdf */
 [
 
 /* Page #1 */
 
-    { "pdf": "Charaktername", "foundry": @name },
-    { "pdf": "Charaktername1", "foundry": @name },
-    { "pdf": "Charaktername2", "foundry": @name },
+    { "pdf": "_helper_functions", "foundry": game.pdfsheet = {
 
-    { "pdf": "KlasseUndStufe", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.data.data.levels}`).join(' / ') },
+        abilityModToAttrOption: function(modifier) {
+          switch(modifier) {
+            case 'str': return 'Str';
+            case 'dex': return 'Ges';
+            case 'con': return 'Kon';
+            case 'int': return 'Int';
+            case 'wis': return 'Wei';
+            case 'cha': return 'Cha';
+          }
+          console.warn('bad ability modifier', modifier);
+          return '';
+        },
+
+        getNthAttackWeapon: function(itemNr) {
+          return @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[itemNr - 1] || '';
+        },
+
+        attackModifier: function(item) {
+          return item ? game.pdfsheet.abilityModToAttrOption(item.abilityMod) : '';
+        },
+
+        damageFormula: function(item) {
+          return item ? item.getDerivedDamageLabel()[0].formula || '' : '';
+        },
+
+        localizedDamageType: function(item) {
+          const dt = item ? item.getDerivedDamageLabel()[0].damageType : null;
+          return dt ? game.i18n.localize(game.dnd5e.config.damageTypes[dt]) : '';
+        },
+
+        localizedItemName: function(item) {
+          return item ? game.i18n.localize(item?.name) : '';
+        },
+
+        weaponRange: function(item) {
+          if (!item) return '';
+          const r = item.data.data.range;
+          return r.value + (r.long ? ("/" + r.long) : "") + (r.units ? (" " + r.units) : "");
+        },
+
+        weaponBonus: function(item) {
+          if (!item) return '';
+          const rd = item.getAttackToHit().rollData;
+          return (+rd.mod)+(+rd.prof)+(+rd.ammo);
+        },
+
+        htmlToText: function(html) {
+          return html.replaceAll("\n", "")
+                     .replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n")
+                     .replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n")
+                     .replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n")
+                     .replaceAll(/<p[^>]*>/gms, "")
+                     .replaceAll(/<\/p>/gms, "\n")
+                     .replaceAll(/<li[^>]*>/gms, "• ")
+                     .replaceAll(/<\/li>/gms, "\n")
+                     .replaceAll(/<[^>]*>/gms, "")
+                     .replaceAll(/\u00a0/g, "");
+        },
+
+        splitIntoTwoParts: function(text, firstPartMinLength, ratio) {
+          if (!text) return '';
+          const len = text.length;
+          if (len <= firstPartMinLength) {
+            return [text, ''];
+          }
+          const splitIdx = len * ratio;
+          const p2 = text.substring(splitIdx);
+          const nlIdx = p2.indexOf('\n');
+          /* try splitting at newline: */
+          if (nlIdx >= 0 && nlIdx < 100) {
+            return [
+              text.substring(0, splitIdx + nlIdx),
+              p2.substring(nlIdx + 1)
+            ];
+          }
+          /* try splitting at space character: */
+          const spcIdx = p2.indexOf(' ');
+          if (spcIdx >= 0) {
+            return [
+              text.substring(0, splitIdx + spcIdx),
+              p2.substring(spcIdx + 1)
+            ];
+          }
+          return [text.substring(0, splitIdx), p2];
+        },
+
+        getPrimaryClassObj: function() {
+          const allClasses = @items.filter(i => i.type === 'class').map(i => i.data);
+          if (allClasses.length > 1) {
+            const primary = allClasses.filter(i => i.flags?.srd5e?.isPrimaryClass);
+            if (primary.length >= 1) {
+              return primary[0];
+            }
+          }
+          return allClasses[0];
+        },
+
+        getLocalizedClassAndSubclass: function(classItem) {
+          const sc = classItem.data.subclass;
+          return sc ? game.i18n.localize(classItem.name) + "/" + game.i18n.localize(sc) : game.i18n.localize(classItem.name);
+        },
+
+        getLocalizedClassAndSubclassAndLevel: function(classItem) {
+          return `${game.pdfsheet.getLocalizedClassAndSubclass(classItem)} ${classItem.data.levels}`;
+        },
+
+        getFeatsAndTraits: function() {
+          let featsAndTraits = '';
+          @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i.data).forEach(i => {
+            featsAndTraits += ("### " + i.name);
+            if (i.data?.source) {
+              featsAndTraits += (" (" + i.data.source + ")");
+            }
+            featsAndTraits += " ###\n";
+            if (i.data?.description?.value) {
+              featsAndTraits += game.pdfsheet.htmlToText(i.data.description.value);
+              featsAndTraits += "\n";
+            }
+          });
+          return featsAndTraits;
+        },
+
+    }},
+
+    { "pdf": "Charaktername_page1", "foundry": @name },
+    { "pdf": "Charaktername_page2", "foundry": @name },
+    
+    { "pdf": "KlasseUndStufe", "foundry": game.pdfsheet.getLocalizedClassAndSubclassAndLevel(game.pdfsheet.getPrimaryClassObj()) },
     { "pdf": "Spielername", "foundry": Object.entries(@permission).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
     { "pdf": "Hintergrund", "foundry": @data.details.background },
     { "pdf": "Volk", "foundry": @data.details.race },
@@ -129,45 +254,47 @@
     { "pdf": "Bindungen", "foundry": @data.details.bond },
     { "pdf": "Makel", "foundry": @data.details.flaw },
 
-    { "pdf": "Angriff1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
-    { "pdf": "ÜB1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.proficient)[0] },
-    { "pdf": "Attr1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.abilityMod).map(m => game.i18n.format(game.dnd5e.config.abilities[m])).map(a => a.substring(0,3))[0] || ""},
-    { "pdf": "Reichweite1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.range.value + (i.data.data.range.long ? ("/" + i.data.data.range.long) : "") + " " + i.data.data.range.units)[0] || ""},
-    { "pdf": "Bonus1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getAttackToHit().rollData).map(rd => (+rd.mod)+(+rd.prof)+(+rd.ammo))[0] || ""},
-    { "pdf": "Schaden1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].formula)[0] || "" },
-    { "pdf": "Schadentyp1", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].damageType).map(d => game.i18n.localize(game.dnd5e.config.damageTypes[d]))[0] || ""},
+    { "pdf": "Angriff1", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Angriff2", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Angriff3", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Angriff4", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Angriff5", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(5)) },
 
-    { "pdf": "Angriff2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
-    { "pdf": "ÜB2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.proficient)[1] },
-    { "pdf": "Attr2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.abilityMod).map(m => game.i18n.format(game.dnd5e.config.abilities[m])).map(a => a.substring(0,3))[1] || ""},
-    { "pdf": "Reichweite2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.range.value + (i.data.data.range.long ? ("/" + i.data.data.range.long) : "") + " " + i.data.data.range.units)[1] || ""},
-    { "pdf": "Bonus2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getAttackToHit().rollData).map(rd => (+rd.mod)+(+rd.prof)+(+rd.ammo))[1] || ""},
-    { "pdf": "Schaden2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].formula)[1] || "" },
-    { "pdf": "Schadentyp2", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].damageType).map(d => game.i18n.localize(game.dnd5e.config.damageTypes[d]))[1] || ""},
+    { "pdf": "ÜB1", "foundry": game.pdfsheet.getNthAttackWeapon(1)?.data?.data?.proficient },
+    { "pdf": "ÜB2", "foundry": game.pdfsheet.getNthAttackWeapon(2)?.data?.data?.proficient },
+    { "pdf": "ÜB3", "foundry": game.pdfsheet.getNthAttackWeapon(3)?.data?.data?.proficient },
+    { "pdf": "ÜB4", "foundry": game.pdfsheet.getNthAttackWeapon(4)?.data?.data?.proficient },
+    { "pdf": "ÜB5", "foundry": game.pdfsheet.getNthAttackWeapon(5)?.data?.data?.proficient },
 
-    { "pdf": "Angriff3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
-    { "pdf": "ÜB3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.proficient)[2] },
-    { "pdf": "Attr3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.abilityMod).map(m => game.i18n.format(game.dnd5e.config.abilities[m])).map(a => a.substring(0,3))[2] || ""},
-    { "pdf": "Reichweite3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.range.value + (i.data.data.range.long ? ("/" + i.data.data.range.long) : "") + " " + i.data.data.range.units)[2] || ""},
-    { "pdf": "Bonus3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getAttackToHit().rollData).map(rd => (+rd.mod)+(+rd.prof)+(+rd.ammo))[2] || ""},
-    { "pdf": "Schaden3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].formula)[2] || "" },
-    { "pdf": "Schadentyp3", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].damageType).map(d => game.i18n.localize(game.dnd5e.config.damageTypes[d]))[2] || ""},
+    { "pdf": "Attr1", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Attr2", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Attr3", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Attr4", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Attr5", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(5)) },
 
-    { "pdf": "Angriff4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[3]?.name || "" },
-    { "pdf": "ÜB4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.proficient)[3] },
-    { "pdf": "Attr4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.abilityMod).map(m => game.i18n.format(game.dnd5e.config.abilities[m])).map(a => a.substring(0,3))[3] || ""},
-    { "pdf": "Reichweite4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.range.value + (i.data.data.range.long ? ("/" + i.data.data.range.long) : "") + " " + i.data.data.range.units)[3] || ""},
-    { "pdf": "Bonus4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getAttackToHit().rollData).map(rd => (+rd.mod)+(+rd.prof)+(+rd.ammo))[3] || ""},
-    { "pdf": "Schaden4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].formula)[3] || "" },
-    { "pdf": "Schadentyp4", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].damageType).map(d => game.i18n.localize(game.dnd5e.config.damageTypes[d]))[3] || ""},
+    { "pdf": "Reichweite1", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Reichweite2", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Reichweite3", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Reichweite4", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Reichweite5", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(5)) },
 
-    { "pdf": "Angriff5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage)[4]?.name || "" },
-    { "pdf": "ÜB5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.proficient)[4] },
-    { "pdf": "Attr5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.abilityMod).map(m => game.i18n.format(game.dnd5e.config.abilities[m])).map(a => a.substring(0,3))[4] || ""},
-    { "pdf": "Reichweite5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.data.data.range.value + (i.data.data.range.long ? ("/" + i.data.data.range.long) : "") + " " + i.data.data.range.units)[4] || ""},
-    { "pdf": "Bonus5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getAttackToHit().rollData).map(rd => (+rd.mod)+(+rd.prof)+(+rd.ammo))[4] || ""},
-    { "pdf": "Schaden5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].formula)[4] || "" },
-    { "pdf": "Schadentyp5", "foundry": @items.filter(i => i.type === 'weapon' && i.data.data.equipped && i.hasAttack && i.hasDamage).map(i => i.getDerivedDamageLabel()[0].damageType).map(d => game.i18n.localize(game.dnd5e.config.damageTypes[d]))[4] || ""},
+    { "pdf": "Bonus1", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Bonus2", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Bonus3", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Bonus4", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Bonus5", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "Schaden1", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Schaden2", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Schaden3", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Schaden4", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Schaden5", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "Schadentyp1", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Schadentyp2", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Schadentyp3", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Schadentyp4", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Schadentyp5", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(5)) },
 
     { "pdf": "PassiveWeisheit", "foundry": @data.skills.prc.passive },
 
@@ -199,7 +326,8 @@
 
 /* Page #2 */
 
-    /* { "pdf": "Klassenmerkmale2", "foundry": @items.filter(i => i.type === 'class').map(i => i.data.data.description?.value?.replaceAll(/<table\s.*<\/table>/gms, "").replaceAll(/<[^>]*>/g, "").trim()).join('\n') || "" }, */
+    { "pdf": "Klassenmerkmale1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.getFeatsAndTraits(), 600, 0.25)[0] || "" },
+    { "pdf": "Klassenmerkmale2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.getFeatsAndTraits(), 600, 0.25)[1] || "" },
 
     { "pdf": "HochsprungOhneAnlauf", "foundry": Math.round(((@data.abilities.str.mod + 3)*0.3)/2*10)/10 },
     { "pdf": "HochsprungMitAnlauf", "foundry": Math.round(((@data.abilities.str.mod + 3)*0.3)*10)/10 },
@@ -345,7 +473,7 @@
 
     { "pdf": "Alter", "foundry": @data.details.age || "" },
     { "pdf": "Körpergrösse", "foundry": @data.details.height || "" },
-    { "pdf": "SizeCat", "foundry": game.i18n.localize(game.dnd5e.config.actorSizes[@data.traits.size]) || "" },
+    { "pdf": "SizeCat", "foundry": @data.traits.size === "tiny" ? 1 : @data.traits.size === "sm" ? 2 : @data.traits.size === "med" ? 3 : @data.traits.size === "lg" ? 5 : @data.traits.size === "huge" ? 6 : @data.traits.size === "grg" ? 7 : 0 },
     { "pdf": "Gewicht", "foundry": @data.details.weight || ""},
     { "pdf": "Augenfarbe", "foundry": @data.details.eyes || ""},
     { "pdf": "Hautfarbe", "foundry": @data.details.skin || ""},
@@ -354,10 +482,11 @@
     { "pdf": "Geschlecht", "foundry": @data.details.gender || ""},
     { "pdf": "Aussehen", "foundry": @data.details.appearance || ""},
 
-    { "pdf": "Hintergrundgeschichte1", "foundry": @data.details.biography?.value?.replaceAll("\n", "").replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n").replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n").replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n").replaceAll(/<p[^>]*>/gms, "").replaceAll(/<\/p>/gms, "\n").replaceAll(/<li[^>]*>/gms, "- ").replaceAll(/<\/li>/gms, "\n").replaceAll(/<[^>]*>/gms, "").replaceAll(/\u00a0/g, "").trim().substring(0, 500) },
-    { "pdf": "Hintergrundgeschichte2", "foundry": @data.details.biography?.value?.replaceAll("\n", "").replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n").replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n").replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n").replaceAll(/<p[^>]*>/gms, "").replaceAll(/<\/p>/gms, "\n").replaceAll(/<li[^>]*>/gms, "- ").replaceAll(/<\/li>/gms, "\n").replaceAll(/<[^>]*>/gms, "").replaceAll(/\u00a0/g, "").trim().substring(500) },
+    { "pdf": "Hintergrundgeschichte1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@data.details.biography?.value)?.trim(),400,0.5)[0] || "" },
+    { "pdf": "Hintergrundgeschichte2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@data.details.biography?.value)?.trim(),400,0.5)[1] || "" },
 
-    { "pdf": "Werdegang1", "foundry": @data.details.description?.value?.replaceAll("\n", "").replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n").replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n").replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n").replaceAll(/<p[^>]*>/gms, "").replaceAll(/<\/p>/gms, "\n").replaceAll(/<li[^>]*>/gms, "- ").replaceAll(/<\/li>/gms, "\n").replaceAll(/<[^>]*>/gms, "").replaceAll(/\u00a0/g, "").trim() || ""},
+    { "pdf": "Werdegang1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@data.details.description?.value)?.trim(),400,0.5)[0] || "" },
+    { "pdf": "Werdegang2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@data.details.description?.value)?.trim(),400,0.5)[1] || "" },
 
     { "pdf": "AttacksSpellcasting", "foundry": "" },
     { "pdf": "Equipment", "foundry": @items.filter(i => !['feat', 'class', 'weapon', 'loot'].includes(i.type)).map(i => `${i.name} (${i.data.data.quantity})`).join(', ') },
