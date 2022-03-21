@@ -31,6 +31,11 @@
         "label": "PDF for Pathfinder 2e",
         "title": "Download an unofficial character sheet PDF for Pathfinder 2e",
         "url": "https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo"
+      },
+      "dcc": {
+        "label": "PDF for Dungeon Crawl Classics",
+        "title": "Download a character sheet PDF from Goodman Games for Dungeon Crawl Classics",
+        "url": "https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf"
       }
     }
   }

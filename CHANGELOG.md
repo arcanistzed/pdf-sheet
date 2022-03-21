@@ -1,5 +1,54 @@
 # Changelog
 
+## 0.17.0 - 20 Mar 2022
+
+### Added
+
+DCC mapping: add 0 level character sheet mapping (thanks to @mphagan)
+
+## 0.16.0 - 19 Mar 2022
+
+### Added
+
+DnD5e mapping: Export entire text from the description field of feats and traits
+
+### Fixed
+
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.7.2.10819
+
+## 0.15.3 - 11 Mar 2022
+
+### Fixed
+
+* Cases where certain properties don't exist
+* Spell mappings on 5e character sheet and added spell component indicators (VSMC)
+
+## 0.15.2 - 11 Mar 2022
+
+* Pathfinder 2e mapping: further updates for v9 (thanks to @BlauKreuz)
+
+## 0.15.1 - 20 Feb 2022
+
+### Fixed
+
+* Shadownrun 5e mapping: added condition tracks which had been forgotten (thanks to @BlauKreuz)
+* Pathfinder 2e mapping: update for v9 (thanks to @BlauKreuz)
+
+## 0.15.0 - 12 Feb 2022
+
+All thanks to @manolitto:
+
+* Translate and organize proficiencies, respect semicolon in custom lists (#20)
+* Use `derivedDamage` strings in attacks (#19)
+* Strip HTML chars from personality traits, ideals, bonds, and flaws (compatibility with Tidy5e)
+* Include to-hit bonus in attacks
+* Asterisk indicates there is additional damage from attack (more than one damage part)
+* Equipment sheet includes only weapons, equipment, and tools; containers and consumables moved to treasure for space management
+* Spells removed from equipment list
+* Strip html from all fields using DOM methods
+* Show all damage types, indicating type
+* All movement types shown if non-walking or multiple types
+
 ## 0.14.0 - 10 Feb 2022
 
 ### Added

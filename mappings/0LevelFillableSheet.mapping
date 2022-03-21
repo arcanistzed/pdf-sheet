@@ -1,0 +1,66 @@
+/* DCC: Dungeon Crawl Classics                                version 2022.03.20 */
+/*                                                                               */
+/* This mapping was developed for level 0 characters. Level 1 sheets/classes     */
+/* have not yet been fully tested or developed, but are considered next steps.   */
+/*                                                                               */
+/* PDF: https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf */
+/*                                                                               */
+/* Known deficiencies: Language, Lucky roll, Attack, Missle Damamge              */
+/*                                                                               */
+[ 
+  {"pdf": "Character Name", "foundry": @name },
+  {"pdf": "Occupation",     "foundry": @data.details.occupation.value },
+  {"pdf": "Class",          "foundry": @data.details.sheetClass }, 
+  {"pdf": "Level",          "foundry": @data.details.level.value },
+  {"pdf": "Title",          "foundry": ((@data.details.title.length===undefined ) ? @data.details.title.value : '')},
+  {"pdf": "Alignment",      "foundry": game.i18n.localize(CONFIG.DCC.alignments[@data.details.alignment]) }, 
+  {"pdf": "XP",             "foundry": @data.details.xp.value },
+  {"pdf": "Crit Die",       "foundry": @data.details.attackBonus },
+   
+  {"pdf": "Strength",       "foundry": @data.abilities.str.value },
+  {"pdf": "str mod",        "foundry": @data.abilities.str.mod },
+  {"pdf": "Agi",            "foundry": @data.abilities.agl.value },
+  {"pdf": "Agi mod",        "foundry": @data.abilities.agl.mod },
+  {"pdf": "sta",            "foundry": @data.abilities.sta.value },
+  {"pdf": "sta mod",        "foundry": @data.abilities.sta.mod },
+  {"pdf": "Personality",    "foundry": @data.abilities.per.value },
+  {"pdf": "Per Mod",        "foundry": @data.abilities.per.mod },
+  {"pdf": "Luck",           "foundry": @data.abilities.lck.value },
+  {"pdf": "Luck Mod",       "foundry": @data.abilities.lck.mod },
+  {"pdf": "Int",            "foundry": @data.abilities.int.value },
+  {"pdf": "Int mod",        "foundry": @data.abilities.int.mod },
+  
+  {"pdf": "Ref save",       "foundry": @data.saves.ref.value },
+  {"pdf": "Fort save",      "foundry": @data.saves.frt.value },
+  {"pdf": "will save",      "foundry": @data.saves.wil.value },
+  {"pdf": "AC",             "foundry": @data.attributes.ac.value },
+  {"pdf": "HP",             "foundry": @data.attributes.hp.value },
+  {"pdf": "Max HP",         "foundry": @data.attributes.hp.max },
+  {"pdf": "Init",           "foundry": @data.attributes.init.value },
+  {"pdf": "Speed",          "foundry": @data.attributes.speed.value },
+  {"pdf": "Crit Table",     "foundry": @data.attributes.critical.table },
+  
+  {"pdf": "Action Dice",    "foundry": @data.config.actionDice }, 
+  {"pdf": "Melee",          "foundry": @data.abilities.str.mod }, 
+  {"pdf": "Melee dam",      "foundry": @data.abilities.str.mod }, 
+  {"pdf": "missile attack", "foundry": @data.abilities.agl.mod }, 
+  {"pdf": "Languages",      "foundry": ((@data.details.languages.length===undefined ) ? @data.details.languages.value : '')}, 
+ 
+  
+
+  {"pdf": "Weapons",        "foundry": @items.filter(i => i.type === 'weapon').map(i => `${i.name} ${i.data.data.toHit} ${i.data.data.melee ? 'Melee' : 'Missile'} (${i.data.data.damage})`).join('\n') },
+
+  {"pdf": "Armor", "foundry": @items.filter(i => i.type === 'armor').map(i => `${i.name} ${i.data.data.acBonus} (Check Penalty ${i.data.data.checkPenalty} Fumble Die ${i.data.data.fumbleDie} Speed ${i.data.data.speed ? i.data.data.speed : '-0'})`).join('\n') },
+
+  {"pdf": "Equipment", "foundry": @items.filter(i => i.type === 'equipment' || i.type === 'ammunition' || i.type === 'mount').map(i => `${i.name}`).join('\n') },
+
+  {"pdf": "Treasure", "foundry": ["Funds GP " + @data.currency.gp + " SP " + @data.currency.sp + " CP " + @data.currency.cp, @items.filter(i => i.type === 'treasure').map(i => `${i.name} GP ${i.data.data.value.gp} SP ${i.data.data.value.sp} CP ${i.data.data.value.cp}`).join('\n')].join('\n') },
+
+  {"pdf": "Notes2",        "foundry": (function() {
+     if ((@data.details.notes.value===undefined) || (@data.details.notes.value===null) || (@data.details.notes.value===''))
+        return '';
+      else
+        return @data.details.notes.value.replace( /(<([^>]+)>)/ig, '');
+    })()
+  }
+]
