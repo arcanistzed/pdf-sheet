@@ -1,5 +1,6 @@
 [ /*
-Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 19/03/2022 - Kurko#1535
+Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 08/04/2022 - Kurko#1535
+Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -8,7 +9,7 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
     { "pdf": "PlayerName", "foundry": Object.entries(@permission).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
 
     { "pdf": "XP", "foundry": @data.details.xp.value + " / " + @data.details.xp.max },
-    { "pdf": "Ancestry_Heritage", "foundry": actor.data.items._source.filter(i => i.type === 'ancestry').map(i =>[i.name, @data.details.heritage.value].filter(x => String(x)).join(", "))  },
+    { "pdf": "Ancestry_Heritage", "foundry": actor.data.items._source.filter(i => i.type === 'ancestry' || i.type === 'heritage').map(i => i.name).join(", ") },
     { "pdf": "Background", "foundry": actor.data.items._source.filter(i => i.type === 'background').map(i =>i.name) },
     { "pdf": "Class", "foundry": actor.data.items._source.filter(i => i.type === 'class').map(i =>i.name) },
     { "pdf": "Size", "foundry": @data.traits.size.value},
@@ -159,16 +160,17 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
 
     { "pdf": "Melee1_T", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Melee1_E", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || ""  )[0] }, 
- { "pdf": "Melee1_M", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
+    { "pdf": "Melee1_M", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
     { "pdf": "Melee1_L", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || ""  )[0] }, 
     { "pdf": "Melee1_AtkItemMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee1_Dice", "foundry": @items._source.filter(i => i._id ===(@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready ).map(i => i.item)[0] )  && i.type === 'weapon' ).map(i =>i.data.damage.dice + i.data.damage.die)[0] || ""  },
-    { "pdf": "Melee1_DmgStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee1_Dice", "foundry":@data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&&  a.ready ).map(i => i.item.data.data.damage.dice + i.item.data.data.damage.die)[0] || '' },
 
-    { "pdf": "Melee1_DmgB", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready ).map(i => i.item)[0]) && i.type === 'weapon' ).map(i =>  i.data.damage.damageType === 'bludgeoning')[0] || ''  },
-    { "pdf": "Melee1_DmgP", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready) .map(i => i.item)[0]) && i.type === 'weapon' ).map(i =>  i.data.damage.damageType === 'piercing')[0] || ''  },
-    { "pdf": "Melee1_DmgS", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready).map(i => i.item)[0]) && i.type === 'weapon' ).map(i =>  (i.data.damage.damageType === 'slashing' || i.data.traits.value.includes('versatile-s') ) )[0] || ''  },
+    { "pdf": "Melee1_DmgStrMod", "foundry":@data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
+
+    { "pdf": "Melee1_DmgB", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'bludgeoning')[0] || ''  },
+    { "pdf": "Melee1_DmgP", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'piercing')[0] || ''  },
+    { "pdf": "Melee1_DmgS", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'slashing' || i.item.data.data.traits.value.includes('versatile-s') )[0] || ''  },
 
     { "pdf": "Melee1_Traits", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.traits)[0]?.filter(a => a.name !== 'attack' ).map(a => a.name).join(', ') || ""  },
 
@@ -181,16 +183,17 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
 
     { "pdf": "Melee2_T", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Melee2_E", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
- { "pdf": "Melee2_M", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Melee2_M", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
     { "pdf": "Melee2_L", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
     { "pdf": "Melee2_AtkItemMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee2_Dice", "foundry": @items._source.filter(i => i._id ===(@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready ).map(i => i.item)[1] )  && i.type === 'weapon' ).map(i =>i.data.damage.dice + i.data.damage.die)[0] || ""  },
+    { "pdf": "Melee2_Dice", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&&  a.ready ).map(i => i.item.data.data.damage.dice + i.item.data.data.damage.die)[1] || '' },
+
     { "pdf": "Melee2_DmgStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee2_DmgB", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready ).map(i => i.item)[1]) && i.type === 'weapon' ).map(i =>  i.data.damage.damageType === 'bludgeoning')[0] || ''  },
-    { "pdf": "Melee2_DmgP", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready) .map(i => i.item)[1]) && i.type === 'weapon' ).map(i =>  i.data.damage.damageType === 'piercing')[0] || ''  },
-    { "pdf": "Melee2_DmgS", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready).map(i => i.item)[1]) && i.type === 'weapon' ).map(i =>  (i.data.damage.damageType === 'slashing' || i.data.traits.value.includes('versatile-s') ) )[0] || ''  },
+    { "pdf": "Melee2_DmgB2", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'bludgeoning')[1] || ''  },
+    { "pdf": "Melee2_DmgP", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'piercing')[1] || ''  },
+    { "pdf": "Melee2_DmgS", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'slashing' || i.item.data.data.traits.value.includes('versatile-s') )[1] || ''  },
 
     { "pdf": "Melee2_Traits", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.traits)[1]?.filter(a => a.name !== 'attack' ).map(a => a.name).join(', ') || ""  },
 
@@ -203,16 +206,17 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
 
     { "pdf": "Melee3_T", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Melee3_E", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
- { "pdf": "Melee3_M", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Melee3_M", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
     { "pdf": "Melee3_L", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
     { "pdf": "Melee3_AtkItemMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee3_Dice", "foundry": @items._source.filter(i => i._id ===(@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready ).map(i => i.item)[2] )  && i.type === 'weapon' ).map(i =>i.data.damage.dice + i.data.damage.die)[0] || ""  },
+    { "pdf": "Melee3_Dice", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&&  a.ready ).map(i => i.item.data.data.damage.dice + i.item.data.data.damage.die)[2] || '' },
+
     { "pdf": "Melee3_DmgStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee3_DmgB", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready ).map(i => i.item)[2]) && i.type === 'weapon' ).map(i =>  i.data.damage.damageType === 'bludgeoning')[0] || ''  },
-    { "pdf": "Melee3_DmgP", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready) .map(i => i.item)[2]) && i.type === 'weapon' ).map(i =>  i.data.damage.damageType === 'piercing')[0] || ''  },
-    { "pdf": "Melee3_DmgS", "foundry": @items._source.filter(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Melee.Description'  && a.ready).map(i => i.item)[2]) && i.type === 'weapon' ).map(i =>  (i.data.damage.damageType === 'slashing' || i.data.traits.value.includes('versatile-s') ) )[0] || ''  },
+    { "pdf": "Melee3_DmgB", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'bludgeoning')[2] || ''  },
+    { "pdf": "Melee3_DmgP", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'piercing')[2] || ''  },
+    { "pdf": "Melee3_DmgS", "foundry": @data.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.data.data.damage.damageType === 'slashing' || i.item.data.data.traits.value.includes('versatile-s') )[2] || ''  },
 
     { "pdf": "Melee3_Traits", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.traits)[2]?.filter(a => a.name !== 'attack' ).map(a => a.name).join(', ') || ""  },
 
@@ -225,20 +229,16 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
     { "pdf": "Ranged1_AtkProfMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged1_T", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Ranged1_E", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
- { "pdf": "Ranged1_M", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
-    { "pdf": "Ranged1_L", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
+    { "pdf": "Ranged1_E", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || ""  )[0] }, 
+    { "pdf": "Ranged1_M", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
+    { "pdf": "Ranged1_L", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || ""  )[0] }, 
     { "pdf": "Ranged1_AtkItemMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Ranged1_Dice", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[0])  ).map(i =>  i.data.damage.dice + i.data.damage.die)[0] || ""  },
+    { "pdf": "Ranged1_Dice", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' &&  a.ready ).map(i => i.item.data.data.damage.dice + i.item.data.data.damage.die)[0] || '' },
 
-    { "pdf": "Ranged1_DmgB", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready && i.ready).map(i => i.item)[0])  ).map(i =>  i.data.damage.damageType === 'bludgeoning')[0] || ''  },
-    { "pdf": "Ranged1_DmgP", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[0])  ).map(i =>  i.data.damage.damageType === 'piercing')[0] || ''  },
-    { "pdf": "Ranged1_DmgS", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[0])  ).map(i =>  (i.data.damage.damageType === 'slashing' || i.data.traits.value.includes('versatile-s') ) )[0] || ''  },
+    { "pdf": "Ranged1_DmgB", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'bludgeoning')[0] || ''  },
+    { "pdf": "Ranged1_DmgP", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'piercing')[0] || ''  },
+    { "pdf": "Ranged1_DmgS", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'slashing' || i.item.data.data.traits.value.includes('versatile-s') )[0] || ''  },
 
     { "pdf": "Ranged1_Traits", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.traits)[0]?.filter(a => a.name !== 'attack' ).map(a => a.name).join(', ') || ""  },
 
@@ -251,19 +251,15 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
 
     { "pdf": "Ranged2_T", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Ranged2_E", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
- { "pdf": "Ranged2_M", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Ranged2_M", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
     { "pdf": "Ranged2_L", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
     { "pdf": "Ranged2_AtkItemMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Ranged2_Dice", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[1])  ).map(i =>  i.data.damage.dice + i.data.damage.die)[0] || ""  },
+    { "pdf": "Ranged2_Dice", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' &&  a.ready ).map(i => i.item.data.data.damage.dice + i.item.data.data.damage.die)[1] || '' },
 
-    { "pdf": "Ranged2_DmgB", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[1])  ).map(i =>  i.data.damage.damageType === 'bludgeoning')[0] || ''  },
-    { "pdf": "Ranged2_DmgP", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[1])  ).map(i =>  i.data.damage.damageType === 'piercing')[0] || '' },
-    { "pdf": "Ranged2_DmgS", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[1])  ).map(i =>  (i.data.damage.damageType === 'slashing' || i.data.traits.value.includes('versatile-s') ) )[0] || ''  },
+    { "pdf": "Ranged2_DmgB", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'bludgeoning')[1] || ''  },
+    { "pdf": "Ranged2_DmgP", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'piercing')[1] || ''  },
+    { "pdf": "Ranged2_DmgS", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'slashing' || i.item.data.data.traits.value.includes('versatile-s') )[1] || ''  },
 
     { "pdf": "Ranged2_Traits", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.traits)[1]?.filter(a => a.name !== 'attack' ).map(a => a.name).join(', ') || ""  },
 
@@ -276,19 +272,15 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
 
     { "pdf": "Ranged3_T", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Ranged3_E", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
- { "pdf": "Ranged3_M", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Ranged3_M", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
     { "pdf": "Ranged3_L", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
     { "pdf": "Ranged3_AtkItemMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Ranged3_Dice", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[2])  ).map(i =>  i.data.damage.dice + i.data.damage.die)[0] || ""  },
+    { "pdf": "Ranged3_Dice", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' &&  a.ready ).map(i => i.item.data.data.damage.dice + i.item.data.data.damage.die)[2] || '' },
 
-    { "pdf": "Ranged3_DmgB", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready && i.ready).map(i => i.item)[2])  ).map(i =>  i.data.damage.damageType === 'bludgeoning')[0] || ''  },
-    { "pdf": "Ranged3_DmgP", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[2])  ).map(i =>  i.data.damage.damageType === 'piercing')[0] || ''  },
-    { "pdf": "Ranged3_DmgS", "foundry": @items._source.filter
-(i => i._id === (@data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description'  && a.ready).map(i => i.item)[2])  ).map(i =>  (i.data.damage.damageType === 'slashing' || i.data.traits.value.includes('versatile-s') ) )[0] || ''  },
+    { "pdf": "Ranged3_DmgB", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'bludgeoning')[2] || ''  },
+    { "pdf": "Ranged3_DmgP", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'piercing')[2] || ''  },
+    { "pdf": "Ranged3_DmgS", "foundry": @data.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' && a.ready ).map(i => i.item.data.data.damage.damageType === 'slashing' || i.item.data.data.traits.value.includes('versatile-s') )[2] || ''  },
 
     { "pdf": "Ranged3_Traits", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.traits)[2]?.filter(a => a.name !== 'attack' ).map(a => a.name).join(', ') || ""  },
 
@@ -325,7 +317,7 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
  { "pdf": "Acro_M", "foundry":  @data.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
     { "pdf": "Acro_L", "foundry":  @data.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Acro_ItemMod", "foundry": @data.skills.acr._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
-    { "pdf": "Acro_ArmorMod", "foundry": @data.skills.acr._modifiers.filter(i => i.name === 'PF2E.ArmorCheckPenalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
+    { "pdf": "Acro_ArmorMod", "foundry": @data.skills.acr._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
     { "pdf": "Arcana", "foundry": '+'+@data.skills.arc.value || '' },
     { "pdf": "Arcana_Mod", "foundry": @data.skills.arc._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
@@ -344,7 +336,7 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
  { "pdf": "Ath_M", "foundry":  @data.skills.ath._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
     { "pdf": "Ath_L", "foundry":  @data.skills.ath._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Ath_ItemMod", "foundry": @data.skills.ath._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
-    { "pdf": "Ath_ArmorMod", "foundry": @data.skills.ath._modifiers.filter(i => i.name === 'PF2E.ArmorCheckPenalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
+    { "pdf": "Ath_ArmorMod", "foundry": @data.skills.ath._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
     { "pdf": "Crafting", "foundry": '+'+@data.skills.cra.value || '' },
     { "pdf": "Craft_Mod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
@@ -453,7 +445,7 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
     { "pdf": "Stealth_M", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
     { "pdf": "Stealth_L", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Stealth_ItemMod", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
-    { "pdf": "Stealth_ArmorMod", "foundry": @data.skills.ste._modifiers.filter(i => i.name === 'PF2E.ArmorCheckPenalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
+    { "pdf": "Stealth_ArmorMod", "foundry": @data.skills.ste._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
     { "pdf": "Survival", "foundry": '+'+@data.skills.sur.value || '' },
     { "pdf": "Survival_Mod", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
@@ -472,7 +464,7 @@ Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF
     { "pdf": "Thievery_M", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
     { "pdf": "Thievery_L", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Thievery_ItemMod", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
-    { "pdf": "Thievery_ArmorMod", "foundry": @data.skills.thi._modifiers.filter(i => i.name === 'PF2E.ArmorCheckPenalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
+    { "pdf": "Thievery_ArmorMod", "foundry": @data.skills.thi._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
     { "pdf": "Lore1_Name", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.name)[0] || '' },
     { "pdf": "Lore1", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.value)[0] || '' },
@@ -510,7 +502,7 @@ Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => s
 /* ---------- PAGE 2 ----------*/
 
     { "pdf": "AncFeats", "foundry":
-@items._source.filter(i => i.type === 'feat' &&  (i.data.featType.value === 'ancestryfeature' || i.data.featType.value === 'heritage')).map(i =>i.data.level.value? i.data.level.value +': '+ i.name : '').join('\n')    + '\n' +
+@items._source.filter(i => i.type === 'feat' &&  (i.data.featType.value === 'ancestryfeature' || i.data.featType.value === 'heritage')).map(i => i.name? i.data.level.value +': '+ i.name : '').join('\n')    + '\n' +
 @items._source.filter(i => i.type === 'feat' && i.data.location === 'ancestry-1').map(i =>i.data.level.value? i.data.level.value +': '+ i.name + '\n' : '') + 
 @items._source.filter(i => i.type === 'feat' && i.data.location === 'ancestry-5').map(i =>i.data.level.value? i.data.level.value +': '+ i.name + '\n' : '') + 
 @items._source.filter(i => i.type === 'feat' && i.data.location === 'ancestry-9').map(i =>i.data.level.value? i.data.level.value +': '+ i.name + '\n' : '') + 
@@ -615,10 +607,10 @@ Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => s
 + ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ) },
 
 
-    { "pdf": "Copper", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Copper Pieces').map(i => i.data.data.quantity.value).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
-    { "pdf": "Silver", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Silver Pieces').map(i => i.data.data.quantity.value).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
-    { "pdf": "Gold", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Gold Pieces').map(i => i.data.data.quantity.value).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
-    { "pdf": "Platinum", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Platinum Pieces').map(i => i.data.data.quantity.value).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
+    { "pdf": "Copper", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Copper Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
+    { "pdf": "Silver", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Silver Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
+    { "pdf": "Gold", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Gold Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
+    { "pdf": "Platinum", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Platinum Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
 
 { "pdf": "EncumberedValue", "foundry": 5 + @data.abilities.str.mod + @data.attributes.bonusEncumbranceBulk},
 { "pdf": "BulkStrMod1", "foundry": '+'+ @data.abilities.str.mod + (@data.attributes.bonusEncumbranceBulk? '(+'+ @data.attributes.bonusEncumbranceBulk +')' : '') },
@@ -667,8 +659,7 @@ Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => s
 /* ---------- PAGE 4 ----------*/
 
     { "pdf": "SpellAttack", "foundry":
-
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.check.value)[0]? @items.filter(i=> i.type === 'spellcastingEntry').map(i=> '+'+ i.data.data.statisticData.check.value)[0] 
+@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.check.mod)[0]? @items.filter(i=> i.type === 'spellcastingEntry').map(i=> '+'+ i.data.data.statisticData.check.mod)[0] 
 :
 ((@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.modifiers)[0]?.filter(a=> a.type === 'ability').map(a => a.modifier)[0] || '')? '+'+ ((@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.modifiers)[0].filter(a=> a.type === 'ability').map(a => a.modifier)[0] || '') + (@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.modifiers)[0].filter(a=> a.type === 'proficiency').map(a => a.modifier)[0] || "" )) : "" )}, 
 
@@ -684,7 +675,7 @@ Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => s
     { "pdf": "SpellAtk_L", "foundry": @items.filter(i=> i.type === 'spellcastingEntry').map(i=> (i.data.data.proficiency.value === 4) || "" )[0] },
 
     { "pdf": "SpellDC", "foundry":
-(@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.check.value)[0])? @items.filter(i=> i.type === 'spellcastingEntry').map(i=> '+'+ (i.data.data.statisticData.check.value + 10))[0] :
+(@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.check.mod)[0])? @items.filter(i=> i.type === 'spellcastingEntry').map(i=> '+'+ (i.data.data.statisticData.check.mod + 10))[0] :
 
 ((@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.modifiers)[0]?.filter(a=> a.type === 'ability').map(a => a.modifier)[0] || '')? '+'+ ((@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.modifiers)[0].filter(a=> a.type === 'ability').map(a => a.modifier)[0] || '') + (@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData.modifiers)[0].filter(a=> a.type === 'proficiency').map(a => a.modifier)[0] +10 || "" )) : "" )}, 
 
