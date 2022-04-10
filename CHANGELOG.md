@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.17.1 - 9 Apr 2022
+## 0.18.0 - 9 Apr 2022
+
+### Added
+
+German dnd5e mapping: updated mapping for new PDF v2.8.1
 
 ### Fixed
 
