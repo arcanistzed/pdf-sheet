@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.1 - 9 Apr 2022
+
+### Fixed
+
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.8.2.11047
+
 ## 0.17.0 - 20 Mar 2022
 
 ### Added
