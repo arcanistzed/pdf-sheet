@@ -1,6 +1,6 @@
 [ /*
-Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 08/04/2022 - Kurko#1535
-Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
+Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 11/04/2022 - Kurko#1535
+Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.4.11118
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -15,32 +15,32 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Size", "foundry": @data.traits.size.value},
     { "pdf": "Alignment", "foundry": @data.details.alignment.value},
 
-{ "pdf": "Traits", "foundry": [@data.traits.traits.value.join(", ").replace('humanoid','').replace(', ',''), @data.traits.traits.custom].filter(x => String(x)).join(", ")  },
+    { "pdf": "Traits", "foundry": [@data.traits.traits.value.join(", ").replace('humanoid','').replace(', ',''), @data.traits.traits.custom].filter(x => String(x)).join(", ")  },
 
-    { "pdf": "Deity", "foundry": @data.details.deity.value},
+    { "pdf": "Deity", "foundry": @items._source.filter(i => i.type === 'deity').map(i => i.name) },
     { "pdf": "Level", "foundry": @data.details.level.value},
     { "pdf": "HeroPoints", "foundry": @data.resources.heroPoints.value + '/' + @data.resources.heroPoints.max},
 
 /* ABILITIES */
 
     { "pdf": "STRENGTH", "foundry": @data.abilities.str.value},
-    { "pdf": "STR", "foundry": '+'+@data.abilities.str.mod},
+    { "pdf": "STR", "foundry":  ( @data.abilities.str.mod < 0 ? @data.abilities.str.mod :  '+'+ @data.abilities.str.mod ) || '' },
     { "pdf": "DEXTERITY", "foundry": @data.abilities.dex.value},
-    { "pdf": "DEX", "foundry": '+'+@data.abilities.dex.mod},
+    { "pdf": "DEX", "foundry": ( @data.abilities.dex.mod < 0 ? @data.abilities.dex.mod :  '+'+ @data.abilities.dex.mod ) || '' },
     { "pdf": "CONSTITUTION", "foundry": @data.abilities.con.value},
-    { "pdf": "CON", "foundry": '+'+@data.abilities.con.mod},
+    { "pdf": "CON", "foundry": ( @data.abilities.con.mod < 0 ? @data.abilities.con.mod :  '+'+ @data.abilities.con.mod ) || '' },
     { "pdf": "INTELLIGENCE", "foundry": @data.abilities.int.value},
-    { "pdf": "INT", "foundry": '+'+@data.abilities.int.mod},
+    { "pdf": "INT", "foundry": ( @data.abilities.int.mod < 0 ? @data.abilities.int.mod :  '+'+ @data.abilities.int.mod ) || '' },
     { "pdf": "WISDOM", "foundry": @data.abilities.wis.value},
-    { "pdf": "WIS", "foundry": '+'+@data.abilities.wis.mod},
+    { "pdf": "WIS", "foundry": ( @data.abilities.wis.mod < 0 ? @data.abilities.wis.mod :  '+'+ @data.abilities.wis.mod ) || '' },
     { "pdf": "CHARISMA", "foundry": @data.abilities.cha.value},
-    { "pdf": "CHA", "foundry": '+'+@data.abilities.cha.mod},
+    { "pdf": "CHA", "foundry": ( @data.abilities.cha.mod < 0 ? @data.abilities.cha.mod :  '+'+ @data.abilities.cha.mod ) || '' },
 
 /* ATTRIBUTES */
 
     { "pdf": "AC", "foundry": @data.attributes.ac.value},
     { "pdf": "AC_DexCap", "foundry": ('+'+@data.attributes.ac.dexCap.value).replace('+Infinity', '') || ''},
-    { "pdf": "AC_DexMod", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier) },
+    { "pdf": "AC_DexMod", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier) },
     { "pdf": "AC_ProfMod", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier) },
     { "pdf": "AC_T", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name? i.name.substring(i.name.length - 1) === '1' : i.label === 'Trained' )[0] || '' },
     { "pdf": "AC_E", "foundry": @data.attributes.ac.modifiers.filter(i => i.type === 'proficiency').map(i =>  i.name? i.name.substring(i.name.length - 1) === '2' : i.label === 'Expert' )[0] || '' },
@@ -75,11 +75,11 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
 /* SHIELD */
 
-    { "pdf": "AC_ShieldMod", "foundry": actor.data.items._source.filter(i => i.data.category === 'shield' && i.data.equipped.value).map(i =>i.data.armor.value)[0] || '' },
-    { "pdf": "ShieldHardness", "foundry": actor.data.items._source.filter(i => i.data.category === 'shield' && i.data.equipped.value).map(i =>i.data.hardness.value)[0] || '-' },
-    { "pdf": "ShieldMaxHP", "foundry": actor.data.items._source.filter(i => i.data.category === 'shield' && i.data.equipped.value).map(i =>i.data.maxHp.value)[0] || '-' },
-    { "pdf": "ShieldBT", "foundry": actor.data.items._source.filter(i => i.data.category === 'shield' && i.data.equipped.value).map(i =>i.data.brokenThreshold.value)[0] || '-' },
-    { "pdf": "ShieldCurHP", "foundry": actor.data.items._source.filter(i => i.data.category === 'shield' && i.data.equipped.value).map(i =>i.data.hp.value)[0] || '-' },
+    { "pdf": "AC_ShieldMod", "foundry": actor.data.items.filter(i => i.data.data.category === 'shield' && i.data.isEquipped).map(i =>i.data.data.armor.value)[0] || '' },
+    { "pdf": "ShieldHardness", "foundry": actor.data.items.filter(i => i.data.data.category === 'shield' && i.data.isEquipped).map(i =>i.data.data.hardness)[0] || '-' },
+    { "pdf": "ShieldMaxHP", "foundry": actor.data.items.filter(i => i.data.data.category === 'shield' && i.data.isEquipped).map(i =>i.data.data.hp.max)[0] || '-' },
+    { "pdf": "ShieldBT", "foundry": actor.data.items.filter(i => i.data.data.category === 'shield' && i.data.isEquipped).map(i =>i.data.data.hp.brokenThreshold)[0] || '-' },
+    { "pdf": "ShieldCurHP", "foundry": actor.data.items.filter(i => i.data.data.category === 'shield' && i.data.isEquipped).map(i =>i.data.data.hp.value)[0] || '-' },
 
 /* RESISTANCES - IMMUNITIES - CONDITIONS - WEAKNESSES*/
 
@@ -90,7 +90,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 /* SAVES */
 
     { "pdf": "FortSave", "foundry": '+'+@data.saves.fortitude.value},
-    { "pdf": "FortSave_ConMod", "foundry": '+'+@data.abilities.con.mod},
+    { "pdf": "FortSave_ConMod", "foundry": ( @data.abilities.con.mod < 0 ? @data.abilities.con.mod :  '+'+ @data.abilities.con.mod ) || '' },
     { "pdf": "FortSave_ProfMod", "foundry": @data.saves.fortitude._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
  { "pdf": "FortSave_ItemMod", "foundry": (@data.saves.fortitude._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier <= 0 ? '' : '+') + i.modifier) || '' ) + ( ( (@data.saves.fortitude._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) <= 0 ? '(' : '(+'  ) + ( @data.saves.fortitude._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) + ')'  ).replace('()', '')  },
     { "pdf": "FortSave_T", "foundry": @data.saves.fortitude.rank === 1 || ''},
@@ -99,7 +99,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "FortSave_L", "foundry": @data.saves.fortitude.rank === 4 || ''},
 
     { "pdf": "RefSave", "foundry": '+'+@data.saves.reflex.value},
-    { "pdf": "RefSave_DexMod", "foundry": '+'+@data.abilities.dex.mod},
+    { "pdf": "RefSave_DexMod", "foundry": ( @data.abilities.dex.mod < 0 ? @data.abilities.dex.mod :  '+'+ @data.abilities.dex.mod ) || '' },
     { "pdf": "RefSave_ProfMod", "foundry": @data.saves.reflex._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
  { "pdf": "RefSave_ItemMod", "foundry": (@data.saves.reflex._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier <= 0 ? '' : '+') + i.modifier) || '' ) + ( ( (@data.saves.reflex._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) <= 0 ? '(' : '(+'  ) + ( @data.saves.reflex._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) + ')'  ).replace('()', '')  },
     { "pdf": "RefSave_T", "foundry": @data.saves.reflex.rank === 1 || ''},
@@ -108,7 +108,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "RefSave_L", "foundry": @data.saves.reflex.rank === 4 || ''},
 
     { "pdf": "WillSave", "foundry": '+'+@data.saves.will.value},
-    { "pdf": "WillSave_WisMod", "foundry": '+'+@data.abilities.wis.mod},
+    { "pdf": "WillSave_WisMod", "foundry": ( @data.abilities.wis.mod < 0 ? @data.abilities.wis.mod :  '+'+ @data.abilities.wis.mod ) || '' },
     { "pdf": "WillSave_ProfMod", "foundry": @data.saves.will._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
  { "pdf": "WillSave_ItemMod", "foundry": (@data.saves.will._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier <= 0 ? '' : '+') + i.modifier) || '' ) + ( ( (@data.saves.will._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) <= 0 ? '(' : '(+'  ) + ( @data.saves.will._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) + ')'  ).replace('()', '')  },
     { "pdf": "WillSave_T", "foundry": @data.saves.will.rank === 1 || ''},
@@ -117,14 +117,17 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "WillSave_L", "foundry": @data.saves.will.rank === 4 || ''},
 
     { "pdf": "SavesNotes", "foundry":
-' FOR: '+ @data.saves.fortitude._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' '+ (i.name? i.name : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier ) + ' \n' + ' REF: '+ @data.saves.reflex._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' ' + (i.name? i.name : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )  + ' \n' + ' WILL: '+ @data.saves.will._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' '+ (i.name? i.name : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )  },
+' FOR: '+ @data.saves.fortitude._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' '+ (i.name? i.name : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier ) + ' \n' +
+' REF: '+ @data.saves.reflex._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' ' + (i.name? i.name : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )  + ' \n' +
+' WILL: '+ @data.saves.will._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' '+ (i.name? i.name : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )  },
 
 /* PERCEPTION  */
 
     { "pdf": "Perception", "foundry": '+'+@data.attributes.perception.value},
-    { "pdf": "Percept_WisMod", "foundry": @data.attributes.perception.modifiers.filter(i => i.type === 'ability').map(i =>'+'+i.modifier) },
+    { "pdf": "Percept_WisMod", "foundry": @data.attributes.perception.modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier) },
     { "pdf": "Percept_ProfMod", "foundry": @data.attributes.perception.modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
     { "pdf": "Percept_ItemMod", "foundry": @data.attributes.perception.modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier < 0 ? '' : '+') +i.modifier) + @data.attributes.perception.modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => ( i.modifier < 0 ? '(' : '(+') +i.modifier+')') },
+
     { "pdf": "Percept_T", "foundry": @data.attributes.perception.rank === 1 || ''},
     { "pdf": "Percept_E", "foundry": @data.attributes.perception.rank === 2 || ''},
     { "pdf": "Percept_M", "foundry": @data.attributes.perception.rank === 3 || ''},
@@ -135,7 +138,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 /* CLASS DC */
 
     { "pdf": "ClassDC", "foundry": @data.attributes.classDC.value},
-    { "pdf": "ClassDC_KeyMod", "foundry": @data.attributes.classDC.modifiers.filter(i => i.type === 'ability').map(i =>'+'+i.modifier) },
+    { "pdf": "ClassDC_KeyMod", "foundry": @data.attributes.classDC.modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier) },
     { "pdf": "ClassDC_ProfMod", "foundry": @data.attributes.classDC.modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
     { "pdf": "ClassDC_ItemMod", "foundry": @data.attributes.classDC.modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier < 0 ? '' : '+') +i.modifier) + @data.attributes.perception.modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => ( i.modifier < 0 ? '(' : '(+') +i.modifier+')') },
     { "pdf": "ClassDC_T", "foundry": @data.attributes.classDC.rank === 1 || ''},
@@ -155,7 +158,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
     { "pdf": "Melee1_Name", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description'|| i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.name)[0] || "" },
     { "pdf": "Melee1_AtkMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[0] || "" },
-    { "pdf": "Melee1_AtkStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee1_AtkStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
     { "pdf": "Melee1_AtkProfMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee1_T", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
@@ -178,7 +181,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
     { "pdf": "Melee2_Name", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.name)[1] || "" },
     { "pdf": "Melee2_AtkMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[1] || "" },
-    { "pdf": "Melee2_AtkStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee2_AtkStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
     { "pdf": "Melee2_AtkProfMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee2_T", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
@@ -201,7 +204,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
     { "pdf": "Melee3_Name", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.name)[2] || "" },
     { "pdf": "Melee3_AtkMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[2] || "" },
-    { "pdf": "Melee3_AtkStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee3_AtkStrMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
     { "pdf": "Melee3_AtkProfMod", "foundry": @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee3_T", "foundry":  @data.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
@@ -225,7 +228,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
     { "pdf": "Ranged1_Name", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.name)[0] || "" },
     { "pdf": "Ranged1_AtkMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[0] || "" },
-    { "pdf": "Ranged1_AtkDexMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged1_AtkDexMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
     { "pdf": "Ranged1_AtkProfMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged1_T", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
@@ -246,7 +249,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
     { "pdf": "Ranged2_Name", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.name)[1] || "" },
     { "pdf": "Ranged2_AtkMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[1] || "" },
-    { "pdf": "Ranged2_AtkDexMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged2_AtkDexMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
     { "pdf": "Ranged2_AtkProfMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged2_T", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
@@ -267,7 +270,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
     { "pdf": "Ranged3_Name", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.name)[2] || "" },
     { "pdf": "Ranged3_AtkMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[2] || "" },
-    { "pdf": "Ranged3_AtkDexMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged3_AtkDexMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
     { "pdf": "Ranged3_AtkProfMod", "foundry": @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged3_T", "foundry":  @data.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
@@ -309,8 +312,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
 
  /* SKILLS */
 
-    { "pdf": "Acrobatics", "foundry": '+'+@data.skills.acr.value || '' },
-    { "pdf": "Acro_Mod", "foundry": @data.skills.acr._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Acrobatics", "foundry": @data.skills.acr.value < 0 ? @data.skills.acr.value : '+'+@data.skills.acr.value || '' },
+    { "pdf": "Acro_Mod", "foundry": @data.skills.acr._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Acro_ProfMod", "foundry": @data.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Acro_T", "foundry":  @data.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Acro_E", "foundry":  @data.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -319,8 +322,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Acro_ItemMod", "foundry": @data.skills.acr._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
     { "pdf": "Acro_ArmorMod", "foundry": @data.skills.acr._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
-    { "pdf": "Arcana", "foundry": '+'+@data.skills.arc.value || '' },
-    { "pdf": "Arcana_Mod", "foundry": @data.skills.arc._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Arcana", "foundry": @data.skills.arc.value < 0 ? @data.skills.arc.value : '+'+@data.skills.arc.value || '' },
+    { "pdf": "Arcana_Mod", "foundry": @data.skills.arc._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Arcana_ProfMod", "foundry": @data.skills.arc._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Arcana_T", "foundry":  @data.skills.arc._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Arcana_E", "foundry":  @data.skills.arc._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -328,8 +331,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Arcana_L", "foundry":  @data.skills.arc._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Arcana_ItemMod", "foundry": @data.skills.arc._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Athletics", "foundry": '+'+@data.skills.ath.value || '' },
-    { "pdf": "Ath_Mod", "foundry": @data.skills.ath._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Athletics", "foundry": @data.skills.ath.value < 0 ? @data.skills.ath.value : '+'+@data.skills.ath.value || '' },
+    { "pdf": "Ath_Mod", "foundry": @data.skills.ath._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Ath_ProfMod", "foundry": @data.skills.ath._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Ath_T", "foundry":  @data.skills.ath._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Ath_E", "foundry":  @data.skills.ath._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -338,8 +341,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Ath_ItemMod", "foundry": @data.skills.ath._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
     { "pdf": "Ath_ArmorMod", "foundry": @data.skills.ath._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
-    { "pdf": "Crafting", "foundry": '+'+@data.skills.cra.value || '' },
-    { "pdf": "Craft_Mod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Crafting", "foundry": @data.skills.cra.value < 0 ? @data.skills.cra.value : '+'+@data.skills.cra.value || '' },
+    { "pdf": "Craft_Mod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Craft_ProfMod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Craft_T", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Craft_E", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -347,17 +350,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Craft_L", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Craft_ItemMod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Crafting", "foundry": '+'+@data.skills.cra.value || '' },
-    { "pdf": "Craft_Mod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
-    { "pdf": "Craft_ProfMod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
-    { "pdf": "Craft_T", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Craft_E", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
-    { "pdf": "Craft_M", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
-    { "pdf": "Craft_L", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
-    { "pdf": "Craft_ItemMod", "foundry": @data.skills.cra._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
-
-    { "pdf": "Deception", "foundry": '+'+@data.skills.dec.value || '' },
-    { "pdf": "Decept_Mod", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Deception", "foundry": @data.skills.dec.value < 0 ? @data.skills.dec.value : '+'+@data.skills.dec.value || '' },
+    { "pdf": "Decept_Mod", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Decept_ProfMod", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Decept_T", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Decept_E", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -365,8 +359,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Decept_L", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Decept_ItemMod", "foundry": @data.skills.dec._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Diplomacy", "foundry": '+'+@data.skills.dip.value || '' },
-    { "pdf": "Diplo_Mod", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Diplomacy", "foundry": @data.skills.dip.value < 0 ? @data.skills.dip.value : '+'+@data.skills.dip.value || '' },
+    { "pdf": "Diplo_Mod", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Diplo_ProfMod", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Diplo_T", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Diplo_E", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -374,8 +368,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Diplo_L", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Diplo_ItemMod", "foundry": @data.skills.dip._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Intimidation", "foundry": '+'+@data.skills.itm.value || '' },
-    { "pdf": "Intim_Mod", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Intimidation", "foundry": @data.skills.itm.value < 0 ? @data.skills.itm.value : '+'+@data.skills.itm.value || '' },
+    { "pdf": "Intim_Mod", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Intim_ProfMod", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Intim_T", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Intim_E", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -383,8 +377,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Intim_L", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Intim_ItemMod", "foundry": @data.skills.itm._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Medicine", "foundry": '+'+@data.skills.med.value || '' },
-    { "pdf": "Med_Mod", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Medicine", "foundry": @data.skills.med.value < 0 ? @data.skills.med.value : '+'+@data.skills.med.value || '' },
+    { "pdf": "Med_Mod", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Med_ProfMod", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Med_T", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Med_E", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -392,8 +386,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Med_L", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Med_ItemMod", "foundry": @data.skills.med._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Nature", "foundry": '+'+@data.skills.nat.value || '' },
-    { "pdf": "Nature_Mod", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Nature", "foundry": @data.skills.nat.value < 0 ? @data.skills.nat.value : '+'+@data.skills.nat.value || '' },
+    { "pdf": "Nature_Mod", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Nature_ProfMod", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Nature_T", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Nature_E", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -401,8 +395,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Nature_L", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Nature_ItemMod", "foundry": @data.skills.nat._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Occultism", "foundry": '+'+@data.skills.occ.value || '' },
-    { "pdf": "Occult_Mod", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Occultism", "foundry": @data.skills.occ.value < 0 ? @data.skills.occ.value : '+'+@data.skills.occ.value || '' },
+    { "pdf": "Occult_Mod", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Occult_ProfMod", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Occult_T", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Occult_E", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -410,8 +404,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Occult_L", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Occult_ItemMod", "foundry": @data.skills.occ._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Performance", "foundry": '+'+@data.skills.prf.value || '' },
-    { "pdf": "Perf_Mod", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Performance", "foundry": @data.skills.prf.value < 0 ? @data.skills.prf.value : '+'+@data.skills.prf.value || '' },
+    { "pdf": "Perf_Mod", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Perf_ProfMod", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Perf_T", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Perf_E", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -419,8 +413,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Perf_L", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Perf_ItemMod", "foundry": @data.skills.prf._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Religion", "foundry": '+'+@data.skills.rel.value || '' },
-    { "pdf": "Religion_Mod", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Religion", "foundry": @data.skills.rel.value < 0 ? @data.skills.rel.value : '+'+@data.skills.rel.value || '' },
+    { "pdf": "Religion_Mod", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Religion_ProfMod", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Religion_T", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Religion_E", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -428,8 +422,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Religion_L", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Religion_ItemMod", "foundry": @data.skills.rel._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Society", "foundry": '+'+@data.skills.soc.value || '' },
-    { "pdf": "Society_Mod", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Society", "foundry": @data.skills.soc.value < 0 ? @data.skills.soc.value : '+'+@data.skills.soc.value || '' },
+    { "pdf": "Society_Mod", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Society_ProfMod", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Society_T", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Society_E", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -437,8 +431,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Society_L", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Society_ItemMod", "foundry": @data.skills.soc._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Stealth", "foundry": '+'+@data.skills.ste.value || '' },
-    { "pdf": "Stealth_Mod", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Stealth", "foundry": @data.skills.ste.value < 0 ? @data.skills.ste.value : '+'+@data.skills.ste.value || '' },
+    { "pdf": "Stealth_Mod", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Stealth_ProfMod", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Stealth_T", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Stealth_E", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -447,8 +441,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Stealth_ItemMod", "foundry": @data.skills.ste._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
     { "pdf": "Stealth_ArmorMod", "foundry": @data.skills.ste._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
-    { "pdf": "Survival", "foundry": '+'+@data.skills.sur.value || '' },
-    { "pdf": "Survival_Mod", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Survival", "foundry": @data.skills.sur.value < 0 ? @data.skills.sur.value : '+'+@data.skills.sur.value || '' },
+    { "pdf": "Survival_Mod", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Survival_ProfMod", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Survival_T", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Survival_E", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -456,8 +450,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Survival_L", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Survival_ItemMod", "foundry": @data.skills.sur._modifiers.filter(i => i.type === 'item' && i.enabled).map( i => ( [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) < 0 ?    [i.modifier].reduce((partialSum, a)=> partialSum + a, 0)  : '+'+ [i.modifier].reduce((partialSum, a)=> partialSum + a, 0) ) || '')  },
 
-    { "pdf": "Thievery", "foundry": '+'+@data.skills.thi.value || '' },
-    { "pdf": "Thievery_Mod", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'ability').map(i => '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Thievery", "foundry": @data.skills.thi.value < 0 ? @data.skills.thi.value : '+'+@data.skills.thi.value || '' },
+    { "pdf": "Thievery_Mod", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Thievery_ProfMod", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Thievery_T", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Thievery_E", "foundry": @data.skills.thi._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
@@ -467,35 +461,23 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.2.11047
     { "pdf": "Thievery_ArmorMod", "foundry": @data.skills.thi._modifiers.filter(i => i.label === 'Armor Check Penalty' && i.enabled ).map(i => i.modifier)[0] || ""  },
 
     { "pdf": "Lore1_Name", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.name)[0] || '' },
-    { "pdf": "Lore1", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.value)[0] || '' },
-    { "pdf": "Lore1_Mod", "foundry":
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'ability')[0]).map(i => '+'+ i.modifier)[0] || ''  },
-    { "pdf": "Lore1_ProfMod", "foundry":
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(i => '+'+ i.modifier)[0] || ''  },
-    { "pdf": "Lore1_T", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Lore1_E", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
-    { "pdf": "Lore1_M", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
-    { "pdf": "Lore1_L", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
+    { "pdf": "Lore1", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.value < 0 ?  skill.value :  '+'+ skill.value ) [0] || ""  },
+    { "pdf": "Lore1_Mod", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'ability')[0]).map(i => '+'+ i.modifier)[0] || ''  },
+    { "pdf": "Lore1_ProfMod", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(i => '+'+ i.modifier)[0] || ''  },
+    { "pdf": "Lore1_T", "foundry":  Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Lore1_E", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
+    { "pdf": "Lore1_M", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[0] },
+    { "pdf": "Lore1_L", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[0] },
     { "pdf": "Lore1_ItemMod", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'item')).map(i => i.modifier? ( i.modifier < 0 ? i.modifier : '+' + i.modifier) : '' )[0] || '' }, 
 
     { "pdf": "Lore2_Name", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.name)[1] || '' },
-    { "pdf": "Lore2", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.value)[1] || '' },
-    { "pdf": "Lore2_Mod", "foundry":
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'ability')[0]).map(i => '+'+ i.modifier)[1] || ''  },
-    { "pdf": "Lore2_ProfMod", "foundry":
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(i => '+'+ i.modifier)[1] || ''  },
-    { "pdf": "Lore2_T", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[1] },
-    { "pdf": "Lore2_E", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[1] },
-    { "pdf": "Lore2_M", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[1] },
-    { "pdf": "Lore2_L", "foundry": 
-Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[1] },
+    { "pdf": "Lore2", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill.value < 0 ?  skill.value :  '+'+ skill.value ) [1] || ""  },
+    { "pdf": "Lore2_Mod", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'ability')[0]).map(i => '+'+ i.modifier)[1] || ''  },
+    { "pdf": "Lore2_ProfMod", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(i => '+'+ i.modifier)[1] || ''  },
+    { "pdf": "Lore2_T", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[1] },
+    { "pdf": "Lore2_E", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[1] },
+    { "pdf": "Lore2_M", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || "" )[1] },
+    { "pdf": "Lore2_L", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'proficiency')[0])   .map(a =>  ( a.name === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || "" )[1] },
     { "pdf": "Lore2_ItemMod", "foundry": Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => skill._modifiers.filter(i => i.type === 'item')).map(i => i.modifier? ( i.modifier < 0 ? i.modifier : '+' + i.modifier) : '' )[1] || '' }, 
 
 
@@ -591,32 +573,30 @@ Object.values(actor.data.data.skills).filter(skill => skill.lore).map(skill => s
 
 /*---------------------------INVENTORY-----------------------------*/
 
-    { "pdf": "Containers", "foundry": 'In Eq --- Containers ---\n\n'  + @items.filter(i => i.type === 'backpack').map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' ! ' : '    ')) + ((i.data.data.equipped.value || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name + '   ' + i.data.containerData.formattedHeldItemBulk + ' / ' + i.data.data.bulkCapacity.value  + '\n' + i.data.containerData.heldItems.map(i=>(i.isMagical? ' !  ' : '    ') + '         ' + i.name + ( (i.data.quantity.value > 1)?   ' (' + i.data.quantity.value + ')'  : '' )).join('\n')  || '') .join('\n --------- \n') },
+    { "pdf": "Containers", "foundry": 'In Eq --- Containers ---\n\n'  + @items.filter(i => i.type === 'backpack').map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' ! ' : '    ')) + ((i.data.isEquipped || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name + '   ' + i.data.containerData.formattedHeldItemBulk + ' / ' + i.data.data.bulkCapacity.value  + '\n' + i.data.containerData.heldItems.map(i=>(i.isMagical? ' !  ' : '    ') + '         ' + i.name + ( (i.data.quantity > 1)?   ' (x' + i.data.quantity + ')'  : '' )).join('\n')  || '') .join('\n --------- \n') },
 
     { "pdf": "Inventory", "foundry": [('In Eq --- Weapons / Armor / Items ---\n'),
-(@items.filter(i => i.type === 'weapon' && (!i.data.data.containerId || i.data.data.containerId?.value === null) ).map(i => (i.data.isInvested? ' !' : (i.data.isMagical? ' ! ' : '   ')) + ( ( i.data.data.equipped.value || i.data.data.equipped.carryType === 'held' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), 
+(@items.filter(i => i.type === 'weapon' && !i.data.data.containerId ).map(i => (i.data.isInvested? ' !' : (i.data.isMagical? ' ! ' : '   ')) + ( ( i.data.isEquipped || i.data.data.equipped.carryType === 'held' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), 
 '---------' ,
-(@items.filter(i => i.type === 'armor' && (!i.data.data.containerId || i.data.data.containerId?.value === null)  ).map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.data.equipped.value || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   (i.data.data.equipped.value? ' (B: ' + i.data.data.equippedBulk.value +')' : ' (B: ' + i.data.data.weight.value +')'   ) : '' )   || '').join('\n') ), 
+(@items.filter(i => i.type === 'armor' && !i.data.data.containerId ).map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.isEquipped || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   (i.data.isEquipped? ' (B: ' + i.data.data.equippedBulk.value +')' : ' (B: ' + i.data.data.weight.value +')'   ) : '' )   || '').join('\n') ), 
 '---------' ,
-(@items.filter(i => i.type === 'equipment' && (!i.data.data.containerId || i.data.data.containerId?.value === null)  ).map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.data.equipped.value? i.data.data.equipped.value : (i.data.data.equipped.carryType === 'worn' && i.data.data.usage.value === 'worn') )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') )
+(@items.filter(i => i.type === 'equipment' && !i.data.data.containerId ).map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' - ' : '   ')) + ( ( i.data.isEquipped? i.data.isEquipped : (i.data.data.equipped.carryType === 'worn' && i.data.data.usage.value === 'worn') )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ),
 ].filter(x => String(x)).join('\n') },
 
     { "pdf": "Consumables", "foundry": 'M Eq --- Consumables ---\n\n'  +
-(@items.filter(i => i.type === 'consumable' && (!i.data.data.containerId || i.data.data.containerId?.value === null)  ).map(i =>(i.data.isMagical? ' ! ' : '   ') + ( i.data.data.equipped.value? ' [x] ' : ' [  ] ') + i.name.replace('Level', 'lvl') + ' ' +    
-(( i.data.data.quantity.value > 1)?   '(x' + i.data.data.quantity.value + ')'  : '' )
-+ ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ) },
-
+(@items.filter(i => i.type === 'consumable' && !i.data.data.containerId).map(i =>(i.data.isMagical? ' ! ' : '   ') + ( i.data.isEquipped? ' [x] ' : ' [  ] ') + i.name.replace('Level', 'lvl') + ' ' +    
+(( i.data.data.quantity > 1)?   '(x' + i.data.data.quantity + ')'  : '' )
++ ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), },
 
     { "pdf": "Copper", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Copper Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
     { "pdf": "Silver", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Silver Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
     { "pdf": "Gold", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Gold Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
     { "pdf": "Platinum", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Platinum Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
 
-{ "pdf": "EncumberedValue", "foundry": 5 + @data.abilities.str.mod + @data.attributes.bonusEncumbranceBulk},
-{ "pdf": "BulkStrMod1", "foundry": '+'+ @data.abilities.str.mod + (@data.attributes.bonusEncumbranceBulk? '(+'+ @data.attributes.bonusEncumbranceBulk +')' : '') },
-{ "pdf": "MaxBulkValue", "foundry": 10 + @data.abilities.str.mod + @data.attributes.bonusLimitBulk},
-{ "pdf": "BulkStrMod2", "foundry": '+'+ @data.abilities.str.mod +
-(@data.attributes.bonusLimitBulk? '(+'+ @data.attributes.bonusLimitBulk +')' : '') },
+    { "pdf": "EncumberedValue", "foundry": 5 + @data.abilities.str.mod + @data.attributes.bonusEncumbranceBulk},
+    { "pdf": "BulkStrMod1", "foundry": ( @data.abilities.str.mod < 0 ? @data.abilities.str.mod :  '+'+ @data.abilities.str.mod ) + (@data.attributes.bonusEncumbranceBulk? '(+'+ @data.attributes.bonusEncumbranceBulk +')' : '') },
+    { "pdf": "MaxBulkValue", "foundry": 10 + @data.abilities.str.mod + @data.attributes.bonusLimitBulk},
+    { "pdf": "BulkStrMod2", "foundry": ( @data.abilities.str.mod < 0 ? @data.abilities.str.mod :  '+'+ @data.abilities.str.mod ) + (@data.attributes.bonusLimitBulk? '(+'+ @data.attributes.bonusLimitBulk +')' : '') },
 
 
 /* ---------- PAGE 3 ----------*/
