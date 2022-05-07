@@ -1,0 +1,256 @@
+[
+ /* 
+	This exports to the default sheet's nodice version using the limited space available.
+	The file can be downloaded here: https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/
+	from that zip use the file named SWADE_Character_Sheet_No_Dice.pdf
+	Advances are not tracked, instead all edges are added to the EDGES & ADVANCES section.
+	The first two spaces of Gear are reserved for armor, the next two for shields.
+	Items for which there is no space will not be exported.
+ */
+{ "pdf": "_helper_functions", "foundry": game.pdfsheet = 
+ 
+{
+	getArmor: function(items, nr) {
+		var item = items.filter(item => item.type === "armor")[nr];
+		if (!item) return '';
+		return (items.filter(item => item.type === "armor")[nr]?.data.name ?? '')+" | Armor: "+(items.filter(item => item.type === "armor")[nr]?.data.data.armor ?? '');
+	},
+	
+	getShield: function(items, nr) {
+		var item = items.filter(item => item.type === "shield")[nr];
+		if (!item) return '';
+		return (items.filter(item => item.type === "shield")[nr]?.data.name ?? '')+" | Parry: "+(items.filter(item => item.type === "shield")[nr]?.data.data.parry ?? '')+" | Cover: "+(items.filter(item => item.type === "shield")[nr]?.data.data.cover ?? '');
+	},
+}},
+{
+    "pdf": "Name",
+    "foundry": @name
+}, {
+    "pdf": "Race",
+    "foundry": @data.details.species.name
+}, {
+    "pdf": "Bennies",
+    "foundry": @data.bennies.max
+}, {
+    "pdf": "Agility Die",
+    "foundry": "d"+@data.attributes.agility.die.sides
+}, {
+    "pdf": "Agility Mod",
+    "foundry": @data.attributes.agility.die.modifier
+}, {
+    "pdf": "Smarts Die",
+    "foundry": "d"+@data.attributes.smarts.die.sides
+}, {
+    "pdf": "Smarts Mod",
+    "foundry": @data.attributes.smarts.die.modifier
+}, {
+    "pdf": "Spirit Die",
+    "foundry": "d"+@data.attributes.spirit.die.sides
+}, {
+    "pdf": "Spirit Mod",
+    "foundry": @data.attributes.spirit.die.modifier
+}, {
+    "pdf": "Strength Die",
+    "foundry": "d"+@data.attributes.strength.die.sides
+}, {
+    "pdf": "Strength Mod",
+    "foundry": @data.attributes.strength.die.modifier
+}, {
+    "pdf": "Vigor Die",
+    "foundry": "d"+@data.attributes.vigor.die.sides
+}, {
+    "pdf": "Vigor Mod",
+    "foundry": @data.attributes.vigor.die.modifier
+}, {
+    "pdf": "Pace",
+    "foundry": @data.stats.speed.adjusted
+}, {
+    "pdf": "Parry",
+    "foundry": @data.stats.parry.value
+}, {
+    "pdf": "Toughness",
+    "foundry": @data.stats.toughness.value 
+	+ "(" 
+	+@data.stats.toughness.armor
+	+ ")" }
+, { "pdf": "Skills 1", "foundry": @items.filter(item => item.type === "skill")[0]?.name ?? ''}
+, { "pdf": "Skills 2", "foundry": @items.filter(item => item.type === "skill")[1]?.name ?? ''}
+, { "pdf": "Skills 3", "foundry": @items.filter(item => item.type === "skill")[2]?.name ?? ''}
+, { "pdf": "Skills 4", "foundry": @items.filter(item => item.type === "skill")[3]?.name ?? ''}
+, { "pdf": "Skills 5", "foundry": @items.filter(item => item.type === "skill")[4]?.name ?? ''}
+, { "pdf": "Skills 6", "foundry": @items.filter(item => item.type === "skill")[5]?.name ?? ''}
+, { "pdf": "Skills 7", "foundry": @items.filter(item => item.type === "skill")[6]?.name ?? ''}
+, { "pdf": "Skills 8", "foundry": @items.filter(item => item.type === "skill")[7]?.name ?? ''}
+, { "pdf": "Skills 9", "foundry": @items.filter(item => item.type === "skill")[8]?.name ?? ''}
+, { "pdf": "Skills 10", "foundry": @items.filter(item => item.type === "skill")[9]?.name ?? ''}
+, { "pdf": "Skills 11", "foundry": @items.filter(item => item.type === "skill")[10]?.name ?? ''}
+, { "pdf": "Skills 12", "foundry": @items.filter(item => item.type === "skill")[11]?.name ?? ''}
+, { "pdf": "Skills 13", "foundry": @items.filter(item => item.type === "skill")[12]?.name ?? ''}
+, { "pdf": "Skills 14", "foundry": @items.filter(item => item.type === "skill")[13]?.name ?? ''}
+, { "pdf": "Skills 15", "foundry": @items.filter(item => item.type === "skill")[14]?.name ?? ''}
+, { "pdf": "Skills 16", "foundry": @items.filter(item => item.type === "skill")[15]?.name ?? ''}
+, { "pdf": "Skills 17", "foundry": @items.filter(item => item.type === "skill")[16]?.name ?? ''}
+, { "pdf": "Skills 18", "foundry": @items.filter(item => item.type === "skill")[17]?.name ?? ''}
+, { "pdf": "Skills 19", "foundry": @items.filter(item => item.type === "skill")[18]?.name ?? ''}
+, { "pdf": "Skills 20", "foundry": @items.filter(item => item.type === "skill")[19]?.name ?? ''}
+, { "pdf": "Skills 1 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[0]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 2 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[1]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 3 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[2]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 4 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[3]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 5 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[4]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 6 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[5]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 7 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[6]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 8 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[7]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 9 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[8]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 10 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[9]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 11 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[10]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 12 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[11]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 13 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[12]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 14 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[13]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 15 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[14]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 16 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[15]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 17 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[16]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 18 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[17]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 19 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[18]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 20 Die", "foundry": ("d"+@items.filter(item => item.type === "skill")[19]?.data.data.die.sides) ?? ''}
+, { "pdf": "Skills 1 Mod", "foundry": @items.filter(item => item.type === "skill")[0]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 2 Mod", "foundry": @items.filter(item => item.type === "skill")[1]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 3 Mod", "foundry": @items.filter(item => item.type === "skill")[2]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 4 Mod", "foundry": @items.filter(item => item.type === "skill")[3]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 5 Mod", "foundry": @items.filter(item => item.type === "skill")[4]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 6 Mod", "foundry": @items.filter(item => item.type === "skill")[5]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 7 Mod", "foundry": @items.filter(item => item.type === "skill")[6]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 8 Mod", "foundry": @items.filter(item => item.type === "skill")[7]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 9 Mod", "foundry": @items.filter(item => item.type === "skill")[8]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 10 Mod", "foundry": @items.filter(item => item.type === "skill")[9]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 11 Mod", "foundry": @items.filter(item => item.type === "skill")[10]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 12 Mod", "foundry": @items.filter(item => item.type === "skill")[11]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 13 Mod", "foundry": @items.filter(item => item.type === "skill")[12]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 14 Mod", "foundry": @items.filter(item => item.type === "skill")[13]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 15 Mod", "foundry": @items.filter(item => item.type === "skill")[14]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 16 Mod", "foundry": @items.filter(item => item.type === "skill")[15]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 17 Mod", "foundry": @items.filter(item => item.type === "skill")[16]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 18 Mod", "foundry": @items.filter(item => item.type === "skill")[17]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 19 Mod", "foundry": @items.filter(item => item.type === "skill")[18]?.data.data.die.modifier ?? ''}
+, { "pdf": "Skills 20 Mod", "foundry": @items.filter(item => item.type === "skill")[19]?.data.data.die.modifier ?? ''}
+, { "pdf": "Hindrances 1", "foundry": @items.filter(item => item.type === "hindrance")[0]?.data.name ?? ''}
+, { "pdf": "Hindrances 2", "foundry": @items.filter(item => item.type === "hindrance")[1]?.data.name ?? ''}
+, { "pdf": "Hindrances 3", "foundry": @items.filter(item => item.type === "hindrance")[2]?.data.name ?? ''}
+, { "pdf": "Hindrances 4", "foundry": @items.filter(item => item.type === "hindrance")[3]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 1", "foundry": @items.filter(item => item.type === "edge")[0]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 2", "foundry": @items.filter(item => item.type === "edge")[1]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 3", "foundry": @items.filter(item => item.type === "edge")[2]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 4", "foundry": @items.filter(item => item.type === "edge")[3]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 5", "foundry": @items.filter(item => item.type === "edge")[4]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 6", "foundry": @items.filter(item => item.type === "edge")[5]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 7", "foundry": @items.filter(item => item.type === "edge")[6]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 8", "foundry": @items.filter(item => item.type === "edge")[7]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 9", "foundry": @items.filter(item => item.type === "edge")[8]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 10", "foundry": @items.filter(item => item.type === "edge")[9]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 11", "foundry": @items.filter(item => item.type === "edge")[10]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 12", "foundry": @items.filter(item => item.type === "edge")[11]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 13", "foundry": @items.filter(item => item.type === "edge")[12]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 14", "foundry": @items.filter(item => item.type === "edge")[13]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 15", "foundry": @items.filter(item => item.type === "edge")[14]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 16", "foundry": @items.filter(item => item.type === "edge")[15]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 17", "foundry": @items.filter(item => item.type === "edge")[16]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 18", "foundry": @items.filter(item => item.type === "edge")[17]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 19", "foundry": @items.filter(item => item.type === "edge")[18]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 20", "foundry": @items.filter(item => item.type === "edge")[19]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 21", "foundry": @items.filter(item => item.type === "edge")[20]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 22", "foundry": @items.filter(item => item.type === "edge")[21]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 23", "foundry": @items.filter(item => item.type === "edge")[22]?.data.name ?? ''}
+, { "pdf": "Edges & Advancements 24", "foundry": @items.filter(item => item.type === "edge")[23]?.data.name ?? ''}
+, { "pdf": "Gear 1", "foundry": game.pdfsheet.getArmor(@items, 0)}
+, { "pdf": "Gear 2", "foundry": game.pdfsheet.getArmor(@items, 1)}
+, { "pdf": "Gear 3", "foundry": game.pdfsheet.getShield(@items, 0)}
+, { "pdf": "Gear 4", "foundry": game.pdfsheet.getShield(@items, 1)}
+, { "pdf": "Gear 5", "foundry": @items.filter(item => item.type === "gear")[0]?.data.name ?? ''}
+, { "pdf": "Gear 6", "foundry": @items.filter(item => item.type === "gear")[1]?.data.name ?? ''}
+, { "pdf": "Gear 7", "foundry": @items.filter(item => item.type === "gear")[2]?.data.name ?? ''}
+, { "pdf": "Gear 8", "foundry": @items.filter(item => item.type === "gear")[3]?.data.name ?? ''}
+, { "pdf": "Gear 9", "foundry": @items.filter(item => item.type === "gear")[4]?.data.name ?? ''}
+, { "pdf": "Gear 10", "foundry": @items.filter(item => item.type === "gear")[5]?.data.name ?? ''}
+, { "pdf": "Gear 11", "foundry": @items.filter(item => item.type === "gear")[6]?.data.name ?? ''}
+, { "pdf": "Gear 12", "foundry": @items.filter(item => item.type === "gear")[7]?.data.name ?? ''}
+, { "pdf": "Gear 13", "foundry": @items.filter(item => item.type === "gear")[8]?.data.name ?? ''}
+, { "pdf": "Gear 14", "foundry": @items.filter(item => item.type === "gear")[9]?.data.name ?? ''}
+, { "pdf": "Gear 15", "foundry": @items.filter(item => item.type === "gear")[10]?.data.name ?? ''}
+, { "pdf": "Gear 16", "foundry": @items.filter(item => item.type === "gear")[11]?.data.name ?? ''}
+, { "pdf": "Gear 17", "foundry": @items.filter(item => item.type === "gear")[12]?.data.name ?? ''}
+, { "pdf": "Gear 18", "foundry": @items.filter(item => item.type === "gear")[13]?.data.name ?? ''}
+, { "pdf": "Weapons 1", "foundry": @items.filter(item => item.type === "weapon")[0]?.data.name ?? ''}
+, { "pdf": "Weapons 2", "foundry": @items.filter(item => item.type === "weapon")[1]?.data.name ?? ''}
+, { "pdf": "Weapons 3", "foundry": @items.filter(item => item.type === "weapon")[2]?.data.name ?? ''}
+, { "pdf": "Weapons 4", "foundry": @items.filter(item => item.type === "weapon")[3]?.data.name ?? ''}
+, { "pdf": "Weapons 5", "foundry": @items.filter(item => item.type === "weapon")[4]?.data.name ?? ''}
+, { "pdf": "Weapons 6", "foundry": @items.filter(item => item.type === "weapon")[5]?.data.name ?? ''}
+, { "pdf": "Weapons 7", "foundry": @items.filter(item => item.type === "weapon")[6]?.data.name ?? ''}
+, { "pdf": "Weapons Range 1", "foundry": @items.filter(item => item.type === "weapon")[0]?.data.data.range ?? ''}
+, { "pdf": "Weapons Range 2", "foundry": @items.filter(item => item.type === "weapon")[1]?.data.data.range ?? ''}
+, { "pdf": "Weapons Range 3", "foundry": @items.filter(item => item.type === "weapon")[2]?.data.data.range ?? ''}
+, { "pdf": "Weapons Range 4", "foundry": @items.filter(item => item.type === "weapon")[3]?.data.data.range ?? ''}
+, { "pdf": "Weapons Range 5", "foundry": @items.filter(item => item.type === "weapon")[4]?.data.data.range ?? ''}
+, { "pdf": "Weapons Range 6", "foundry": @items.filter(item => item.type === "weapon")[5]?.data.data.range ?? ''}
+, { "pdf": "Weapons Range 7", "foundry": @items.filter(item => item.type === "weapon")[6]?.data.data.range ?? ''}
+, { "pdf": "Weapons Damage 1", "foundry": @items.filter(item => item.type === "weapon")[0]?.data.data.damage ?? ''}
+, { "pdf": "Weapons Damage 2", "foundry": @items.filter(item => item.type === "weapon")[1]?.data.data.damage ?? ''}
+, { "pdf": "Weapons Damage 3", "foundry": @items.filter(item => item.type === "weapon")[2]?.data.data.damage ?? ''}
+, { "pdf": "Weapons Damage 4", "foundry": @items.filter(item => item.type === "weapon")[3]?.data.data.damage ?? ''}
+, { "pdf": "Weapons Damage 5", "foundry": @items.filter(item => item.type === "weapon")[4]?.data.data.damage ?? ''}
+, { "pdf": "Weapons Damage 6", "foundry": @items.filter(item => item.type === "weapon")[5]?.data.data.damage ?? ''}
+, { "pdf": "Weapons Damage 7", "foundry": @items.filter(item => item.type === "weapon")[6]?.data.data.damage ?? ''}
+, { "pdf": "Weapons AP 1", "foundry": @items.filter(item => item.type === "weapon")[0]?.data.data.ap ?? ''}
+, { "pdf": "Weapons AP 2", "foundry": @items.filter(item => item.type === "weapon")[1]?.data.data.ap ?? ''}
+, { "pdf": "Weapons AP 3", "foundry": @items.filter(item => item.type === "weapon")[2]?.data.data.ap ?? ''}
+, { "pdf": "Weapons AP 4", "foundry": @items.filter(item => item.type === "weapon")[3]?.data.data.ap ?? ''}
+, { "pdf": "Weapons AP 5", "foundry": @items.filter(item => item.type === "weapon")[4]?.data.data.ap ?? ''}
+, { "pdf": "Weapons AP 6", "foundry": @items.filter(item => item.type === "weapon")[5]?.data.data.ap ?? ''}
+, { "pdf": "Weapons AP 7", "foundry": @items.filter(item => item.type === "weapon")[6]?.data.data.ap ?? ''}
+, { "pdf": "Weapons ROF 1", "foundry": @items.filter(item => item.type === "weapon")[0]?.data.data.rof ?? ''}
+, { "pdf": "Weapons ROF 2", "foundry": @items.filter(item => item.type === "weapon")[1]?.data.data.rof ?? ''}
+, { "pdf": "Weapons ROF 3", "foundry": @items.filter(item => item.type === "weapon")[2]?.data.data.rof ?? ''}
+, { "pdf": "Weapons ROF 4", "foundry": @items.filter(item => item.type === "weapon")[3]?.data.data.rof ?? ''}
+, { "pdf": "Weapons ROF 5", "foundry": @items.filter(item => item.type === "weapon")[4]?.data.data.rof ?? ''}
+, { "pdf": "Weapons ROF 6", "foundry": @items.filter(item => item.type === "weapon")[5]?.data.data.rof ?? ''}
+, { "pdf": "Weapons ROF 7", "foundry": @items.filter(item => item.type === "weapon")[6]?.data.data.rof ?? ''}
+, { "pdf": "Weapons WT 1", "foundry": @items.filter(item => item.type === "weapon")[0]?.data.data.weight ?? ''}
+, { "pdf": "Weapons WT 2", "foundry": @items.filter(item => item.type === "weapon")[1]?.data.data.weight ?? ''}
+, { "pdf": "Weapons WT 3", "foundry": @items.filter(item => item.type === "weapon")[2]?.data.data.weight ?? ''}
+, { "pdf": "Weapons WT 4", "foundry": @items.filter(item => item.type === "weapon")[3]?.data.data.weight ?? ''}
+, { "pdf": "Weapons WT 5", "foundry": @items.filter(item => item.type === "weapon")[4]?.data.data.weight ?? ''}
+, { "pdf": "Weapons WT 6", "foundry": @items.filter(item => item.type === "weapon")[5]?.data.data.weight ?? ''}
+, { "pdf": "Weapons WT 7", "foundry": @items.filter(item => item.type === "weapon")[6]?.data.data.weight ?? ''}
+, { "pdf": "Power 1", "foundry": @items.filter(item => item.type === "power")[0]?.data.name ?? ''}
+, { "pdf": "Power 2", "foundry": @items.filter(item => item.type === "power")[1]?.data.name ?? ''}
+, { "pdf": "Power 3", "foundry": @items.filter(item => item.type === "power")[2]?.data.name ?? ''}
+, { "pdf": "Power 4", "foundry": @items.filter(item => item.type === "power")[3]?.data.name ?? ''}
+, { "pdf": "Power 5", "foundry": @items.filter(item => item.type === "power")[4]?.data.name ?? ''}
+, { "pdf": "Power 6", "foundry": @items.filter(item => item.type === "power")[5]?.data.name ?? ''}
+, { "pdf": "Power 7", "foundry": @items.filter(item => item.type === "power")[6]?.data.name ?? ''}
+, { "pdf": "Power 8", "foundry": @items.filter(item => item.type === "power")[7]?.data.name ?? ''}
+, { "pdf": "PP 1", "foundry": @items.filter(item => item.type === "power")[0]?.data.data.pp ?? ''}
+, { "pdf": "PP 2", "foundry": @items.filter(item => item.type === "power")[1]?.data.data.pp ?? ''}
+, { "pdf": "PP 3", "foundry": @items.filter(item => item.type === "power")[2]?.data.data.pp ?? ''}
+, { "pdf": "PP 4", "foundry": @items.filter(item => item.type === "power")[3]?.data.data.pp ?? ''}
+, { "pdf": "PP 5", "foundry": @items.filter(item => item.type === "power")[4]?.data.data.pp ?? ''}
+, { "pdf": "PP 6", "foundry": @items.filter(item => item.type === "power")[5]?.data.data.pp ?? ''}
+, { "pdf": "PP 7", "foundry": @items.filter(item => item.type === "power")[6]?.data.data.pp ?? ''}
+, { "pdf": "PP 8", "foundry": @items.filter(item => item.type === "power")[7]?.data.data.pp ?? ''}
+, { "pdf": "Power Range 1", "foundry": @items.filter(item => item.type === "power")[0]?.data.data.range ?? ''}
+, { "pdf": "Power Range 2", "foundry": @items.filter(item => item.type === "power")[1]?.data.data.range ?? ''}
+, { "pdf": "Power Range 3", "foundry": @items.filter(item => item.type === "power")[2]?.data.data.range ?? ''}
+, { "pdf": "Power Range 4", "foundry": @items.filter(item => item.type === "power")[3]?.data.data.range ?? ''}
+, { "pdf": "Power Range 5", "foundry": @items.filter(item => item.type === "power")[4]?.data.data.range ?? ''}
+, { "pdf": "Power Range 6", "foundry": @items.filter(item => item.type === "power")[5]?.data.data.range ?? ''}
+, { "pdf": "Power Range 7", "foundry": @items.filter(item => item.type === "power")[6]?.data.data.range ?? ''}
+, { "pdf": "Power Range 8", "foundry": @items.filter(item => item.type === "power")[7]?.data.data.range ?? ''}
+, { "pdf": "Duration 1", "foundry": @items.filter(item => item.type === "power")[0]?.data.data.duration ?? ''}
+, { "pdf": "Duration 2", "foundry": @items.filter(item => item.type === "power")[1]?.data.data.duration ?? ''}
+, { "pdf": "Duration 3", "foundry": @items.filter(item => item.type === "power")[2]?.data.data.duration ?? ''}
+, { "pdf": "Duration 4", "foundry": @items.filter(item => item.type === "power")[3]?.data.data.duration ?? ''}
+, { "pdf": "Duration 5", "foundry": @items.filter(item => item.type === "power")[4]?.data.data.duration ?? ''}
+, { "pdf": "Duration 6", "foundry": @items.filter(item => item.type === "power")[5]?.data.data.duration ?? ''}
+, { "pdf": "Duration 7", "foundry": @items.filter(item => item.type === "power")[6]?.data.data.duration ?? ''}
+, { "pdf": "Duration 8", "foundry": @items.filter(item => item.type === "power")[7]?.data.data.duration ?? ''}
+]
