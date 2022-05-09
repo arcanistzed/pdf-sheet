@@ -13,3 +13,4 @@ This directory contains mappings created by the community. Feel free to contribu
 * [D&D 5e - German](./dnd5e-charakterbogen_ataendler_v2.8.1.mapping) by `@manolito#9369` - [PDF](https://www.dnddeutsch.de/wp-content/uploads/2022/03/charakterbogen_ataendler_v2.8.1.pdf)
 * [Pathfinder 2e](./pathfinder2e.mapping) by `@Kurko#1535` - [PDF](https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo)
 * [Dungeon Crawl Classics](./0LevelFillableSheet.mapping) by `@OrganicByte#6682` - [PDF](https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf)
+*  [SWADE - Savage Worlds Adventure Edition](./SWADE-SavageWorldsAdventureEdition.mapping) by `@Samcho#8710` - [PDF](https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/)
