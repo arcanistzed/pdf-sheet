@@ -1,6 +1,6 @@
 [ /*
-Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 11/04/2022 - Kurko#1535
-Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.4.11118
+Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 13/06/2022 - Kurko#1535
+Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.11.0.3
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -573,7 +573,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.4.11118
 
 /*---------------------------INVENTORY-----------------------------*/
 
-    { "pdf": "Containers", "foundry": 'In Eq --- Containers ---\n\n'  + @items.filter(i => i.type === 'backpack').map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' ! ' : '    ')) + ((i.data.isEquipped || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name + '   ' + i.data.containerData.formattedHeldItemBulk + ' / ' + i.data.data.bulkCapacity.value  + '\n' + i.data.containerData.heldItems.map(i=>(i.isMagical? ' !  ' : '    ') + '         ' + i.name + ( (i.data.quantity > 1)?   ' (x' + i.data.quantity + ')'  : '' )).join('\n')  || '') .join('\n --------- \n') },
+    { "pdf": "Containers", "foundry": 'In Eq --- Containers ---\n\n'  + @items.filter(i => i.type === 'backpack').map(i =>(i.data.isInvested? ' ¤' : (i.data.isMagical? ' ! ' : '    ')) + ((i.data.isEquipped || i.data.data.equipped.carryType === 'worn' )? ' [x]  ' : ' [  ]  ') + i.name + '   ' + i.capacity.value.normal + '; ' +  i.capacity.value.light + 'L' + ' / ' + i.data.data.bulkCapacity.value  + '\n' + i.contents.map(i=>(i.isMagical? ' !  ' : '    ') + '         ' + i.name + ( (i.data.data.quantity > 1)?   ' (x' + i.data.data.quantity + ')'  : '' )).join('\n')  || '') .join('\n --------- \n') },
 
     { "pdf": "Inventory", "foundry": [('In Eq --- Weapons / Armor / Items ---\n'),
 (@items.filter(i => i.type === 'weapon' && !i.data.data.containerId ).map(i => (i.data.isInvested? ' !' : (i.data.isMagical? ' ! ' : '   ')) + ( ( i.data.isEquipped || i.data.data.equipped.carryType === 'held' )? ' [x]  ' : ' [  ]  ') + i.name +  ( i.data.data.weight.value !== '-'?   ' (B: ' + i.data.data.weight.value +')' : '' ) || '').join('\n') ), 
@@ -593,6 +593,8 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.8.4.11118
     { "pdf": "Gold", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Gold Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
     { "pdf": "Platinum", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Platinum Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
 
+
+    { "pdf": "CurrentBulk", "foundry": actor.inventory.bulk.normal},
     { "pdf": "EncumberedValue", "foundry": 5 + @data.abilities.str.mod + @data.attributes.bonusEncumbranceBulk},
     { "pdf": "BulkStrMod1", "foundry": ( @data.abilities.str.mod < 0 ? @data.abilities.str.mod :  '+'+ @data.abilities.str.mod ) + (@data.attributes.bonusEncumbranceBulk? '(+'+ @data.attributes.bonusEncumbranceBulk +')' : '') },
     { "pdf": "MaxBulkValue", "foundry": 10 + @data.abilities.str.mod + @data.attributes.bonusLimitBulk},
