@@ -13,29 +13,34 @@
         "url": "https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf"
       },
       "starwars-ffg": {
-        "label": "PDF for Star Wars FFG",
+        "label": "PDF pour Star Wars FFG",
         "title": "Télécharger la feuille de personnage non officielle pour Star Wars FFG",
         "url": "http://holocast.terceiraterra.com/wp-content/uploads/EotE-CharacterSheet-Fillable-v4.pdf"
       },
       "shadowrun5e": {
-        "label": "PDF for SR5e",
+        "label": "PDF pour SR5e",
         "title": "Télécharger une feuille de personnage non-officielle PDF pour Shadowrun 5e",
         "url": "https://drive.google.com/uc?export=download&id=1Gkaoi3JR6bfjhhq1PcgFpqGZlhTWv2oV"
       },
       "pf1": {
-        "label": "PDF for Pathfinder 1",
+        "label": "PDF pour Pathfinder 1",
         "title": "Télécharger une feuille de personnage non-officielle PDF pour Pathfinder 1",
         "url": "https://cdn.discordapp.com/attachments/877667041119731734/940318362146308127/Pf1e-Foundry_to_PDF.pdf"
       },
       "pf2e": {
-        "label": "PDF for Pathfinder 2e",
-        "title": "Télécharger une feuille de personnage non officielle en PDF pour Pathfinder 2e",
+        "label": "PDF pour Pathfinder 2e",
+        "title": "Télécharger une feuille de personnage non-officielle en PDF pour Pathfinder 2e",
         "url": "https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo"
       },
       "dcc": {
-        "label": "PDF for Dungeon Crawl Classics",
+        "label": "PDF pour Dungeon Crawl Classics",
         "title": "Téléchargez une feuille de personnage PDF de Goodman Games pour Dungeon Crawl Classics.",
         "url": "https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf"
+      },
+      "swade": {
+        "label": "PDF pour SWADE",
+        "title": "Voir le PDF officiel de la feuille de personnage pour SWADE dans le magasin de PEG",
+        "url": "https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/"
       }
     }
   }
