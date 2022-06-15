@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.0 - 15 Jun 2022
+
+### Fixed
+
+* Make window wider to make the interface less crowded
+* Update French localization
+* Invalid JSON in English localization
+
 ## 0.19.0 - 14 Jun 2022
 
 ### Added
