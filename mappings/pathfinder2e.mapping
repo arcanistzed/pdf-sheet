@@ -1,6 +1,6 @@
 [ /*
-Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 13/06/2022 - Kurko#1535
-Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.11.0.3
+Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 30/06/2022 - Kurko#1535
+Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.12.1.9
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -594,7 +594,7 @@ Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.11.0.3
     { "pdf": "Platinum", "foundry": @items.filter(i => i.type === 'treasure'&& i.data.name === 'Platinum Pieces').map(i => i.data.data.quantity).reduce((partialSum, a)=> partialSum + a, 0) || 0 },
 
 
-    { "pdf": "CurrentBulk", "foundry": actor.inventory.bulk.normal},
+    { "pdf": "CurrentBulk", "foundry": actor.inventory.bulk.value.normal},
     { "pdf": "EncumberedValue", "foundry": 5 + @data.abilities.str.mod + @data.attributes.bonusEncumbranceBulk},
     { "pdf": "BulkStrMod1", "foundry": ( @data.abilities.str.mod < 0 ? @data.abilities.str.mod :  '+'+ @data.abilities.str.mod ) + (@data.attributes.bonusEncumbranceBulk? '(+'+ @data.attributes.bonusEncumbranceBulk +')' : '') },
     { "pdf": "MaxBulkValue", "foundry": 10 + @data.abilities.str.mod + @data.attributes.bonusLimitBulk},
