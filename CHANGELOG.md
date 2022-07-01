@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.1 - 1 Jul 2022
+
+### Fixed
+
+Pathfinder 2e mapping: correct Current Bulk value for system version 3.12.1.9 (thanks to @BlauKreuz) 
+
 ## 0.20.0 - 15 Jun 2022
 
 ### Fixed
