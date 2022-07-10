@@ -1,5 +1,46 @@
 # Changelog
 
+## 0.20.1 - 1 Jul 2022
+
+### Fixed
+
+Pathfinder 2e mapping: correct Current Bulk value for system version 3.12.1.9 (thanks to @BlauKreuz) 
+
+## 0.20.0 - 15 Jun 2022
+
+### Fixed
+
+* Make window wider to make the interface less crowded
+* Update French localization
+* Invalid JSON in English localization
+
+## 0.19.0 - 14 Jun 2022
+
+### Added
+
+* French localization (thanks to @zdaar)
+* New SWADE mapping (thanks to @SalmonRain)
+
+### Fixed
+
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.11.0.3 (thanks to @BlauKreuz)
+
+## 0.18.1 - 12 Apr 2022
+
+### Fixed
+
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.8.4.11118 (thanks to @BlauKreuz)
+
+## 0.18.0 - 9 Apr 2022
+
+### Added
+
+German dnd5e mapping: updated mapping for new PDF v2.8.1 (thanks to @manolitto)
+
+### Fixed
+
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.8.2.11047 (thanks to @BlauKreuz)
+
 ## 0.17.0 - 20 Mar 2022
 
 ### Added
@@ -10,15 +51,17 @@ DCC mapping: add 0 level character sheet mapping (thanks to @mphagan)
 
 ### Added
 
-DnD5e mapping: Export entire text from the description field of feats and traits
+DnD5e mapping: Export entire text from the description field of feats and traits (thanks to @FreakyFerrox)
 
 ### Fixed
 
-Pathfinder 2e mapping: fixes for Pathfinder2e 3.7.2.10819
+Pathfinder 2e mapping: fixes for Pathfinder2e 3.7.2.10819 (thanks to @BlauKreuz)
 
 ## 0.15.3 - 11 Mar 2022
 
 ### Fixed
+
+Thanks to @Jinix16
 
 * Cases where certain properties don't exist
 * Spell mappings on 5e character sheet and added spell component indicators (VSMC)
