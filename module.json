@@ -1,12 +1,8 @@
 {
+  "id": "pdf-sheet",
   "name": "pdf-sheet",
   "title": "Export Sheet to PDF",
   "description": "A system agnostic module for exporting character sheets to a form-fillable and printable PDF!",
-  "version": "This is auto replaced",
-  "manifestPlusVersion": "1.2.0",
-  "minimumCoreVersion": "0.7.9",
-  "compatibleCoreVersion": "9",
-  "author": "Arcanist",
   "authors": [
     {
       "name": "Arcanist",
@@ -16,6 +12,21 @@
       "reddit": "u/arcanistzed"
     }
   ],
+  "url": "This is auto replaced",
+  "license": "https://github.com/arcanistzed/pdf-sheet/blob/main/LICENSE",
+  "readme": "https://github.com/arcanistzed/pdf-sheet/blob/main/README.md",
+  "bugs": "https://github.com/arcanistzed/pdf-sheet/issues/new/choose",
+  "changelog": "https://github.com/arcanistzed/pdf-sheet/blob/main/CHANGELOG.md",
+  "flags": {
+    "allowBugReporter": true
+  },
+  "version": "This is auto replaced",
+  "compatibility": {
+    "minimum": "0.7.9",
+    "maximum": "10"
+  },
+  "minimumCoreVersion": "0.7.9",
+  "compatibleCoreVersion": "10",
   "scripts": [
     "scripts/pdfsheet.js",
     "scripts/libraries/pdfform.js/minipdf.js",
@@ -38,12 +49,8 @@
       "path": "languages/fr.json"
     }
   ],
-  "url": "This is auto replaced",
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
-  "readme": "https://github.com/arcanistzed/pdf-sheet/blob/main/README.md",
-  "changelog": "https://github.com/arcanistzed/pdf-sheet/blob/main/CHANGELOG.md",
-  "license": "https://github.com/arcanistzed/pdf-sheet/blob/main/LICENSE",
-  "bugs": "https://github.com/arcanistzed/pdf-sheet/issues/new/choose",
+  "manifestPlusVersion": "1.2.0",
   "media": []
 }
