@@ -167,7 +167,7 @@ class Pdfconfig extends FormApplication {
 			template: "modules/pdf-sheet/templates/module.hbs",
 			id: "pdf-sheet",
 			height: window.innerHeight * 7 / 8,
-			width: Math.max(window.innerWidth * 1 / 3, 600),
+			width: Math.max(window.innerWidth / 3, 600),
 			resizable: true,
 			title: "Export to PDF"
 		});
