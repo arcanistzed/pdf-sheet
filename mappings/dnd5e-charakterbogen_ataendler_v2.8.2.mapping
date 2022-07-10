@@ -52,7 +52,7 @@
         },
 
         htmlToText: function(html) {
-          return html.replaceAll("\n", "")
+          return !html ? '' : html.replaceAll("\n", "")
                      .replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n")
                      .replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n")
                      .replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n")
