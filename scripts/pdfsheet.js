@@ -1,3 +1,5 @@
+/* global pdfform minipdf saveAs */
+
 // Store mapping
 Hooks.on("init", () => {
 	game.settings.register(Pdfconfig.ID, "mapping", {
@@ -9,15 +11,18 @@ Hooks.on("init", () => {
 		default: "[]",
 	});
 
-	if (game.version && isNewerVersion(game.version, "9.230")) game.keybindings.register(Pdfconfig.ID, "showConfig", {
-		name: "Show Config",
-		hint: "Show PDF config menu for the character currently open",
-		onDown: () => {
-			// If the currently opened sheet is an Actor sheet, open the PDF config for the actor
-			if (ui.activeWindow instanceof ActorSheet)
-				new Pdfconfig(ui.activeWindow.object).render(true);
-		},
-	});
+	if (game.version && isNewerVersion(game.version, "9.230")) {
+		game.keybindings.register(Pdfconfig.ID, "showConfig", {
+			name: "Show Config",
+			hint: "Show PDF config menu for the character currently open",
+			onDown: () => {
+				// If the currently opened sheet is an Actor sheet, open the PDF config for the actor
+				if (ui.activeWindow instanceof ActorSheet) {
+					new Pdfconfig(ui.activeWindow.object).render(true);
+				}
+			},
+		});
+	}
 });
 
 // Inject editor into the settings menu
@@ -25,13 +30,15 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 	// Only if GM
 	if (game.user.isGM) {
 		// Create a new text box
-		let newTextBox, editor;
+		let editor, newTextBox;
 
 		// Get the old text box
 		const oldTextBox = html[0].querySelector("[name='pdf-sheet.mapping']");
 
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
+			/* global ace */
+
 			// Create an editor
 			newTextBox = document.createElement("div");
 			editor = ace.edit(newTextBox);
@@ -49,14 +56,17 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 			setTimeout(() => editor.execCommand("beautify"), 500);
 
 			// Hide annotations
-			editor.getSession().on("changeAnnotation", debounce(() => editor.getSession().setAnnotations(), 1));
+			editor.getSession().on(
+				"changeAnnotation",
+				debounce(() => editor.getSession().setAnnotations(), 1)
+			);
 		} else {
 			// Otherwise create new textarea
 			newTextBox = document.createElement("textarea");
 
 			// Copy the value from the old textbox into the new one
 			newTextBox.value = oldTextBox.value;
-		};
+		}
 
 		// Don't show the old textbox
 		oldTextBox.style.display = "none";
@@ -82,7 +92,7 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 				// Copy the value from the new textbox to the old one
 				oldTextBox.value = newTextBox.value;
 			});
-		};
+		}
 
 		// Create mapping select menu
 		const mappingSelect = document.createElement("select");
@@ -90,22 +100,21 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 		oldTextBox.parentNode.before(mappingSelect);
 
 		// Browse and get list of included mapping files
-		FilePicker.browse("data", "modules/pdf-sheet/mappings", { extensions: [".mapping"] })
-			.then(results => {
-				// Add the default option first
-				results.files.unshift("");
+		FilePicker.browse("data", "modules/pdf-sheet/mappings", { extensions: [".mapping"] }).then(results => {
+			// Add the default option first
+			results.files.unshift("");
 
-				// Add options for each included mapping
-				results.files.forEach(name => {
-					// Create the option
-					const option = document.createElement("option");
-					mappingSelect.append(option);
+			// Add options for each included mapping
+			results.files.forEach(name => {
+				// Create the option
+				const option = document.createElement("option");
+				mappingSelect.append(option);
 
-					// Add just the name of the system as the text
-					name = name.replace(".mapping", "").replace("modules/pdf-sheet/mappings/", "");
-					option.innerHTML = name;
-				});
+				// Add just the name of the system as the text
+				name = name.replace(".mapping", "").replace("modules/pdf-sheet/mappings/", "");
+				option.innerHTML = name;
 			});
+		});
 
 		// Resize the Settings Config App
 		app.setPosition();
@@ -113,9 +122,10 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 		// Add an event listener
 		mappingSelect.addEventListener("change", async () => {
 			// Fetch selected mapping if not empty
-			const mapping = mappingSelect.value ?
-				await fetch(getRoute(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`))
-					.then(response => response.text())
+			const mapping = mappingSelect.value
+				? await fetch(getRoute(`/modules/pdf-sheet/mappings/${mappingSelect.value}.mapping`)).then(response =>
+						response.text()
+				  )
 				: "";
 
 			// Copy the mapping to the old text box
@@ -126,9 +136,9 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 			} else {
 				// Copy the mapping to the new textbox
 				newTextBox.value = mapping;
-			};
+			}
 		});
-	};
+	}
 });
 
 // Add button to Actor Sheet for opening app
@@ -145,18 +155,19 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 			new Pdfconfig(sheet.actor).render(true);
 
 			// Bring window to top
-			Object.values(ui.windows).filter(window => window instanceof Pdfconfig)[0]?.bringToTop();
-		}
+			Object.values(ui.windows)
+				.filter(window => window instanceof Pdfconfig)[0]
+				?.bringToTop();
+		},
 	});
 });
 
 class Pdfconfig extends FormApplication {
-
 	constructor(actor) {
 		super();
 		this.actor = actor;
 		this.currentBuffer = new ArrayBuffer();
-	};
+	}
 
 	/** The module's ID */
 	static ID = "pdf-sheet";
@@ -166,12 +177,12 @@ class Pdfconfig extends FormApplication {
 		return mergeObject(super.defaultOptions, {
 			template: "modules/pdf-sheet/templates/module.hbs",
 			id: "pdf-sheet",
-			height: window.innerHeight * 7 / 8,
+			height: (window.innerHeight * 7) / 8,
 			width: Math.max(window.innerWidth / 3, 600),
 			resizable: true,
-			title: "Export to PDF"
+			title: "Export to PDF",
 		});
-	};
+	}
 
 	/** @override */
 	activateListeners() {
@@ -188,7 +199,7 @@ class Pdfconfig extends FormApplication {
 		});
 
 		document.getElementById("pdf-download")?.addEventListener("click", event => event.preventDefault());
-	};
+	}
 
 	/** @override */
 	getData() {
@@ -199,9 +210,9 @@ class Pdfconfig extends FormApplication {
 				label: game.i18n.localize(`pdfsheet.download.${system}.label`),
 				title: game.i18n.localize(`pdfsheet.download.${system}.title`),
 				url: game.i18n.localize(`pdfsheet.download.${system}.url`),
-			}
+			},
 		};
-	};
+	}
 
 	/** Create a form with inputs for each PDF field and fill them in with Actor data */
 	createForm(buffer) {
@@ -211,7 +222,7 @@ class Pdfconfig extends FormApplication {
 		let child;
 		while ((child = inputForm.lastChild)) {
 			inputForm.removeChild(child);
-		};
+		}
 
 		// Get PDF fields
 		const pdfFields = pdfform(minipdf).list_fields(buffer);
@@ -219,20 +230,20 @@ class Pdfconfig extends FormApplication {
 		const actor = this.actor;
 
 		// Begin grouping logs
-		console.group("PDF Sheet")
+		console.group("PDF Sheet");
 		// Log Actor Data
 		console.log("Actor Data:", actor);
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
 		// Get mapping from settings
-		let mapping = game.settings.get(Pdfconfig.ID, "mapping")
+		let mapping = game.settings.get(Pdfconfig.ID, "mapping");
 
 		// Parse dynamic keys
 		mapping = mapping.replaceAll("@", "actor.data.");
 
 		// Log un-evaluated mapping
-		console.log("Raw mapping:", mapping)
+		console.log("Raw mapping:", mapping);
 
 		// Try to deserialize mapping
 		try {
@@ -245,11 +256,13 @@ class Pdfconfig extends FormApplication {
 			this.close();
 
 			// Alert if invalid
-			ui.notifications.error(`PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.`);
+			ui.notifications.error(
+				'PDF Sheet | Invalid mapping JavaScript Object. See the <a href="https://github.com/arcanistzed/pdf-sheet/blob/main/README.md">README</a> for more info.'
+			);
 
 			// Evaluate the JS again to throw the error
 			Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
-		};
+		}
 
 		// Log parsed mapping
 		console.log("Parsed mapping:", mapping);
@@ -258,7 +271,6 @@ class Pdfconfig extends FormApplication {
 
 		// Loop through each key
 		Object.keys(pdfFields).forEach(pdfFieldKey => {
-
 			// Create row
 			const row = document.createElement("li");
 
@@ -272,11 +284,11 @@ class Pdfconfig extends FormApplication {
 			inputForm.appendChild(row);
 
 			pdfFields[pdfFieldKey].forEach((field, i) => {
-				if ((field.type === "radio") && field.options) {
+				if (field.type === "radio" && field.options) {
 					const fieldSet = document.createElement("fieldset");
 					fieldSet.id = pdfFieldKey;
 
-					field.options.forEach((value) => {
+					field.options.forEach(value => {
 						const radioLabel = document.createElement("label");
 						const radio = document.createElement("input");
 						radio.disabled = true;
@@ -294,13 +306,11 @@ class Pdfconfig extends FormApplication {
 
 					row.appendChild(fieldSet);
 					return;
-				};
+				}
 
 				// Create an input
 				const input = document.createElement(
-					field.type === "select" ? "select" :
-						field.type === "string" ? "textarea" :
-							"input"
+					field.type === "select" ? "select" : field.type === "string" ? "textarea" : "input"
 				);
 				input.disabled = true;
 				input.setAttribute("data-idx", i);
@@ -312,54 +322,62 @@ class Pdfconfig extends FormApplication {
 					input.setAttribute("type", "checkbox");
 
 					// Make a drop down menu if the type is select and it has options
-				} else if ((field.type === "select") && field.options) {
-
-					field.options.forEach((value) => {
-
+				} else if (field.type === "select" && field.options) {
+					field.options.forEach(value => {
 						const option = document.createElement("option");
 						option.innerText = Array.isArray(value) ? value[1] : value;
 						option.setAttribute("value", Array.isArray(value) ? value[0] : value);
 						input.appendChild(option);
 					});
-				};
+				}
 				row.appendChild(input); // Add to DOM
 
 				// Add values from character sheet
 				// Loop through all entries in the mapping
 				mapping.forEach(entry => {
 					// Check if the current field in the PDF matches an entry in the mapping
-					if (pdfFieldKey.trim() == entry.pdf) {
+					if (pdfFieldKey.trim() === entry.pdf) {
 						// Set the input to what is on the character sheet
-						if (field.type === "boolean") { input.checked = entry.foundry } // If it's a checkbox
-						else if (field.type === "string") { input.innerHTML = entry.foundry } // If it's a textarea
-						else if (field.type === "select") { input.value = entry.foundry } // If it's a selectbox
-						else { input.setAttribute('value', entry.foundry) }; // If it's anything else
-					};
+						if (field.type === "boolean") {
+							// If it's a checkbox
+							input.checked = entry.foundry;
+						} else if (field.type === "string") {
+							// If it's a textarea
+							input.innerHTML = entry.foundry;
+						}     else if (field.type === "select") {
+							// If it's a selectbox
+							input.value = entry.foundry;
+						} else {
+							// If it's anything else
+							input.setAttribute("value", entry.foundry);
+						}
+					}
 				});
 			});
 		});
-	};
+	}
 
 	/** Get values and download PDF */
 	download(buffer) {
 		const fieldList = document.getElementById("fieldList");
 		const fields = {};
-		fieldList.querySelectorAll("input, textarea, select").forEach((input) => {
-			if ((input.getAttribute("type") === "radio") && !input.checked) {
+		fieldList.querySelectorAll("input, textarea, select").forEach(input => {
+			if (input.getAttribute("type") === "radio" && !input.checked) {
 				return;
-			};
+			}
 
 			const key = input.getAttribute("data-key");
 			if (!fields[key]) {
 				fields[key] = [];
-			};
+			}
 			const index = parseInt(input.getAttribute("data-idx"), 10);
 
-			const value = (
-				input.type === "textarea" ? input.innerHTML :
-					input.getAttribute("type") === "checkbox" ? input.checked :
-						input.value
-			);
+			const value =
+				input.type === "textarea"
+					? input.innerHTML
+					: input.getAttribute("type") === "checkbox"
+					? input.checked
+					: input.value;
 			fields[key][index] = value;
 		});
 
@@ -367,7 +385,7 @@ class Pdfconfig extends FormApplication {
 
 		const blob = new Blob([filled_pdf], { type: "application/pdf" });
 		saveAs(blob, `${this.actor.name ?? "character"}.pdf`);
-	};
+	}
 
 	/** Manage new PDF upload */
 	onFileUpload(buffer) {
@@ -376,5 +394,5 @@ class Pdfconfig extends FormApplication {
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-export").style.display = "block";
-	};
-};
+	}
+}
