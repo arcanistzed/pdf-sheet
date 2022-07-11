@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.20.2 - 11 Jul 2022
+
+### Fixed
+
+* Updated german dnd5e mapping for new PDF v2.8.2 and fix null issue in `htmlToText` function (thanks to @manolitto)
+* Code formatting & linting
+* Update manifest for v10
+
 ## 0.20.1 - 1 Jul 2022
 
 ### Fixed
