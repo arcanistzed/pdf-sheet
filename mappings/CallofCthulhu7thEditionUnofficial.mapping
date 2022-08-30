@@ -1,14 +1,15 @@
 [
     /************************************************************************************************************
-     Call of Cthulhu 7th Edition (Unofficial) Export to PDF Mapping
-     -----------------------------------------------------------------------------------------
+     Call of Cthulhu 7th Edition (Unofficial) Export to PDF Mapping v2
+     August 2022. Required for v8+ of this sheet.
+     ---------------------------------------------------------------------------------------------
 
     The Call of Cthulhu 7th Edition (Unofficial) Foundry VTT system (CoC), as maintained by the Miskatonic
     Investigative Society (https://github.com/Miskatonic-Investigative-Society/CoC7-FoundryVTT)
     implements an extensible skills and specialisation model, as encouraged by Chaosium's Call of
     Cthulhu 7th Edition rules.
     
-    The skills model, combined with the many era variants of CoC, it is not feasible to provide a one-size-fits-all
+    The skills model, combined with the many era variants of CoC, hinders the feasibilty of a one-size-fits-all
     mapping for CoC. However, this mapping should support all pdf sheet variants as laid out on the Chaosium site
     under the "Updated Investigator Sheets" heading on this page:
 
@@ -16,10 +17,22 @@
 
     Using this mapping, some entries on the resulting pdf may be blank. This is an unavoidable consequence
     of the flexible skills model and number of era variants. It means that the mapping has no entry that references
-    that skill. Using the mapping as a reference, it can updated locally to include such skills and specialisations.
-
+    that skill.
+    
     Warning: Do not attempt to use the sheets from the Chaosium page under the "Legacy Investigator Sheets"
     heading, they are not compatible with the Export to PDF module.
+
+    ************************************************************************************************************
+    Note: due to indirection introduced in Versions >=8 of the CoC 7e (Unofficial sheet) to the Actor
+    data model, a small number of skills are blank on the output pdf and should be completed
+    manually. These include:
+
+    * Some Specialisation skills, notably weapons.
+    * Dodge skill
+
+    Also note that there does not appear to be any way of digitally populating the image on the
+    sheet. It appears to have always been intended as simply a space to glue a paper thumbnail.
+    ************************************************************************************************************
 
     ************************************************************************************************************/
 
@@ -203,23 +216,23 @@
     /* Status Flags *********************/
     {
         "pdf": "TempInsanity_Chk",
-        "foundry": @data.status.tempoInsane.value
+        "foundry": @data.conditions.tempoInsane.value
     },
     {
         "pdf": "IndefIInsanity_Chk",
-        "foundry": @data.status.indefInsane.value
+        "foundry": @data.conditions.indefInsane.value
     },
     {
         "pdf": "MajorWound_Chk",
-        "foundry": @data.status.criticalWounds.value
+        "foundry": @data.conditions.criticalWounds.value
     },
     {
         "pdf": "Unconscious_Chk",
-        "foundry": @data.status.unconscious.value
+        "foundry": @data.conditions.unconscious.value
     },
     {
         "pdf": "Dying_Chk",
-        "foundry": @data.status.dying.value
+        "foundry": @data.conditions.dying.value
     },
    
     /* Skills *********************/
@@ -402,6 +415,7 @@
         "foundry": isNaN( Math.floor( @items.filter(item => item.name === "Diving" && item.type === "skill")[0]?.value )) ? '' : Math.floor( @items.filter(item => item.name === "Diving" && item.type === "skill")[0]?.value / 5 ) ?? ''
     },
 
+    /******************************* Removed - see note in header re: missing skills
     {
         "pdf": "Skill_Dodge_Chk",
         "foundry": @items.filter(item => item.name === "Dodge" && item.type === "skill")[0]?.data.data.flags.developement ?? ''
@@ -430,6 +444,8 @@
         "pdf": "Dodge_Copy_fifth",
         "foundry": Math.floor( @items.filter(item => item.name === "Dodge" && item.type === "skill")[0]?.value / 5 ) ?? ''
     },
+
+    Removed - see note in header re: missing skills *******************************/
 
     {
         "pdf": "Skill_Drive_Chk",
@@ -1342,19 +1358,14 @@
 
     /* Gear and Possessions *********************/
 
-    /* <= 15 items, concatenated field arrays overlapped to accomodate varying numbers of items and/or pdf fields */
+    /* <= 10 items, concatenated field arrays to accomodate varying numbers of items and/or pdf fields */
     {
         "pdf": "Gear/Possessions",
         "foundry": ( @items.filter( item => item.type === "item" )[0]?.name ?? '' ) + "\n" +
                        ( @items.filter( item => item.type === "item" )[1]?.name ?? '' ) + "\n" +
                        ( @items.filter( item => item.type === "item" )[2]?.name ?? '' ) + "\n" +
                        ( @items.filter( item => item.type === "item" )[3]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[4]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[5]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[6]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[7]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[8]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[9]?.name ?? '' )
+                       ( @items.filter( item => item.type === "item" )[4]?.name ?? '' )
     },
     {
         "pdf": "Gear/Possessions1",
@@ -1362,12 +1373,15 @@
                        ( @items.filter( item => item.type === "item" )[6]?.name ?? '' ) + "\n" +
                        ( @items.filter( item => item.type === "item" )[7]?.name ?? '' ) + "\n" +
                        ( @items.filter( item => item.type === "item" )[8]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[9]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[10]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[11]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[12]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[13]?.name ?? '' ) + "\n" +
-                       ( @items.filter( item => item.type === "item" )[14]?.name ?? '' )
+                       ( @items.filter( item => item.type === "item" )[9]?.name ?? '' )
+    },
+
+    /* Gear and Possessions *********************/
+    {
+        "pdf": "Tomes/Spells",
+        "foundry": ( @items.filter( item => item.type === "book" )[0]?.name ?? '' ) + "\n" +
+                       ( @items.filter( item => item.type === "book" )[1]?.name ?? '' ) + "\n" +
+                       ( @items.filter( item => item.type === "book" )[2]?.name ?? '' )
     },
 
     /* Pulp Talents *********************/
