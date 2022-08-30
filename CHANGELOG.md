@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.21.0 - 30 Aug 2022
+
+Update to Call of Cthulhu 7th Edition mapping (thanks to @Dick-K)
+
 ## 0.20.2 - 11 Jul 2022
 
 ### Fixed
