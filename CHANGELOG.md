@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.22.0 - 1 Oct 2022
+
+
+Pathfinder 2e mapping: update for system version 4.1.3 (thanks to @BlauKreuz) 
+
 ## 0.21.0 - 30 Aug 2022
 
 Update to Call of Cthulhu 7th Edition mapping (thanks to @Dick-K)
