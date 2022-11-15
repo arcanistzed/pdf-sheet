@@ -23,7 +23,7 @@
     "version": "This is auto replaced",
     "compatibility": {
         "minimum": "0.7.9",
-        "maximum": "10"
+        "verified": "10"
     },
     "minimumCoreVersion": "0.7.9",
     "compatibleCoreVersion": "10",
