@@ -1,7 +1,7 @@
 [ /*
 Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 01/10/2022 - Kurko#1535
 Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.13.6
-Fixed for Foundry VTT 10 | PF2e system version: 4.1.3
+Fixed for Foundry VTT 10 | PF2e system version: 4.2.1
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -141,9 +141,9 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.1.3
 /* CLASS DC */
 
     { "pdf": "ClassDC", "foundry": @data.attributes.classDC?.value},
-    { "pdf": "ClassDC_KeyMod", "foundry": @data.attributes.classDC?.modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier) },
-    { "pdf": "ClassDC_ProfMod", "foundry": @data.attributes.classDC?.modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
-    { "pdf": "ClassDC_ItemMod", "foundry": @data.attributes.classDC?.modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier < 0 ? '' : '+') +i.modifier) + @data.attributes.perception.modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => ( i.modifier < 0 ? '(' : '(+') +i.modifier+')') },
+    { "pdf": "ClassDC_KeyMod", "foundry": @data.attributes.classDC?._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier) },
+    { "pdf": "ClassDC_ProfMod", "foundry": @data.attributes.classDC?._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
+    { "pdf": "ClassDC_ItemMod", "foundry": @data.attributes.classDC?._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier < 0 ? '' : '+') +i.modifier) + @data.attributes.perception.modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => ( i.modifier < 0 ? '(' : '(+') +i.modifier+')') },
     { "pdf": "ClassDC_T", "foundry": @data.attributes.classDC?.rank === 1 || ''},
     { "pdf": "ClassDC_E", "foundry": @data.attributes.classDC?.rank === 2 || ''},
     { "pdf": "ClassDC_M", "foundry": @data.attributes.classDC?.rank === 3 || ''},
