@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.2 - 15 Nov 2022
+
+Fix for The Forge
+
 ## 0.22.1 - 15 Nov 2022
 
 Pathfinder 2e mapping: update for system version 4.2.2 (thanks to @BlauKreuz) 
