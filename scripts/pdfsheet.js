@@ -111,7 +111,7 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 				mappingSelect.append(option);
 
 				// Add just the name of the system as the text
-				name = name.replace(".mapping", "").replace("modules/pdf-sheet/mappings/", "");
+				name = name.split("/").at(-1).replace(".mapping", "");
 				option.innerHTML = name;
 			});
 		});
