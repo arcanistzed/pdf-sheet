@@ -1,7 +1,10 @@
 # Changelog
 
-## 0.22.0 - 1 Oct 2022
+## 0.22.1 - 15 Nov 2022
 
+Pathfinder 2e mapping: update for system version 4.2.2 (thanks to @BlauKreuz) 
+
+## 0.22.0 - 1 Oct 2022
 
 Pathfinder 2e mapping: update for system version 4.1.3 (thanks to @BlauKreuz) 
 
