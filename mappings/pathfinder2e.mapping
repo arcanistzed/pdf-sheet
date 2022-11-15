@@ -1,7 +1,7 @@
 [ /*
-Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 01/10/2022 - Kurko#1535
+Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 05/10/2022 - Kurko#1535
 Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.13.6
-Fixed for Foundry VTT 10 | PF2e system version: 4.2.1
+Fixed for Foundry VTT 10 | PF2e system version: 4.2.2
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -644,10 +644,10 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.2.1
 /* ---------- PAGE 4 ----------*/
 
     { "pdf": "SpellAttack", "foundry":
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData?.check.mod)[0] 
+(@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData?.check.mod)[0] 
 ||
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0].filter(a=> a.type === 'ability').map(a => a.modifier)[0] +
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0].filter(a=> a.type === 'proficiency').map(a => a.modifier)[0]}, 
+@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0]?.filter(a=> a.type === 'ability').map(a => a.modifier)[0] +
+@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0]?.filter(a=> a.type === 'proficiency').map(a => a.modifier)[0]) || '' }, 
 
     { "pdf": "SpellAtk_KeyMod", "foundry":  
 (@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.ability.value)[0])?
@@ -660,10 +660,10 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.2.1
     { "pdf": "SpellAtk_L", "foundry": @items.filter(i=> i.type === 'spellcastingEntry').map(i=> (i.data.data.proficiency.value === 4) || "" )[0] },
 
     { "pdf": "SpellDC", "foundry":
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData?.check.mod)[0] +10
+(@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.statisticData?.check.mod)[0] +10
 ||
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0].filter(a=> a.type === 'ability').map(a => a.modifier)[0] +
-@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0].filter(a=> a.type === 'proficiency').map(a => a.modifier)[0] + 10}, 
+@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0]?.filter(a=> a.type === 'ability').map(a => a.modifier)[0] +
+@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.statistic.modifiers)[0]?.filter(a=> a.type === 'proficiency').map(a => a.modifier)[0] + 10) || '' }, 
 
     { "pdf": "SpellDC_KeyMod", "foundry":  
 (@items.filter(i=> i.type === 'spellcastingEntry').map(i=> i.data.data.ability.value)[0])?
