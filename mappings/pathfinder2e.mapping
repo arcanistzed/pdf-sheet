@@ -86,9 +86,9 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.2.2
 
 /* RESISTANCES - IMMUNITIES - CONDITIONS - WEAKNESSES*/
 
-    { "pdf": "Resistances_Immunities", "foundry": [@data.traits.dr.map(i => ' '+i.type +' '+ i.value), @data.traits.di.value.join(", "), @data.traits.di.custom].filter(x => String(x)).join(", ")  },
+    /* { "pdf": "Resistances_Immunities", "foundry": [@data.traits.dr.map(i => ' '+i.type +' '+ i.value), @data.traits.di.value.join(", "), @data.traits.di.custom].filter(x => String(x)).join(", ")  },
     { "pdf": "Conditions", "foundry": actor.data.items._source.filter(i => i.type === 'condition').map(i =>i.name).join(", ") },
-    { "pdf": "Weaknesses", "foundry": 'W: ' + @data.traits.dv.map(i => ' '+i.type +' '+ i.value).join(", ") + '\n' + actor.data.items._source.filter(i => i.type === 'effect').map(i =>i.name).join(", ")  },
+    { "pdf": "Weaknesses", "foundry": 'W: ' + @data.traits.dv.map(i => ' '+i.type +' '+ i.value).join(", ") + '\n' + actor.data.items._source.filter(i => i.type === 'effect').map(i =>i.name).join(", ")  }, */
 
 /* SAVES */
 
