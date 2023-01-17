@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.3 - 17 Jan 2023
+
+Pathfinder 2e mapping: comment out Immunities & Resistances (thanks to @FuzzyFlipFlop)
+
 ## 0.22.2 - 15 Nov 2022
 
 Fix for The Forge
