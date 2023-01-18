@@ -144,24 +144,17 @@
     { "pdf": "CP", "foundry": @data.currency.cp || "" },
     { "pdf": "ProficienciesLang", "foundry": (function() {
             let s = "";
-            let a = @data.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
-                || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name)
-                .concat(@data.traits.weaponProf.custom.split(";")).filter(x => String(x) && x?.length);
-            if (a?.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n`; }
-            a = @data.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
-                || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)
-                .concat(@data.traits.armorProf.custom.split(";")).filter(x => String(x) && x?.length);
-            if (a?.length > 0) { s = `${s}Armor: ${a.join(", ")}\n`; }
-            a = @data.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
-                || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)
-                .concat(@data.traits.toolProf.custom.split(";")).filter(x => String(x) && x?.length);
-            if (a?.length > 0) { s = `${s}Tools: ${a.join(", ")}\n`; }
-            a = @data.traits.languages.value.map(x => game.dnd5e.config.languages[x])
-                .concat(@data.traits.languages.custom.split(";")).filter(x => String(x) && x?.length);
-            if (a?.length > 0) { s = `${s}Languages: ${a.join(", ")}\n`; }
+            let a = Object.values(actor.data.data.traits.weaponProf.selected);
+            if (a?.length > 0) { s = `${s}Weapons: ${a.join(", ")}\n`;}
+            a = Object.values(actor.data.data.traits.armorProf.selected);
+            if (a?.length > 0) { s = `${s}Armor: ${a.join(", ")}\n`;}
+            a = Object.values(actor.data.data.traits.toolProf.selected);
+            if (a?.length > 0) { s = `${s}Tools: ${a.join(", ")}\n`;}
+            a = Object.values(actor.data.data.traits.languages.selected);
+            if (a?.length > 0) { s = `${s}Languages: ${a.join(", ")}\n`;}
             return s;
         })()
-    },
+    },,
     { "pdf": "SP", "foundry": @data.currency.sp || "" },
     { "pdf": "EP", "foundry": @data.currency.ep || "" },
     { "pdf": "GP", "foundry": @data.currency.gp || "" },
@@ -241,7 +234,7 @@
     { "pdf": "Spells 1031", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[9] || "" },
     { "pdf": "Spells 1032", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[10] || "" },
     { "pdf": "Spells 1033", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[11] || "" },
-	
+
 	{ "pdf": "Check Box 251", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[0]?.data.data.preparation.prepared || "" },
 	{ "pdf": "Check Box 309", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[1]?.data.data.preparation.prepared || "" },
 	{ "pdf": "Check Box 3010", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 1)[2]?.data.data.preparation.prepared || "" },
@@ -310,7 +303,7 @@
     { "pdf": "Check Box 3039", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 3)[10]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3040", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 3)[11]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3041", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 3)[12]?.data.data.preparation.prepared || "" },
-	
+
     /* 4th Level Spells */
 	{ "pdf": "Spells 1061", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 4).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[0] || "" },
 	{ "pdf": "Spells 1060", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 4).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[1] || "" },
@@ -360,7 +353,7 @@
     { "pdf": "Check Box 3057", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 5)[6]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3058", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 5)[7]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3059", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 5)[8]?.data.data.preparation.prepared || "" },
-	
+
     /* 6th Level Spells */
 	{ "pdf": "Spells 1083", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 6).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[0] || "" },
     { "pdf": "Spells 1082", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 6).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[1] || "" },
@@ -381,7 +374,7 @@
     { "pdf": "Check Box 3064", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 6)[6]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3065", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 6)[7]?.data.data.preparation.prepared || "" },
 	{ "pdf": "Check Box 3066", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 6)[8]?.data.data.preparation.prepared || "" },
-	
+
     /* 7th Level Spells */
 	{ "pdf": "Spells 1092", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 7).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[0] || "" },
     { "pdf": "Spells 1091", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 7).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[1] || "" },
@@ -402,7 +395,7 @@
     { "pdf": "Check Box 3071", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 7)[6]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3072", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 7)[7]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3073", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 7)[8]?.data.data.preparation.prepared || "" },
-	
+
 	/* 8th Level Spells */
 	{ "pdf": "Spells 10101", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 8).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[0] || "" },
     { "pdf": "Spells 10100", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 8).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[1] || "" },
@@ -419,7 +412,7 @@
     { "pdf": "Check Box 3076", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 8)[4]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3077", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 8)[5]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3078", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 8)[6]?.data.data.preparation.prepared || "" },
-	
+
     /* 9th Level Spells */
 	{ "pdf": "Spells 10108", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 9).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[0] || "" },
     { "pdf": "Spells 10107", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 9).map(x => x.name + " " + (x.data.data.components.vocal?"V":"") + (x.data.data.components.somatic?"S":"") + (x.data.data.components.material?"M":"") + (x.data.data.components.ritual?"R":"") + (x.data.data.components.concentration?"C":"")).sort()[1] || "" },
@@ -436,6 +429,6 @@
     { "pdf": "Check Box 3081", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 9)[4]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3082", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 9)[5]?.data.data.preparation.prepared || "" },
     { "pdf": "Check Box 3083", "foundry": @items.filter(i => i.type === 'spell' && i.data.data.level === 9)[6]?.data.data.preparation.prepared || "" },
-    
+
     { "pdf": "", "foundry": "" }
 ]
