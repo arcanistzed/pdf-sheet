@@ -77,7 +77,7 @@
   { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
   { "pdf": "Wpn1 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
-      return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
     })()
   },
   { "pdf": "Insight", "foundry": @system.skills.ins.total },
@@ -95,7 +95,7 @@
   { "pdf": "INTmod", "foundry": @system.abilities.int.mod },
   { "pdf": "Wpn2 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage;
-      return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
     })()
   },
   { "pdf": "Investigation", "foundry": @system.skills.inv.total },
@@ -133,7 +133,7 @@
   { "pdf": "HPTemp", "foundry": @system.attributes.hp.temp },
   { "pdf": "Wpn3 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage;
-      return !dda ? "" : dda.map(dd => `${dd.formula} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
     })()
   },
   { "pdf": "SleightofHand", "foundry": @system.skills.slt.total },
@@ -172,7 +172,7 @@
       const d = document.createElement("div");
       d.innerHTML = h;
       return d.textContent || d.innerText || "";
-    })(i.system.description.value)}\n`).join("\n")
+    })(i.system.description.value.substring(0,299))}${(i.system.description.value.length>300)?'...':''}\n`).join("\n")
   },
 
   /* Page #2 */
