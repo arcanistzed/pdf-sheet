@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.4 - 4 Feb 2023
+
+DnD5e mapping: compatibility with Foundry v10.291 & DnD5e 2.1.4 (thanks to @SebaSOFT)
+
 ## 0.22.3 - 17 Jan 2023
 
 Pathfinder 2e mapping: comment out Immunities & Resistances (thanks to @FuzzyFlipFlop)
