@@ -11,6 +11,15 @@ Hooks.on("init", () => {
 		default: "[]",
 	});
 
+	game.settings.register(Pdfconfig.ID, 'minimizeText', {
+		name: "pdfsheet.settings.minimizeText.Name",
+		hint: "pdfsheet.settings.minimizeText.Hint",
+		scope: 'client',
+		type: Boolean,
+		config: true,
+		default: false
+	});
+
 	if (game.version && isNewerVersion(game.version, "9.230")) {
 		game.keybindings.register(Pdfconfig.ID, "showConfig", {
 			name: "Show Config",
