@@ -41,6 +41,11 @@
         "label": "PDF for SWADE",
         "title": "View the the official character sheet PDF for SWADE in the PEG store",
         "url": "https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/"
+      },
+      "5ePTBR": {
+        "label": "PDF for Portuguese D&D 5e sheet",
+        "title": "Unnoficial fillable PDF adapted from the official character sheet for D&D 5th edition",
+        "url": "https://drive.google.com/file/d/1YochPfr_kVtgxmORsDmzrXSotMfeYo4o/view"
       }
     }
   }
