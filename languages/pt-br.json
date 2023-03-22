@@ -8,9 +8,9 @@
     },
     "download": {
       "dnd5e": {
-        "label": "PDF para D&D 5e (EN)",
-        "title": "Faça o download do PDF oficial (inglês) da ficha de personagem para a 5ª edição",
-        "url": "https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf"
+        "label": "PDF para a ficha PT-BR do D&D 5ª edição",
+        "title": "Baixe o PDF preenchível não oficial adaptado da ficha de personagem oficial para D&D 5ª edição",
+        "url": "https://drive.google.com/file/d/1YochPfr_kVtgxmORsDmzrXSotMfeYo4o/view"
       },
       "starwars-ffg": {
         "label": "PDF para Star Wars FFG",
@@ -42,11 +42,6 @@
         "title": "Veja o PDF oficial da ficha de personagem para SWADE na loja PEG",
         "url": "https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/"
       },
-      "5ePTBR": {
-        "label": "PDF para a ficha PT-BR do D&D 5ª edição",
-        "title": "Baixe o PDF preenchível não oficial adaptado da ficha de personagem oficial para D&D 5ª edição",
-        "url": "https://drive.google.com/file/d/1YochPfr_kVtgxmORsDmzrXSotMfeYo4o/view"
-      }
     }
   }
 }
