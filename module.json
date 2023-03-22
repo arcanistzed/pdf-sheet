@@ -48,6 +48,11 @@
             "name": "Français",
             "path": "languages/fr.json"
         }
+        {
+            "lang": "pt-BR",
+            "name": "Português (BR)",
+            "path": "languages/pt-br.json"
+        }
     ],
     "manifest": "This is auto replaced",
     "download": "This is auto replaced",
