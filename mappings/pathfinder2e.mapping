@@ -733,4 +733,18 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
    { "pdf": "Lvl9_Remain", "foundry": @items.filter(i=> i.type === 'spellcastingEntry' && i.spells.entry.system.prepared.value === 'spontaneous').map(i=> (i.spells.entry.system.slots.slot9.max > 0)?   i.spells.entry.system.slots.slot9.max - i.spells.entry.system.slots.slot9.value : '-' )[0] || '' },
    { "pdf": "Lvl10_Remain", "foundry": @items.filter(i=> i.type === 'spellcastingEntry' && i.spells.entry.system.prepared.value === 'spontaneous').map(i=> (i.spells.entry.system.slots.slot10.max > 0)?   i.spells.entry.system.slots.slot10.max - i.spells.entry.system.slots.slot10.value : '-' )[0] || '' },
 */
+
+   {"pdf": "FeatureFullDescription", "foundry": (@feats.filter(i=>i.id === "ancestryfeature").map(i=>i.id)[0]? '  --- Ancestry --- \n' +
+         @feats.filter(i=>i.id === "ancestryfeature").map(i=>i.feats)[0].map(a=> "  " + a.feat.name + ": " + a.feat.description).join('\n') : '') +
+    (@feats.filter(i=>i.id === "ancestry").map(i=>i.id)[0]? '\n\n  --- Ancestry Feats --- \n' +
+         @feats.filter(i=>i.id === "ancestry").map(i=>i.feats)[0].map(a=> "  " + a.feat.name + ": " + a.feat.description).join('\n') : '') +
+    (@feats.filter(i=>i.id === "classfeature").map(i=>i.id)[0]? '\n\n  --- Class --- \n' +
+         @feats.filter(i=>i.id === "classfeature").map(i=>i.feats)[0].map(a=> "  " + a.feat.name + ": " + a.feat.description).join('\n') : '') +
+    (@feats.filter(i=>i.id === "class").map(i=>i.id)[0]? '\n\n  --- Class Feats --- \n' +
+         @feats.filter(i=>i.id === "class").map(i=>i.feats)[0].map(a=> "  " + a.feat.name + ": " + a.feat.description).join('\n') : '') +
+    (@feats.filter(i=>i.id === "skill").map(i=>i.id)[0]? '\n\n  --- Skill Feats --- \n' +
+         @feats.filter(i=>i.id === "skill").map(i=>i.feats)[0].map(a=> "  " + a.feat.name + ": " + a.feat.description).join('\n') : '') +
+    (@feats.filter(i=>i.id === "general").map(i=>i.id)[0]? '\n\n  --- General Feats --- \n' +
+         @feats.filter(i=>i.id === "general").map(i=>i.feats)[0].map(a=> "  " + a.feat.name + ": " + a.feat.description).join('\n') : '') 
+    }
 ]
