@@ -10,9 +10,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
     { "pdf": "PlayerName", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
 
     { "pdf": "XP", "foundry": @system.details.xp.value + " / " + @system.details.xp.max },
+    /*
     { "pdf": "Ancestry_Heritage", "foundry": actor.items._source.filter(i => i.type === 'ancestry' || i.type === 'heritage').map(i => i.name).join(", ") },
     { "pdf": "Background", "foundry": actor.items._source.filter(i => i.type === 'background').map(i =>i.name) },
     { "pdf": "Class", "foundry": actor.items._source.filter(i => i.type === 'class').map(i =>i.name) },
+    */
+    { "pdf": "Ancestry_Heritage", "foundry": @ancestry.name + ', ' + @heritage.name },
+    { "pdf": "Background", "foundry": @background.name },
+    { "pdf": "Class", "foundry": @class.name },
     { "pdf": "Size", "foundry": @system.traits.size.value},
     { "pdf": "Alignment", "foundry": @system.details.alignment.value},
 
@@ -86,8 +91,11 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
 /* RESISTANCES - IMMUNITIES - CONDITIONS - WEAKNESSES*/
 
-    { "pdf": "Resistances_Immunities", "foundry": [@system.attributes.resistances.map(i => ' '+i.type +' '+ i.value), @system.attributes.immunities.map(i => i.type)].filter(x => String(x)).join(", ").trim()  },
+    { "pdf": "Resistances_Immunities", "foundry": ['R: ' + @system.attributes.resistances.map(i => ' '+i.type +' '+ i.value), '\nI: ' + @system.attributes.immunities.map(i => i.type)].filter(x => String(x)).join(", ").trim()  },
+    /*
     { "pdf": "Conditions", "foundry": actor.items._source.filter(i => i.type === 'condition').map(i =>i.name).join(", ") },
+    */
+    { "pdf": "Conditions", "foundry": @conditions.map(i =>i.name).join(", ") },
     { "pdf": "Weaknesses", "foundry": 'W: ' + @system.attributes.weaknesses.map(i => ' '+i.type +' '+ i.value).join(", ") + '\n' + actor.items._source.filter(i => i.type === 'effect').map(i =>i.name).join(", ")  },
 
 /* SAVES */
@@ -697,29 +705,53 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
    { "pdf": "Lvl10_Remain", "foundry": @items.filter(i=> i.type === 'spellcastingEntry' && i.spells.entry.system.prepared.value === 'spontaneous').map(i=> (i.spells.entry.system.slots.slot10.max > 0)?   i.spells.entry.system.slots.slot10.max - i.spells.entry.system.slots.slot10.value : '-' )[0] || '' },
 */
 
+/* ---------- OPTIONAL PAGE 5 ----------*/
+
    {"pdf": "AncestryFullDescription", "foundry": 
    ((@feats.filter(i=>i.id === "ancestryfeature").map(i=>i.id)[0]? '  --- Ancestry --- \n' +
          @feats.filter(i=>i.id === "ancestryfeature").map(i=>i.feats)[0].map(a=> "  [0] " + a.feat.name + ": " + a.feat.system.description.value).join('\n') : '') +
     (@feats.filter(i=>i.id === "ancestry").map(i=>i.id)[0]? '\n\n  --- Ancestry Feats --- \n' +
-         @feats.filter(i=>i.id === "ancestry").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('ancestry-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/(?<link>@UUID\[.*?\])/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
+         @feats.filter(i=>i.id === "ancestry").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('ancestry-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
     },
 
-    {"pdf": "SkillFullDescription", "foundry": 
+/* ---------- OPTIONAL PAGE 6 ----------*/
+
+{"pdf": "SkillFullDescription", "foundry": 
     ((@feats.filter(i=>i.id === "skill").map(i=>i.id)[0]? '\n\n  --- Skill Feats --- \n' +
-          @feats.filter(i=>i.id === "skill").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('skill-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/(?<link>@UUID\[.*?\])/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
+          @feats.filter(i=>i.id === "skill").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('skill-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
      },
 
-    {"pdf": "ClassFullDescription", "foundry": 
+/* ---------- OPTIONAL PAGE 7 ----------*/
+
+{"pdf": "ClassFullDescription", "foundry": 
    ((@feats.filter(i=>i.id === "classfeature").map(i=>i.id)[0]? '\n\n  --- Class --- \n' +
          @feats.filter(i=>i.id === "classfeature").map(i=>i.feats)[0].map(a=> '  [' + a.feat.system.level.value + '] ' + a.feat.name + ": " + a.feat.description).join('\n') : '') +
     (@feats.filter(i=>i.id === "class").map(i=>i.id)[0]? '\n\n  --- Class Feats --- \n' +
-         @feats.filter(i=>i.id === "class").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('class-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/(?<link>@UUID\[.*?\])/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
+         @feats.filter(i=>i.id === "class").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('class-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
     },
 
-    {"pdf": "ArchetypeGeneralFullDescription", "foundry": 
+/* ---------- OPTIONAL PAGE 8 ----------*/
+
+{"pdf": "ArchetypeGeneralFullDescription", "foundry": 
     ((@feats.filter(i=>i.id === "general").map(i=>i.id)[0]? '\n\n  --- General Feats --- \n' +
          @feats.filter(i=>i.id === "general").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('general-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '') + 
     (@feats.filter(i=>i.id === "archetype").map(i=>i.id)[0]? '\n\n  --- Archetype --- \n' +
-          @feats.filter(i=>i.id === "archetype").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('archetype-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/(?<link>@UUID\[.*?\])/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
-     }
+          @feats.filter(i=>i.id === "archetype").map(i=>i.feats)[0].map(a=> "  [" + a.id.replace('archetype-','') + "] " + a.feat.name + ": " + a.feat.description).join('\n') : '')).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')
+     },
+/* ---------- OPTIONAL PAGE 9 ----------*/
+
+{"pdf": "SpellsFullDescription", "foundry": 
+    (@items.filter(i=> i.type === 'spellcastingEntry')
+    .map(i=> ' --- ' + i.name + ' --- \n' +
+            'Slots: ' + (i.system.slots?.slot0?.max ?? '') + '/'+(i.system.slots?.slot1?.max ?? '') + '/'+(i.system.slots?.slot2?.max ?? '') + '/'+(i.system.slots?.slot3?.max ?? '') + 
+            '/'+(i.system.slots?.slot4?.max ?? '')  + '/'+(i.system.slots?.slot5?.max ?? '') + '/'+(i.system.slots?.slot6?.max ?? '') + '/'+(i.system.slots?.slot7?.max ?? '') + 
+            '/'+(i.system.slots?.slot8?.max ?? '') + '/'+(i.system.slots?.slot9?.max ?? '') + '/'+(i.system.slots?.slot10?.max ?? '') + '\n' +
+            ' Act Lvl  Mat Name\n' + 
+    i.spells.filter(a=>a.isCantrip===true || a.isCantrip === false)
+        .map ( b=>  ' [ '+ (  ( b.system.time.value === '1' || b.system.time.value === '2' ||  b.system.time.value === '3' )?   b.system.time.value  : '*'+b.system.time.value  )    +' ]'  +
+            (b.isCantrip? ' C ': ' L' +b.system.level.value) + ' (' + (b.system.components.material? 'm' : '  ') + (b.system.components.somatic? 's' : '  ') + (b.system.components.verbal? 'v' : '  ') + ') ' + 
+            b.name + ": " + b.system.description.value )
+        .join('\n')  ?? ''  
+    +' \n' ?? '' ).join('\n\n') ?? '' ).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')}
+
 ]
