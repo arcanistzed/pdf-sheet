@@ -610,10 +610,11 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
 /* ACTIONS AND ACTIVITIES */
 
-    { "pdf": "Actions", "foundry": ' Act\n --------- \n' + 
-[ (@items._source.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'action' ) .map(i => ' [ '+ i.system.actions.value +' ] ' + i.name || "" ).join('\n')  || '' ) ,
-(@items._source.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'free' ) .map(i => ' [ F ] ' + i.name || "" ).join('\n')  || '' ) ,
-(@items._source.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'reaction' ) .map(i =>  ' [ R ] ' +  i.name || "" ).join('\n')  || '' )  ].join('\n --------- \n') },
+    { "pdf": "Actions", "foundry": ' Action -----------------\n\n' + 
+    [ (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'action' ) .map(i => ' [ '+ i.system.actions.value +' ] ' + i.name || "" ).join('\n')  || '' ) ,
+    '\n Free Action -----------------\n', (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'free' ) .map(i => ' [F] ' + i.name || "" ).join('\n')  || '' ) ,
+    '\n Reaction -----------------\n', (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'reaction' ) .map(i => ' [R] ' + i.name || "" ).join('\n')  || '' ) ].join('\n') },
+
 
 
 /* ---------- PAGE 4 ----------*/
@@ -752,6 +753,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
             (b.isCantrip? ' C ': ' L' +b.system.level.value) + ' (' + (b.system.components.material? 'm' : '  ') + (b.system.components.somatic? 's' : '  ') + (b.system.components.verbal? 'v' : '  ') + ') ' + 
             b.name + ": " + b.system.description.value )
         .join('\n')  ?? ''  
-    +' \n' ?? '' ).join('\n\n') ?? '' ).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')}
+    +' \n' ?? '' ).join('\n\n') ?? '' ).replaceAll(/@UUID\[.*?\]/gis,'').replaceAll(/<.?p>/gis,'').replaceAll(/<.?strong>/gis,'')},
+
+    /* ---------- OPTIONAL PAGE 10 ----------*/
+
+{"pdf": "ActionsFullDescription", "foundry": ' Action -----------------\n\n' + 
+[ (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'action' ) .map(i => ' [ '+ i.system.actions.value +' ] ' + i.name + i.system.description.value || "" ).join('\n')  || '' ) ,
+'\n Free Action -----------------\n', (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'free' ) .map(i => ' [F] ' + i.name + i.system.description.value || "" ).join('\n')  || '' ) ,
+'\n Reaction -----------------\n', (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'reaction' ) .map(i => ' [R] ' + i.name + i.system.description.value || "" ).join('\n')  || '' ) ].join('\n') }
+
 
 ]
