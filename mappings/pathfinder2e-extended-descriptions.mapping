@@ -99,37 +99,48 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
 /* SAVES */
 
-    { "pdf": "FortSave", "foundry": '+'+@system.saves.fortitude.value},
-    { "pdf": "FortSave_ConMod", "foundry": ( @system.abilities.con.mod < 0 ? @system.abilities.con.mod :  '+'+ @system.abilities.con.mod ) || '' },
-    { "pdf": "FortSave_ProfMod", "foundry": @system.saves.fortitude._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
- { "pdf": "FortSave_ItemMod", "foundry": (@system.saves.fortitude._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier <= 0 ? '' : '+') + i.modifier) || '' ) + ( ( (@system.saves.fortitude._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) <= 0 ? '(' : '(+'  ) + ( @system.saves.fortitude._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) + ')'  ).replace('()', '')  },
-    { "pdf": "FortSave_T", "foundry": @system.saves.fortitude.rank === 1 || ''},
-    { "pdf": "FortSave_E", "foundry": @system.saves.fortitude.rank === 2 || ''},
-    { "pdf": "FortSave_M", "foundry": @system.saves.fortitude.rank === 3 || ''},
-    { "pdf": "FortSave_L", "foundry": @system.saves.fortitude.rank === 4 || ''},
+    { "pdf": "FortSave", "foundry": '+'+@saves.fortitude.mod},
+    { "pdf": "FortSave_ConMod", "foundry": ( @saves.fortitude.abilityModifier.signedValue) || '' },
+    { "pdf": "FortSave_ProfMod", "foundry": @saves.fortitude.modifiers.filter(i => i.type === 'proficiency').map(i =>i.signedValue) },
+ { "pdf": "FortSave_ItemMod", "foundry": function(){ const itemmod = (@saves.fortitude.modifiers.filter(i => i.type === 'item' && i.enabled ).map(i => i.modifier).reduce((a,b) => Math.max(a,b))); return itemmod<0 ? itemmod : '+'+itemmod;}() || '' },
+    { "pdf": "FortSave_T", "foundry": @saves.fortitude.rank === 1 || ''},
+    { "pdf": "FortSave_E", "foundry": @saves.fortitude.rank === 2 || ''},
+    { "pdf": "FortSave_M", "foundry": @saves.fortitude.rank === 3 || ''},
+    { "pdf": "FortSave_L", "foundry": @saves.fortitude.rank === 4 || ''},
 
-    { "pdf": "RefSave", "foundry": '+'+@system.saves.reflex.value},
-    { "pdf": "RefSave_DexMod", "foundry": ( @system.abilities.dex.mod < 0 ? @system.abilities.dex.mod :  '+'+ @system.abilities.dex.mod ) || '' },
-    { "pdf": "RefSave_ProfMod", "foundry": @system.saves.reflex._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
- { "pdf": "RefSave_ItemMod", "foundry": (@system.saves.reflex._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier <= 0 ? '' : '+') + i.modifier) || '' ) + ( ( (@system.saves.reflex._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) <= 0 ? '(' : '(+'  ) + ( @system.saves.reflex._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) + ')'  ).replace('()', '')  },
-    { "pdf": "RefSave_T", "foundry": @system.saves.reflex.rank === 1 || ''},
-    { "pdf": "RefSave_E", "foundry": @system.saves.reflex.rank === 2 || ''},
-    { "pdf": "RefSave_M", "foundry": @system.saves.reflex.rank === 3 || ''},
-    { "pdf": "RefSave_L", "foundry": @system.saves.reflex.rank === 4 || ''},
+    { "pdf": "RefSave", "foundry": '+'+@saves.reflex.mod},
+    { "pdf": "RefSave_DexMod", "foundry": ( @saves.reflex.abilityModifier.signedValue) || '' },
+    { "pdf": "RefSave_ProfMod", "foundry": @saves.reflex.modifiers.filter(i => i.type === 'proficiency').map(i =>i.signedValue) },
+ { "pdf": "RefSave_ItemMod", "foundry": function(){ const itemmod = (@saves.reflex.modifiers.filter(i => i.type === 'item' && i.enabled ).map(i => i.modifier).reduce((a,b) => Math.max(a,b))); return itemmod<0 ? itemmod : '+'+itemmod;}() || '' },
+    { "pdf": "RefSave_T", "foundry": @saves.reflex.rank === 1 || ''},
+    { "pdf": "RefSave_E", "foundry": @saves.reflex.rank === 2 || ''},
+    { "pdf": "RefSave_M", "foundry": @saves.reflex.rank === 3 || ''},
+    { "pdf": "RefSave_L", "foundry": @saves.reflex.rank === 4 || ''},
 
-    { "pdf": "WillSave", "foundry": '+'+@system.saves.will.value},
-    { "pdf": "WillSave_WisMod", "foundry": ( @system.abilities.wis.mod < 0 ? @system.abilities.wis.mod :  '+'+ @system.abilities.wis.mod ) || '' },
-    { "pdf": "WillSave_ProfMod", "foundry": @system.saves.will._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
- { "pdf": "WillSave_ItemMod", "foundry": (@system.saves.will._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier <= 0 ? '' : '+') + i.modifier) || '' ) + ( ( (@system.saves.will._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) <= 0 ? '(' : '(+'  ) + ( @system.saves.will._modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => i.modifier).reduce((a, b) => a + b, 0) || '' ) + ')'  ).replace('()', '')  },
-    { "pdf": "WillSave_T", "foundry": @system.saves.will.rank === 1 || ''},
-    { "pdf": "WillSave_E", "foundry": @system.saves.will.rank === 2 || ''},
-    { "pdf": "WillSave_M", "foundry": @system.saves.will.rank === 3 || ''},
-    { "pdf": "WillSave_L", "foundry": @system.saves.will.rank === 4 || ''},
+    { "pdf": "WillSave", "foundry": '+'+@saves.will.mod},
+    { "pdf": "WillSave_WisMod", "foundry": ( @saves.will.abilityModifier.signedValue) || '' },
+    { "pdf": "WillSave_ProfMod", "foundry": @saves.will.modifiers.filter(i => i.type === 'proficiency').map(i =>i.signedValue) },
+ { "pdf": "WillSave_ItemMod", "foundry": function(){ const itemmod = (@saves.will.modifiers.filter(i => i.type === 'item' && i.enabled ).map(i => i.modifier).reduce((a,b) => Math.max(a,b))); return itemmod<0 ? itemmod : '+'+itemmod;}() || '' },
+    { "pdf": "WillSave_T", "foundry": @saves.will.rank === 1 || ''},
+    { "pdf": "WillSave_E", "foundry": @saves.will.rank === 2 || ''},
+    { "pdf": "WillSave_M", "foundry": @saves.will.rank === 3 || ''},
+    { "pdf": "WillSave_L", "foundry": @saves.will.rank === 4 || ''},
 
     { "pdf": "SavesNotes", "foundry":
-' FOR: '+ @system.saves.fortitude._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' '+ (i.slug? i.slug : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier ) + ' \n' +
-' REF: '+ @system.saves.reflex._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' ' + (i.slug? i.slug : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )  + ' \n' +
-' WILL: '+ @system.saves.will._modifiers.filter(i => i.type === 'item' || i.type ===  'untyped' ).map(i => ' '+ (i.slug? i.slug : i.label) +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )  },
+' FOR: '+   (@saves.fortitude.modifiers.filter(i => i.type === 'item')[0] ? ('[Item]' + @saves.fortitude.modifiers.filter(i => i.type === 'item').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.fortitude.modifiers.filter(i => i.type === 'untyped')[0] ? ('[Untyped]' + @saves.fortitude.modifiers.filter(i => i.type === 'untyped').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.fortitude.modifiers.filter(i => i.type === 'status')[0] ? ('[Status]' + @saves.fortitude.modifiers.filter(i => i.type === 'status').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.fortitude.modifiers.filter(i => i.type === 'circumstance')[0] ? ('[Circum]' + @saves.fortitude.modifiers.filter(i => i.type === 'circumstance').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            ' \n' +
+' REF: '+   (@saves.reflex.modifiers.filter(i => i.type === 'item')[0] ? ('[Item]' + @saves.reflex.modifiers.filter(i => i.type === 'item').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.reflex.modifiers.filter(i => i.type === 'untyped')[0] ? ('[Untyped]' + @saves.reflex.modifiers.filter(i => i.type === 'untyped').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.reflex.modifiers.filter(i => i.type === 'status')[0] ? ('[Status]' + @saves.reflex.modifiers.filter(i => i.type === 'status').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.reflex.modifiers.filter(i => i.type === 'circumstance')[0] ? ('[Circum]' + @saves.reflex.modifiers.filter(i => i.type === 'circumstance').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            ' \n' +
+' WILL: '+  (@saves.will.modifiers.filter(i => i.type === 'item')[0] ? ('[Item]' + @saves.will.modifiers.filter(i => i.type === 'item').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.will.modifiers.filter(i => i.type === 'untyped')[0] ? ('[Untyped]' + @saves.will.modifiers.filter(i => i.type === 'untyped').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.will.modifiers.filter(i => i.type === 'status')[0] ? ('[Status]' + @saves.will.modifiers.filter(i => i.type === 'status').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '') +
+            (@saves.will.modifiers.filter(i => i.type === 'circumstance')[0] ? ('[Circum]' + @saves.will.modifiers.filter(i => i.type === 'circumstance').map(i => ' '+ i.label +' '+ ( i.modifier < 0 ? '' : '+') +i.modifier )) : '')  },
 
 /* PERCEPTION  */
 
