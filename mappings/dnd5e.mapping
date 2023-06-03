@@ -144,21 +144,21 @@
   { "pdf": "CP", "foundry": @system.currency.cp || "" },
   { "pdf": "ProficienciesLang", "foundry": (function() {
       let s = "";
-      let a = @system.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
+      let a = @system.traits.weaponProf?.value.map(x => game.dnd5e.config.weaponProficiencies[x]
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name).first();
       let b = @system.traits.weaponProf.custom.split(";").filter(x => String(x) && x?.length);
 
       if (a?.length > 0) { s = `${s}Weapons: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
+      a = @system.traits.armorProf?.value.map(x => game.dnd5e.config.armorProficiencies[x]
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
-      b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
+      b = @system.traits.armorProf?.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
+      a = @system.traits.toolProf?.value.map(x => game.dnd5e.config.toolProficiencies[x]
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).first();
-      b = @system.traits.toolProf.custom.split(";").filter(x => String(x) && x?.length);
+      b = @system.traits.toolProf?.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Tools: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
-      b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
+      a = @system.traits.languages?.value.map(x => game.dnd5e.config.languages[x]).first();
+      b = @system.traits.languages?.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
       return s;
     })()
