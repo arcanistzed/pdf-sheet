@@ -21,10 +21,10 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
     { "pdf": "Alignment", "foundry": @system.details.alignment.value},
 
     { "pdf": "Traits", "foundry":
-@system.traits.traits? [@system.traits.traits.value.join(", ").replace('humanoid','').replace(', ',''), @system.traits.traits.custom].filter(x => String(x)).join(", ")  :
-(@system.traits.value? [@system.traits.value.join(", ").replace('humanoid','').replace(', ',''), @system.traits.custom].filter(x => String(x)).join(", ") : '' ) },
+        @system.traits.traits? [@system.traits.traits.value.join(", ").replace('humanoid','').replace(', ',''), @system.traits.traits.custom].filter(x => String(x)).join(", ")  :
+            (@system.traits.value? [@system.traits.value.join(", ").replace('humanoid','').replace(', ',''), @system.traits.custom].filter(x => String(x)).join(", ") : '' ) },
 
-    { "pdf": "Deity", "foundry": @items._source.filter(i => i.type === 'deity').map(i => i.name) },
+    { "pdf": "Deity", "foundry": @diety.name) },
     { "pdf": "Level", "foundry": @system.details.level.value},
     { "pdf": "HeroPoints", "foundry": @system.resources.heroPoints.value + '/' + @system.resources.heroPoints.max},
 
@@ -91,11 +91,8 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 /* RESISTANCES - IMMUNITIES - CONDITIONS - WEAKNESSES*/
 
     { "pdf": "Resistances_Immunities", "foundry": ['R: ' + @system.attributes.resistances.map(i => ' '+i.type +' '+ i.value), '\nI: ' + @system.attributes.immunities.map(i => i.type)].filter(x => String(x)).join(", ").trim()  },
-    /*
-    { "pdf": "Conditions", "foundry": actor.items._source.filter(i => i.type === 'condition').map(i =>i.name).join(", ") },
-    */
     { "pdf": "Conditions", "foundry": @conditions.map(i =>i.name).join(", ") },
-    { "pdf": "Weaknesses", "foundry": 'W: ' + @system.attributes.weaknesses.map(i => ' '+i.type +' '+ i.value).join(", ") + '\n' + actor.items._source.filter(i => i.type === 'effect').map(i =>i.name).join(", ")  },
+    { "pdf": "Weaknesses", "foundry": 'W: ' + @system.attributes.weaknesses.map(i => ' '+i.type +' '+ i.value).join(", ")  },
 
 /* SAVES */
 
@@ -158,14 +155,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
 /* CLASS DC */
 
-    { "pdf": "ClassDC", "foundry": @system.attributes.classDC?.value},
-    { "pdf": "ClassDC_KeyMod", "foundry": @system.attributes.classDC?._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier) },
-    { "pdf": "ClassDC_ProfMod", "foundry": @system.attributes.classDC?._modifiers.filter(i => i.type === 'proficiency').map(i =>'+'+i.modifier) },
-    { "pdf": "ClassDC_ItemMod", "foundry": @system.attributes.classDC?._modifiers.filter(i => i.type !== 'ability' && i.type !== 'proficiency' && i.enabled ).map(i => ( i.modifier < 0 ? '' : '+') +i.modifier) + @system.attributes.perception.modifiers.filter(i =>  i.type !== 'ability' && i.type !== 'proficiency' && !i.enabled ).map(i => ( i.modifier < 0 ? '(' : '(+') +i.modifier+')') },
-    { "pdf": "ClassDC_T", "foundry": @system.attributes.classDC?.rank === 1 || ''},
-    { "pdf": "ClassDC_E", "foundry": @system.attributes.classDC?.rank === 2 || ''},
-    { "pdf": "ClassDC_M", "foundry": @system.attributes.classDC?.rank === 3 || ''},
-    { "pdf": "ClassDC_L", "foundry": @system.attributes.classDC?.rank === 4 || ''},
+    { "pdf": "ClassDC", "foundry": @classDC?.dc.value || ''},
+    { "pdf": "ClassDC_KeyMod", "foundry": @classDC?.modifiers.filter(i => i.type === 'ability').map(i => i.signedValue) },
+    { "pdf": "ClassDC_ProfMod", "foundry": @classDC?.modifiers.filter(i => i.type === 'proficiency').map(i =>i.signedValue) },
+    { "pdf": "ClassDC_ItemMod", "foundry": function(){ const itemmod = (@classDC?.modifiers.filter(i => i.type === 'item' && i.enabled ).map(i => i.modifier).reduce((a,b) => Math.max(a,b))); return itemmod<0 ? itemmod : '+'+itemmod;}() || '' },
+    { "pdf": "ClassDC_T", "foundry": @classDC?.rank === 1 || ''},
+    { "pdf": "ClassDC_E", "foundry": @classDC?.rank === 2 || ''},
+    { "pdf": "ClassDC_M", "foundry": @classDC?.rank === 3 || ''},
+    { "pdf": "ClassDC_L", "foundry": @classDC?.rank === 4 || ''},
 
 /* SPEED */
 
@@ -179,18 +176,18 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
     { "pdf": "Melee1_Name", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description'|| i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.slug)[0] || "" },
     { "pdf": "Melee1_AtkMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[0] || "" },
-    { "pdf": "Melee1_AtkStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
-    { "pdf": "Melee1_AtkProfMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee1_AtkStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.signedValue)[0] || ""  },
+    { "pdf": "Melee1_AtkProfMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => a.signedValue)[0] || ""  },
 
-    { "pdf": "Melee1_T", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Melee1_E", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || ""  )[0] }, 
-    { "pdf": "Melee1_M", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
-    { "pdf": "Melee1_L", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || ""  )[0] }, 
-    { "pdf": "Melee1_AtkItemMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee1_T", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Melee1_E", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || ""  )[0] }, 
+    { "pdf": "Melee1_M", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
+    { "pdf": "Melee1_L", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || ""  )[0] }, 
+    { "pdf": "Melee1_AtkItemMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'item' && a.enabled ).map(a => a.signedValue)[0] || ""  },
 
     { "pdf": "Melee1_Dice", "foundry":@system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&&  a.ready ).map(i => i.item.system.damage.dice + i.item.system.damage.die)[0] || '' },
 
-    { "pdf": "Melee1_DmgStrMod", "foundry":@system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[0]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee1_DmgStrMod", "foundry":@system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[0]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee1_DmgB", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.system.damage.damageType === 'bludgeoning')[0] || ''  },
     { "pdf": "Melee1_DmgP", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.system.damage.damageType === 'piercing')[0] || ''  },
@@ -202,18 +199,18 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
     { "pdf": "Melee2_Name", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.slug)[1] || "" },
     { "pdf": "Melee2_AtkMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[1] || "" },
-    { "pdf": "Melee2_AtkStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
-    { "pdf": "Melee2_AtkProfMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee2_AtkStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee2_AtkProfMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee2_T", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Melee2_E", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
-    { "pdf": "Melee2_M", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
-    { "pdf": "Melee2_L", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
-    { "pdf": "Melee2_AtkItemMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee2_T", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Melee2_E", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
+    { "pdf": "Melee2_M", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Melee2_L", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
+    { "pdf": "Melee2_AtkItemMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee2_Dice", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&&  a.ready ).map(i => i.item.system.damage.dice + i.item.system.damage.die)[1] || '' },
 
-    { "pdf": "Melee2_DmgStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[1]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee2_DmgStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[1]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee2_DmgB2", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.system.damage.damageType === 'bludgeoning')[1] || ''  },
     { "pdf": "Melee2_DmgP", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.system.damage.damageType === 'piercing')[1] || ''  },
@@ -225,18 +222,18 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
     { "pdf": "Melee3_Name", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.slug)[2] || "" },
     { "pdf": "Melee3_AtkMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[2] || "" },
-    { "pdf": "Melee3_AtkStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
-    { "pdf": "Melee3_AtkProfMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee3_AtkStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee3_AtkProfMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Melee3_T", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Melee3_E", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
-    { "pdf": "Melee3_M", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
-    { "pdf": "Melee3_L", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
-    { "pdf": "Melee3_AtkItemMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee3_T", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Melee3_E", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
+    { "pdf": "Melee3_M", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Melee3_L", "foundry":  @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
+    { "pdf": "Melee3_AtkItemMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee3_Dice", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&&  a.ready ).map(i => i.item.system.damage.dice + i.item.system.damage.die)[2] || '' },
 
-    { "pdf": "Melee3_DmgStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i._modifiers)[2]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Melee3_DmgStrMod", "foundry": @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description' )&& i.ready ).map(i => i.modifiers)[2]?.filter(a => a.ability === 'str' ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Melee3_DmgB", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.system.damage.damageType === 'bludgeoning')[2] || ''  },
     { "pdf": "Melee3_DmgP", "foundry": @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description' )&& a.ready ).map(i => i.item.system.damage.damageType === 'piercing')[2] || ''  },
@@ -249,14 +246,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
     { "pdf": "Ranged1_Name", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.slug)[0] || "" },
     { "pdf": "Ranged1_AtkMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[0] || "" },
-    { "pdf": "Ranged1_AtkDexMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
-    { "pdf": "Ranged1_AtkProfMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged1_AtkDexMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers )[0]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged1_AtkProfMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Ranged1_T", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Ranged1_E", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || ""  )[0] }, 
-    { "pdf": "Ranged1_M", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
-    { "pdf": "Ranged1_L", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || ""  )[0] }, 
-    { "pdf": "Ranged1_AtkItemMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[0]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged1_T", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Ranged1_E", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || ""  )[0] }, 
+    { "pdf": "Ranged1_M", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' ) || ""  )[0] }, 
+    { "pdf": "Ranged1_L", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' ) || ""  )[0] }, 
+    { "pdf": "Ranged1_AtkItemMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[0]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged1_Dice", "foundry": @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' &&  a.ready ).map(i => i.item.system.damage.dice + i.item.system.damage.die)[0] || '' },
 
@@ -270,14 +267,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
     { "pdf": "Ranged2_Name", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.slug)[1] || "" },
     { "pdf": "Ranged2_AtkMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[1] || "" },
-    { "pdf": "Ranged2_AtkDexMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
-    { "pdf": "Ranged2_AtkProfMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged2_AtkDexMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged2_AtkProfMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Ranged2_T", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Ranged2_E", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
-    { "pdf": "Ranged2_M", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
-    { "pdf": "Ranged2_L", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
-    { "pdf": "Ranged2_AtkItemMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[1]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged2_T", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Ranged2_E", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
+    { "pdf": "Ranged2_M", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Ranged2_L", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
+    { "pdf": "Ranged2_AtkItemMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[1]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged2_Dice", "foundry": @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' &&  a.ready ).map(i => i.item.system.damage.dice + i.item.system.damage.die)[1] || '' },
 
@@ -291,14 +288,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
     { "pdf": "Ranged3_Name", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.slug)[2] || "" },
     { "pdf": "Ranged3_AtkMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => ( i.totalModifier< 0 ? '' : '+') + i.totalModifier)[2] || "" },
-    { "pdf": "Ranged3_AtkDexMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
-    { "pdf": "Ranged3_AtkProfMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged3_AtkDexMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled ).map(a=> a.modifier < 0 ?  a.modifier :  '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged3_AtkProfMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a => '+'+ a.modifier)[0] || ""  },
 
-    { "pdf": "Ranged3_T", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
-    { "pdf": "Ranged3_E", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
-    { "pdf": "Ranged3_M", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
-    { "pdf": "Ranged3_L", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
-    { "pdf": "Ranged3_AtkItemMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i._modifiers)[2]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
+    { "pdf": "Ranged3_T", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
+    { "pdf": "Ranged3_E", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' )|| ""  )[0] }, 
+    { "pdf": "Ranged3_M", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel3'  ||  a.label === 'Master' )|| ""  )[0] }, 
+    { "pdf": "Ranged3_L", "foundry":  @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency' ).map(a =>  ( a.slug === 'PF2E.ProficiencyLevel4'  ||  a.label === 'Legendary' )|| ""  )[0] }, 
+    { "pdf": "Ranged3_AtkItemMod", "foundry": @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description' && i.ready ).map(i => i.modifiers)[2]?.filter(a => a.type === 'item' && a.enabled ).map(a => '+'+ a.modifier)[0] || ""  },
 
     { "pdf": "Ranged3_Dice", "foundry": @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description' &&  a.ready ).map(i => i.item.system.damage.dice + i.item.system.damage.die)[2] || '' },
 
@@ -334,7 +331,7 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
  /* SKILLS */
 
     { "pdf": "Acrobatics", "foundry": @system.skills.acr.value < 0 ? @system.skills.acr.value : '+'+@system.skills.acr.value || '' },
-    { "pdf": "Acro_Mod", "foundry": @system.skills.acr._modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
+    { "pdf": "Acro_Mod", "foundry": @system.skills.acr.modifiers.filter(i => i.type === 'ability').map(i => i.modifier < 0 ?  i.modifier :  '+'+ i.modifier)[0] || ""  },
     { "pdf": "Acro_ProfMod", "foundry": @system.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(i => '+'+ i.modifier)[0] || ""  },
     { "pdf": "Acro_T", "foundry":  @system.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.slug === 'PF2E.ProficiencyLevel1'  ||  a.label === 'Trained' ) || "" )[0] },
     { "pdf": "Acro_E", "foundry":  @system.skills.acr._modifiers.filter(i => i.type === 'proficiency').map(a =>  ( a.slug === 'PF2E.ProficiencyLevel2'  ||  a.label === 'Expert' ) || "" )[0] },
