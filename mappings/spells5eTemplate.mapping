@@ -1,4 +1,5 @@
 [
+  /* spell */
   { "pdf": "spell_name_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[0] || "error" },
   { "pdf": "spell_school_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[0] || "" },
   { "pdf": "spell_level_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[0] || 0 },
@@ -66,6 +67,75 @@
   { "pdf": "spell_range_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[3] || "" },
   { "pdf": "spell_casting_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[3] || "" },
   { "pdf": "spell_duration_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[3] || "" },
+
+   /* spell */
+  { "pdf": "spell_name_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[4] || "error" },
+  { "pdf": "spell_school_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[4] || "" },
+  { "pdf": "spell_level_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[4] || 0 },
+  { "pdf": "spell_description_05", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.description.value)[4] || "") },
+  { "pdf": "spell_verbal_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.vocal)[4] || 0 },
+  { "pdf": "spell_somatic_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.somatic)[4] || 0 },
+  { "pdf": "spell_material_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.material)[4] || 0 },
+  { "pdf": "spell_ritual_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.ritual)[4] || 0 },
+  { "pdf": "spell_concentration_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.concentration)[4] || 0 },
+  { "pdf": "spell_range_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[4] || "" },
+  { "pdf": "spell_casting_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[4] || "" },
+  { "pdf": "spell_duration_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[4] || "" },
+  /* spell */
+  { "pdf": "spell_name_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[5] || "error" },
+  { "pdf": "spell_school_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[5] || "" },
+  { "pdf": "spell_level_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[5] || 0 },
+  { "pdf": "spell_description_06", "foundry":  (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.description.value)[5] || "") },
+  { "pdf": "spell_verbal_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.vocal)[5] || 0 },
+  { "pdf": "spell_somatic_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.somatic)[5] || 0 },
+  { "pdf": "spell_material_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.material)[5] || 0 },
+  { "pdf": "spell_ritual_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.ritual)[5] || 0 },
+  { "pdf": "spell_concentration_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.concentration)[5] || 0 },
+  { "pdf": "spell_range_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[5] || "" },
+  { "pdf": "spell_casting_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[5] || "" },
+  { "pdf": "spell_duration_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[5] || "" },
+  /* spell */
+  { "pdf": "spell_name_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[6] || "error" },
+  { "pdf": "spell_school_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[6] || "" },
+  { "pdf": "spell_level_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[6] || 0 },
+  { "pdf": "spell_description_07", "foundry":  (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.description.value)[6] || "") },
+  { "pdf": "spell_verbal_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.vocal)[6] || 0 },
+  { "pdf": "spell_somatic_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.somatic)[6] || 0 },
+  { "pdf": "spell_material_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.material)[6] || 0 },
+  { "pdf": "spell_ritual_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.ritual)[6] || 0 },
+  { "pdf": "spell_concentration_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.concentration)[6] || 0 },
+  { "pdf": "spell_range_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[6] || "" },
+  { "pdf": "spell_casting_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[6] || "" },
+  { "pdf": "spell_duration_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[6] || "" },
+  /* spell */
+  { "pdf": "spell_name_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[7] || "error" },
+  { "pdf": "spell_school_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[7] || "" },
+  { "pdf": "spell_level_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[7] || 0 },
+  { "pdf": "spell_description_08", "foundry":  (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.description.value)[7] || "") },
+  { "pdf": "spell_verbal_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.vocal)[7] || 0 },
+  { "pdf": "spell_somatic_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.somatic)[7] || 0 },
+  { "pdf": "spell_material_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.material)[7] || 0 },
+  { "pdf": "spell_ritual_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.ritual)[7] || 0 },
+  { "pdf": "spell_concentration_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.components.concentration)[7] || 0 },
+  { "pdf": "spell_range_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[7] || "" },
+  { "pdf": "spell_casting_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[7] || "" },
+  { "pdf": "spell_duration_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[7] || "" },
 
   { "pdf": "", "foundry": "" }
 ]
