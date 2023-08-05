@@ -308,12 +308,12 @@
     { "pdf": "SonstigeWaffenProf", "foundry": Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").length > 0 || @system.traits.weaponProf.custom !== ""},
     { "pdf": "SonstigeWaffen", "foundry": Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").concat(@system.traits.weaponProf.custom.split(";")).join(", ")},
 
-    { "pdf": "Sprache1", "foundry": @system.traits.languages.value[0] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[0]]) : "" },
-    { "pdf": "Sprache2", "foundry": @system.traits.languages.value[1] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[1]]) : "" },
-    { "pdf": "Sprache3", "foundry": @system.traits.languages.value[2] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[2]]) : "" },
-    { "pdf": "Sprache4", "foundry": @system.traits.languages.value[3] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[3]]) : "" },
-    { "pdf": "Sprache5", "foundry": @system.traits.languages.value[4] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[4]]) : "" },
-    { "pdf": "Sprache6", "foundry": @system.traits.languages.value[5] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[5]]) : "" },
+    { "pdf": "Sprache1", "foundry": Array.from(@system.traits.languages.value)[0] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[0]]) : "" },
+    { "pdf": "Sprache2", "foundry": Array.from(@system.traits.languages.value)[1] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[1]]) : "" },
+    { "pdf": "Sprache3", "foundry": Array.from(@system.traits.languages.value)[2] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[2]]) : "" },
+    { "pdf": "Sprache4", "foundry": Array.from(@system.traits.languages.value)[3] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[3]]) : "" },
+    { "pdf": "Sprache5", "foundry": Array.from(@system.traits.languages.value)[4] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[4]]) : "" },
+    { "pdf": "Sprache6", "foundry": Array.from(@system.traits.languages.value)[5] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[5]]) : "" },
 
     { "pdf": "WerkzeugUndAndere1", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[0] || ""},
     { "pdf": "WerkzeugUndAndere2", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[1] || ""},
