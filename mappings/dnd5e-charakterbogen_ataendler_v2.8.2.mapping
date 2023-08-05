@@ -315,12 +315,18 @@
     { "pdf": "Sprache5", "foundry": Array.from(@system.traits.languages.value)[4] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[4]]) : "" },
     { "pdf": "Sprache6", "foundry": Array.from(@system.traits.languages.value)[5] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[5]]) : "" },
 
-    { "pdf": "WerkzeugUndAndere1", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[0] || ""},
-    { "pdf": "WerkzeugUndAndere2", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[1] || ""},
-    { "pdf": "WerkzeugUndAndere3", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[2] || ""},
-    { "pdf": "WerkzeugUndAndere4", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[3] || ""},
-    { "pdf": "WerkzeugUndAndere5", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[4] || ""},
-    { "pdf": "WerkzeugUndAndere6", "foundry": @system.traits.toolProf?.value.concat(@system.traits.toolProf?.custom.split(";"))[5] || ""},
+    { "pdf": "WerkzeugUndAndere1", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[0] || ""},
+    { "pdf": "WerkzeugUndAndere2", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[1] || ""},
+    { "pdf": "WerkzeugUndAndere3", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[2] || ""},
+    { "pdf": "WerkzeugUndAndere4", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[3] || ""},
+    { "pdf": "WerkzeugUndAndere5", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[4] || ""},
+    { "pdf": "WerkzeugUndAndere6", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[5] || ""},
 
     { "pdf": "Klassenmerkmale1", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i.name + " (" + i.system.source + ")").join('\n') },
 
