@@ -92,7 +92,7 @@
         },
 
         getPrimaryClassObj: function() {
-          const allClasses = @items.filter(i => i.type === 'class').map(i => i.data);
+          const allClasses = @items.filter(i => i.type === 'class').map(i => i);
           if (allClasses.length > 1) {
             const primary = allClasses.filter(i => i.flags?.srd5e?.isPrimaryClass);
             if (primary.length >= 1) {
@@ -103,24 +103,24 @@
         },
 
         getLocalizedClassAndSubclass: function(classItem) {
-          const sc = classItem.data.subclass;
+          const sc = classItem.system.subclass;
           return sc ? game.i18n.localize(classItem.name) + "/" + game.i18n.localize(sc) : game.i18n.localize(classItem.name);
         },
 
         getLocalizedClassAndSubclassAndLevel: function(classItem) {
-          return `${game.pdfsheet.getLocalizedClassAndSubclass(classItem)} ${classItem.data.levels}`;
+          return `${game.pdfsheet.getLocalizedClassAndSubclass(classItem)} ${classItem.system.levels}`;
         },
 
         getFeatsAndTraits: function() {
           let featsAndTraits = '';
-          @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i.data).forEach(i => {
+          @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i).forEach(i => {
             featsAndTraits += ("### " + i.name);
-            if (i.data?.source) {
-              featsAndTraits += (" (" + i.data.source + ")");
+            if (i.system?.source) {
+              featsAndTraits += (" (" + i.system.source + ")");
             }
             featsAndTraits += " ###\n";
-            if (i.data?.description?.value) {
-              featsAndTraits += game.pdfsheet.htmlToText(i.data.description.value);
+            if (i.system?.description?.value) {
+              featsAndTraits += game.pdfsheet.htmlToText(i.system.description.value);
               featsAndTraits += "\n";
             }
           });
@@ -260,11 +260,11 @@
     { "pdf": "Angriff4", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(4)) },
     { "pdf": "Angriff5", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(5)) },
 
-    { "pdf": "ÜB1", "foundry": game.pdfsheet.getNthAttackWeapon(1)?.data?.data?.proficient },
-    { "pdf": "ÜB2", "foundry": game.pdfsheet.getNthAttackWeapon(2)?.data?.data?.proficient },
-    { "pdf": "ÜB3", "foundry": game.pdfsheet.getNthAttackWeapon(3)?.data?.data?.proficient },
-    { "pdf": "ÜB4", "foundry": game.pdfsheet.getNthAttackWeapon(4)?.data?.data?.proficient },
-    { "pdf": "ÜB5", "foundry": game.pdfsheet.getNthAttackWeapon(5)?.data?.data?.proficient },
+    { "pdf": "ÜB1", "foundry": game.pdfsheet.getNthAttackWeapon(1)?.system?.proficient },
+    { "pdf": "ÜB2", "foundry": game.pdfsheet.getNthAttackWeapon(2)?.system?.proficient },
+    { "pdf": "ÜB3", "foundry": game.pdfsheet.getNthAttackWeapon(3)?.system?.proficient },
+    { "pdf": "ÜB4", "foundry": game.pdfsheet.getNthAttackWeapon(4)?.system?.proficient },
+    { "pdf": "ÜB5", "foundry": game.pdfsheet.getNthAttackWeapon(5)?.system?.proficient },
 
     { "pdf": "Attr1", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(1)) },
     { "pdf": "Attr2", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(2)) },
@@ -298,15 +298,15 @@
 
     { "pdf": "PassiveWeisheit", "foundry": @system.skills.prc.passive },
 
-    { "pdf": "LeichteRüstungProf", "foundry": @system.traits.armorProf.value.includes("lgt") },
-    { "pdf": "MittlereRüstungProf", "foundry": @system.traits.armorProf.value.includes("med") },
-    { "pdf": "SchwereRüstungProf", "foundry": @system.traits.armorProf.value.includes("hvy") },
-    { "pdf": "SchildeProf", "foundry": @system.traits.armorProf.value.includes("shl") },
+    { "pdf": "LeichteRüstungProf", "foundry": @system.traits.armorProf.value.has("lgt") },
+    { "pdf": "MittlereRüstungProf", "foundry": @system.traits.armorProf.value.has("med") },
+    { "pdf": "SchwereRüstungProf", "foundry": @system.traits.armorProf.value.has("hvy") },
+    { "pdf": "SchildeProf", "foundry": @system.traits.armorProf.value.has("shl") },
 
-    { "pdf": "EinfachWaffenProf", "foundry": @system.traits.weaponProf.value.includes("sim") },
-    { "pdf": "KriegswaffenProf", "foundry": @system.traits.weaponProf.value.includes("mar") },
-    { "pdf": "SonstigeWaffenProf", "foundry": @system.traits.weaponProf.value.filter(w => w !== "sim" && w !== "mar").length > 0 || @system.traits.weaponProf.custom !== ""},
-    { "pdf": "SonstigeWaffen", "foundry": @system.traits.weaponProf.value.filter(w => w !== "sim" && w !== "mar").concat(@system.traits.weaponProf.custom.split(";")).join(", ")},
+    { "pdf": "EinfachWaffenProf", "foundry": @system.traits.weaponProf.value.has("sim") },
+    { "pdf": "KriegswaffenProf", "foundry": @system.traits.weaponProf.value.has("mar") },
+    { "pdf": "SonstigeWaffenProf", "foundry": Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").length > 0 || @system.traits.weaponProf.custom !== ""},
+    { "pdf": "SonstigeWaffen", "foundry": Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").concat(@system.traits.weaponProf.custom.split(";")).join(", ")},
 
     { "pdf": "Sprache1", "foundry": @system.traits.languages.value[0] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[0]]) : "" },
     { "pdf": "Sprache2", "foundry": @system.traits.languages.value[1] ? game.i18n.localize(game.dnd5e.config.languages[@system.traits.languages.value[1]]) : "" },
