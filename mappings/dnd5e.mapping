@@ -168,10 +168,10 @@
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
       b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.toolProf?.value.map(x => game.dnd5e.config.toolProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).first();
-      b = @system.traits.toolProf?.custom.split(";").filter(x => String(x) && x?.length);
-      if (a?.length > 0) { s = `${s}Tools: ${a} ${b.join(', ')}\n`; }
+      a = Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).join(",");
+        console.log(a);
+      if (a?.length > 0) { s = `${s}Tools: ${a} \n`; }
       a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
       b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
