@@ -233,7 +233,6 @@ class Pdfconfig extends FormApplication {
 		console.group("PDF Sheet");
 		// Log Actor Data
 		console.log("Actor Data:", actor);
-		console.log("Actor Data Weapons:", actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage));
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
