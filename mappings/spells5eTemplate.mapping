@@ -1,5 +1,5 @@
 [
-  /* spell */
+  /* spell 1 */
   { "pdf": "spell_name_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[0] || "" },
   { "pdf": "spell_school_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[0] || "" },
   { "pdf": "spell_level_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[0] || 0 },
@@ -16,7 +16,7 @@
   { "pdf": "spell_range_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[0] || "" },
   { "pdf": "spell_casting_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[0] || "" },
   { "pdf": "spell_duration_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[0] || "" },
-  /* spell */
+  /* spell 2 */
   { "pdf": "spell_name_02", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[1] || "" },
   { "pdf": "spell_school_02", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[1] || "" },
   { "pdf": "spell_level_02", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[1] || 0 },
@@ -33,7 +33,7 @@
   { "pdf": "spell_range_02", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[1] || "" },
   { "pdf": "spell_casting_02", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[1] || "" },
   { "pdf": "spell_duration_02", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[1] || "" },
-  /* spell */
+  /* spell 3 */
   { "pdf": "spell_name_03", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[2] || "" },
   { "pdf": "spell_school_03", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[2] || "" },
   { "pdf": "spell_level_03", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[2] || 0 },
@@ -50,7 +50,7 @@
   { "pdf": "spell_range_03", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[2] || "" },
   { "pdf": "spell_casting_03", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[2] || "" },
   { "pdf": "spell_duration_03", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[2] || "" },
-  /* spell */
+  /* spell 4 */
   { "pdf": "spell_name_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[3] || "" },
   { "pdf": "spell_school_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[3] || "" },
   { "pdf": "spell_level_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[3] || 0 },
@@ -68,7 +68,7 @@
   { "pdf": "spell_casting_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[3] || "" },
   { "pdf": "spell_duration_04", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[3] || "" },
 
-   /* spell */
+   /* spell 5 */
   { "pdf": "spell_name_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[4] || "" },
   { "pdf": "spell_school_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[4] || "" },
   { "pdf": "spell_level_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[4] || 0 },
@@ -85,7 +85,7 @@
   { "pdf": "spell_range_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[4] || "" },
   { "pdf": "spell_casting_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[4] || "" },
   { "pdf": "spell_duration_05", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[4] || "" },
-  /* spell */
+  /* spell 6 */
   { "pdf": "spell_name_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[5] || "" },
   { "pdf": "spell_school_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[5] || "" },
   { "pdf": "spell_level_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[5] || 0 },
@@ -102,7 +102,7 @@
   { "pdf": "spell_range_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[5] || "" },
   { "pdf": "spell_casting_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[5] || "" },
   { "pdf": "spell_duration_06", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[5] || "" },
-  /* spell */
+  /* spell 7 */
   { "pdf": "spell_name_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[6] || "" },
   { "pdf": "spell_school_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[6] || "" },
   { "pdf": "spell_level_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[6] || 0 },
@@ -119,7 +119,7 @@
   { "pdf": "spell_range_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.range.value + " " + x.system.range.units)[6] || "" },
   { "pdf": "spell_casting_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.activation.cost + " " + x.system.activation.type)[6] || "" },
   { "pdf": "spell_duration_07", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.duration.value + " " + x.system.duration.units)[6] || "" },
-  /* spell */
+  /* spell 8 */
   { "pdf": "spell_name_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name)[7] || "" },
   { "pdf": "spell_school_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.school)[7] || "" },
   { "pdf": "spell_level_08", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.system.level)[7] || 0 },

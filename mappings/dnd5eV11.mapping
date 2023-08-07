@@ -74,7 +74,12 @@
   { "pdf": "Deception", "foundry": @system.skills.dec.total },
   { "pdf": "History", "foundry": @system.skills.his.total },
   { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
-  { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn1 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
   { "pdf": "Wpn1 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
       return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
@@ -83,9 +88,19 @@
   { "pdf": "Insight", "foundry": @system.skills.ins.total },
   { "pdf": "Intimidation", "foundry": @system.skills.itm.total },
   { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
-  { "pdf": "Wpn2 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn2 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
   { "pdf": "Wpn Name 3", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
-  { "pdf": "Wpn3 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn3 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
   { "pdf": "Check Box 11", "foundry": @system.abilities.str.proficient },
   { "pdf": "Check Box 18", "foundry": @system.abilities.dex.proficient },
   { "pdf": "Check Box 19", "foundry": @system.abilities.con.proficient },
@@ -153,10 +168,10 @@
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
       b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).first();
-      b = @system.traits.toolProf.custom.split(";").filter(x => String(x) && x?.length);
-      if (a?.length > 0) { s = `${s}Tools: ${a} ${b.join(', ')}\n`; }
+      a = Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).join(",");
+        console.log(a);
+      if (a?.length > 0) { s = `${s}Tools: ${a} \n`; }
       a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
       b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
