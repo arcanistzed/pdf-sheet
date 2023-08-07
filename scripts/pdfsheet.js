@@ -144,7 +144,7 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 // Add button to Actor Sheet for opening app
 Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	// If this is not a player character sheet, return without adding the button
-	if (!["character", "PC", "Player"].includes(sheet.actor.type ?? sheet.actor.type)) return;
+	if (!["character", "PC", "Player"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
 
 	buttons.unshift({
 		label: "Export to PDF",
@@ -233,6 +233,7 @@ class Pdfconfig extends FormApplication {
 		console.group("PDF Sheet");
 		// Log Actor Data
 		console.log("Actor Data:", actor);
+		console.log("Actor Data Weapons:", actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage));
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
@@ -240,7 +241,7 @@ class Pdfconfig extends FormApplication {
 		let mapping = game.settings.get(Pdfconfig.ID, "mapping");
 
 		// Parse dynamic keys
-		mapping = mapping.replaceAll("@", "actor.");
+		mapping = mapping.replaceAll("@", game.release.generation > 10 ? "actor." : "actor.data.");
 
 		// Log un-evaluated mapping
 		console.log("Raw mapping:", mapping);
