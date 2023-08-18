@@ -1,7 +1,7 @@
 [ /*
 Pathfinder2e character sheet mapping for Foundry VTT module 'Export Sheet to PDF' - 05/10/2022 - Kurko#1535
 Minimum requirements: Foundry VTT Version 9 | PF2e system version: 3.13.6
-Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
+Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
 */
 
 /* ---------- PAGE 1 ----------*/
@@ -20,23 +20,23 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 @system.traits.traits? [@system.traits.traits.value.join(", ").replace('humanoid','').replace(', ',''), @system.traits.traits.custom].filter(x => String(x)).join(", ")  :
 (@system.traits.value? [@system.traits.value.join(", ").replace('humanoid','').replace(', ',''), @system.traits.custom].filter(x => String(x)).join(", ") : '' ) },
 
-    { "pdf": "Deity", "foundry": @system.details.diety?.value },
+    { "pdf": "Deity", "foundry": @deity?.name ?? ""},
     { "pdf": "Level", "foundry": @system.details.level.value},
     { "pdf": "HeroPoints", "foundry": @system.resources.heroPoints.value + '/' + @system.resources.heroPoints.max},
 
 /* ABILITIES */
 
-    { "pdf": "STRENGTH", "foundry": @system.abilities.str.value},
+    { "pdf": "STRENGTH", "foundry": @system.abilities.str.value ?? ""},
     { "pdf": "STR", "foundry":  ( @system.abilities.str.mod < 0 ? @system.abilities.str.mod :  '+'+ @system.abilities.str.mod ) || '' },
-    { "pdf": "DEXTERITY", "foundry": @system.abilities.dex.value},
+    { "pdf": "DEXTERITY", "foundry": @system.abilities.dex.value ?? ""},
     { "pdf": "DEX", "foundry": ( @system.abilities.dex.mod < 0 ? @system.abilities.dex.mod :  '+'+ @system.abilities.dex.mod ) || '' },
-    { "pdf": "CONSTITUTION", "foundry": @system.abilities.con.value},
+    { "pdf": "CONSTITUTION", "foundry": @system.abilities.con.value ?? ""},
     { "pdf": "CON", "foundry": ( @system.abilities.con.mod < 0 ? @system.abilities.con.mod :  '+'+ @system.abilities.con.mod ) || '' },
-    { "pdf": "INTELLIGENCE", "foundry": @system.abilities.int.value},
+    { "pdf": "INTELLIGENCE", "foundry": @system.abilities.int.value ?? ""},
     { "pdf": "INT", "foundry": ( @system.abilities.int.mod < 0 ? @system.abilities.int.mod :  '+'+ @system.abilities.int.mod ) || '' },
-    { "pdf": "WISDOM", "foundry": @system.abilities.wis.value},
+    { "pdf": "WISDOM", "foundry": @system.abilities.wis.value ?? ""},
     { "pdf": "WIS", "foundry": ( @system.abilities.wis.mod < 0 ? @system.abilities.wis.mod :  '+'+ @system.abilities.wis.mod ) || '' },
-    { "pdf": "CHARISMA", "foundry": @system.abilities.cha.value},
+    { "pdf": "CHARISMA", "foundry": @system.abilities.cha.value ?? ""},
     { "pdf": "CHA", "foundry": ( @system.abilities.cha.mod < 0 ? @system.abilities.cha.mod :  '+'+ @system.abilities.cha.mod ) || '' },
 
 /* ATTRIBUTES */
@@ -78,7 +78,7 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
 /* SHIELD */
 
-    { "pdf": "AC_ShieldMod", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i =>i.system.armor.value)[0] || '' },
+    { "pdf": "AC_ShieldMod", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i =>i.system.acBonus)[0] || '' },
     { "pdf": "ShieldHardness", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i =>i.system.hardness)[0] || '-' },
     { "pdf": "ShieldMaxHP", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i =>i.system.hp.max)[0] || '-' },
     { "pdf": "ShieldBT", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i =>i.system.hp.brokenThreshold)[0] || '-' },
@@ -781,14 +781,14 @@ Fixed for Foundry VTT 10 | PF2e system version: 4.10.4
 
 {"pdf": "ActionsFullDescription", "foundry": 
 [   ' Action -----------------\n\n',
-    (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'action' ) .map(i => ' [ '+ i.system.actions.value +' ] ' + i.name + 
-        ((h)=> {const d = document.createElement("div"); d.innerHTML = h; return d.textContent.replaceAll(/.UUID\[.*?\]/gis,'') || d.innerText.replaceAll(/.UUID\[.*?\]/gis,'') || "";})(i.system.description.value)).join('\n') || ''),
+    (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'action' ) .map(i => ' [ '+ i.system.actions.value +' ] ' + i.name + ': ' +
+        ((h)=> {const d = document.createElement("div"); d.innerHTML = h; return d.textContent.replaceAll(/.UUID\[.*?\]/gis,'') || d.innerText.replaceAll(/.UUID\[.*?\]/gis,'') || "";})(i.system.description.value)).join('\n\n') || ''),
     '\n Free Action -----------------\n', 
-    (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'free' ) .map(i => ' [F] ' + i.name + 
-        ((h)=> {const d = document.createElement("div"); d.innerHTML = h; return d.textContent.replaceAll(/.UUID\[.*?\]/gis,'') || d.innerText.replaceAll(/.UUID\[.*?\]/gis,'') || "";})(i.system.description.value)).join('\n') || ''),
+    (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'free' ) .map(i => ' [F] ' + i.name +  ': ' +
+        ((h)=> {const d = document.createElement("div"); d.innerHTML = h; return d.textContent.replaceAll(/.UUID\[.*?\]/gis,'') || d.innerText.replaceAll(/.UUID\[.*?\]/gis,'') || "";})(i.system.description.value)).join('\n\n') || ''),
     '\n Reaction -----------------\n', 
-    (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'reaction' ) .map(i => ' [R] ' + i.name + 
-        ((h)=> {const d = document.createElement("div"); d.innerHTML = h; return d.textContent.replaceAll(/.UUID\[.*?\]/gis,'') || d.innerText.replaceAll(/.UUID\[.*?\]/gis,'') || "";})(i.system.description.value)).join('\n') || '')].join('\n') }
+    (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'reaction' ) .map(i => ' [R] ' + i.name +  ': ' +
+        ((h)=> {const d = document.createElement("div"); d.innerHTML = h; return d.textContent.replaceAll(/.UUID\[.*?\]/gis,'') || d.innerText.replaceAll(/.UUID\[.*?\]/gis,'') || "";})(i.system.description.value)).join('\n\n') || '')].join('\n') }
 
 
 ]
