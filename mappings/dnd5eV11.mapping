@@ -2,7 +2,7 @@
 [
   /* Page #1 */
   { "pdf": "ClassLevel", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.system.levels}`).join(' / ') },
-  { "pdf": "Background", "foundry": @items.find((item)=>item.type==='background').name },
+  { "pdf": "Background", "foundry": (@system.details.background ? @system.details.background : (@items.find((item)=>item.type==='background').name ? @items.find((item)=>item.type==='background').name : "") )},
   { "pdf": "PlayerName", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
   { "pdf": "CharacterName", "foundry": @name },
   { "pdf": "Race", "foundry": @system.details.race },
@@ -74,7 +74,12 @@
   { "pdf": "Deception", "foundry": @system.skills.dec.total },
   { "pdf": "History", "foundry": @system.skills.his.total },
   { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
-  { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn1 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
   { "pdf": "Wpn1 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
       return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
@@ -83,9 +88,19 @@
   { "pdf": "Insight", "foundry": @system.skills.ins.total },
   { "pdf": "Intimidation", "foundry": @system.skills.itm.total },
   { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
-  { "pdf": "Wpn2 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn2 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
   { "pdf": "Wpn Name 3", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
-  { "pdf": "Wpn3 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn3 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
   { "pdf": "Check Box 11", "foundry": @system.abilities.str.proficient },
   { "pdf": "Check Box 18", "foundry": @system.abilities.dex.proficient },
   { "pdf": "Check Box 19", "foundry": @system.abilities.con.proficient },
@@ -144,20 +159,20 @@
   { "pdf": "CP", "foundry": @system.currency.cp || "" },
   { "pdf": "ProficienciesLang", "foundry": (function() {
       let s = "";
-      let a = @system.traits.weaponProf?.value.map(x => game.dnd5e.config.weaponProficiencies[x]
+      let a = @system.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name).first();
       let b = @system.traits.weaponProf.custom.split(";").filter(x => String(x) && x?.length);
 
       if (a?.length > 0) { s = `${s}Weapons: ${a} ${b.join(', ')}\n`; }
-      a = Array.from(@system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)).join(', ');
+      a = @system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
       b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
-      a = Array.from(@system.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)).join(', ');
-      b = @system.traits.toolProf.custom.split(";").filter(x => String(x) && x?.length);
-      if (a?.length > 0) { s = `${s}Tools: ${a} ${b.join(', ')}\n`; }
-      a = Array.from(@system.traits.languages.value.map(x => game.dnd5e.config.languages[x])).join(', ');
+      a = Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).join(",");
+        console.log(a);
+      if (a?.length > 0) { s = `${s}Tools: ${a} \n`; }
+      a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
       b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
       return s;
@@ -178,12 +193,12 @@
   /* Page #2 */
 
   { "pdf": "CharacterName 2", "foundry": @name || "" },
-  { "pdf": "Age", "foundry": @system.details.age || "" },
-  { "pdf": "Height", "foundry": @system.details.height || "" },
-  { "pdf": "Weight", "foundry": @system.details.weight || "" },
-  { "pdf": "Eyes", "foundry": @system.details.eyes || "" },
-  { "pdf": "Skin", "foundry": @system.details.skin || "" },
-  { "pdf": "Hair", "foundry": @system.details.hair || "" },
+  { "pdf": "Age", "foundry": @flags["tidy5e-sheet"].age || "" },
+  { "pdf": "Height", "foundry": @flags["tidy5e-sheet"].height || "" },
+  { "pdf": "Weight", "foundry": @flags["tidy5e-sheet"].weight || "" },
+  { "pdf": "Eyes", "foundry": @flags["tidy5e-sheet"].eyes || "" },
+  { "pdf": "Skin", "foundry": @flags["tidy5e-sheet"].skin || "" },
+  { "pdf": "Hair", "foundry": @flags["tidy5e-sheet"].hair || "" },
   { "pdf": "Faction Symbol Image", "foundry": "" }, /* Images are not supported */
   { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
   { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */

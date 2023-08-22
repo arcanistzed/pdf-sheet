@@ -15,3 +15,4 @@ This directory contains mappings created by the community. Feel free to contribu
 * [Pathfinder 2e (extended)](./pathfinder2e-extended-descriptions.mapping) by `dyoung418#0658` - [PDF](https://drive.google.com/uc?export=download&id=18kg1iXG4NUajc3t4tTUrc4taD2F4tM1j)
 * [Dungeon Crawl Classics](./0LevelFillableSheet.mapping) by `@OrganicByte#6682` - [PDF](https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf)
 *  [SWADE - Savage Worlds Adventure Edition](./SWADE-SavageWorldsAdventureEdition.mapping) by `@Samcho#8710` - [PDF](https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/)
+*  [Starfinder](./sfrpg.mapping) by `@Beff#1513` - [PDF](https://cdn.discordapp.com/attachments/877667041119731734/1076448094897573928/Autofillable_CharacterSheet.pdf)
