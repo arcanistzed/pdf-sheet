@@ -1,0 +1,737 @@
+/* PDF: https://www.dnddeutsch.de/wp-content/uploads/2022/03/charakterbogen_ataendler_v2.8.1.pdf */
+[
+
+/* Page #1 */
+
+    { "pdf": "_helper_functions", "foundry": game.pdfsheet = {
+
+        abilityModToAttrOption: function(modifier) {
+          switch(modifier) {
+            case 'str': return 'Str';
+            case 'dex': return 'Ges';
+            case 'con': return 'Kon';
+            case 'int': return 'Int';
+            case 'wis': return 'Wei';
+            case 'cha': return 'Cha';
+          }
+          console.warn('bad ability modifier', modifier);
+          return '';
+        },
+
+        getNthAttackWeapon: function(itemNr) {
+          return @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[itemNr - 1] || '';
+        },
+
+        attackModifier: function(item) {
+          return item ? game.pdfsheet.abilityModToAttrOption(item.abilityMod) : '';
+        },
+
+        damageFormula: function(item) {
+          return item ? item.getDerivedDamageLabel()[0].formula || '' : '';
+        },
+
+        localizedDamageType: function(item) {
+          const dt = item ? item.getDerivedDamageLabel()[0].damageType : null;
+          return dt ? game.i18n.localize(game.dnd5e.config.damageTypes[dt]) : '';
+        },
+
+        localizedItemName: function(item) {
+          return item ? game.i18n.localize(item?.name) : '';
+        },
+
+        weaponRange: function(item) {
+          if (!item) return '';
+          const r = item.system.range;
+          return r.value + (r.long ? ("/" + r.long) : "") + (r.units ? (" " + r.units) : "");
+        },
+
+        weaponBonus: function(item) {
+          if (!item) return '';
+          const rd = item.getAttackToHit().rollData;
+          return (+rd.mod)+(+rd.prof)+(+rd.ammo);
+        },
+
+        htmlToText: function(html) {
+          return !html ? '' : html.replaceAll("\n", "")
+                     .replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n")
+                     .replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n")
+                     .replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n")
+                     .replaceAll(/<p[^>]*>/gms, "")
+                     .replaceAll(/<\/p>/gms, "\n")
+                     .replaceAll(/<li[^>]*>/gms, "• ")
+                     .replaceAll(/<\/li>/gms, "\n")
+                     .replaceAll(/<[^>]*>/gms, "")
+                     .replaceAll(/\u00a0/g, "");
+        },
+
+        splitIntoTwoParts: function(text, firstPartMinLength, ratio) {
+          if (!text) return '';
+          const len = text.length;
+          if (len <= firstPartMinLength) {
+            return [text, ''];
+          }
+          const splitIdx = len * ratio;
+          const p2 = text.substring(splitIdx);
+          const nlIdx = p2.indexOf('\n');
+          /* try splitting at newline: */
+          if (nlIdx >= 0 && nlIdx < 100) {
+            return [
+              text.substring(0, splitIdx + nlIdx),
+              p2.substring(nlIdx + 1)
+            ];
+          }
+          /* try splitting at space character: */
+          const spcIdx = p2.indexOf(' ');
+          if (spcIdx >= 0) {
+            return [
+              text.substring(0, splitIdx + spcIdx),
+              p2.substring(spcIdx + 1)
+            ];
+          }
+          return [text.substring(0, splitIdx), p2];
+        },
+
+        getPrimaryClassObj: function() {
+          const allClasses = @items.filter(i => i.type === 'class').map(i => i);
+          if (allClasses.length > 1) {
+            const primary = allClasses.filter(i => i.flags?.srd5e?.isPrimaryClass);
+            if (primary.length >= 1) {
+              return primary[0];
+            }
+          }
+          return allClasses[0];
+        },
+
+        getLocalizedClassAndSubclass: function(classItem) {
+          const sc = classItem.system.subclass;
+          return sc ? game.i18n.localize(classItem.name) + "/" + game.i18n.localize(sc) : game.i18n.localize(classItem.name);
+        },
+
+        getLocalizedClassAndSubclassAndLevel: function(classItem) {
+          return `${game.pdfsheet.getLocalizedClassAndSubclass(classItem)} ${classItem.system.levels}`;
+        },
+
+        getFeatsAndTraits: function() {
+          let featsAndTraits = '';
+          @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i).forEach(i => {
+            featsAndTraits += ("### " + i.name);
+            if (i.system?.source) {
+              featsAndTraits += (" (" + i.system.source + ")");
+            }
+            featsAndTraits += " ###\n";
+            if (i.system?.description?.value) {
+              featsAndTraits += game.pdfsheet.htmlToText(i.system.description.value);
+              featsAndTraits += "\n";
+            }
+          });
+          return featsAndTraits;
+        },
+
+    }},
+
+    { "pdf": "Charaktername_page1", "foundry": @name },
+    { "pdf": "Charaktername_page2", "foundry": @name },
+    
+    { "pdf": "KlasseUndStufe", "foundry": game.pdfsheet.getLocalizedClassAndSubclassAndLevel(game.pdfsheet.getPrimaryClassObj()) },
+    { "pdf": "Spielername", "foundry": Object.entries(@permission).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
+    { "pdf": "Hintergrund", "foundry": @system.details.background },
+    { "pdf": "Volk", "foundry": @system.details.race },
+    { "pdf": "Erfahrungspunkte", "foundry": @system.details.xp.value },
+
+    { "pdf": "Inspiration", "foundry": @system.attributes.inspiration ? "x" : "" },
+    { "pdf": "Übungsbonus", "foundry": @system.attributes.prof },
+
+    { "pdf": "Str", "foundry": @system.abilities.str.value },
+    { "pdf": "StrMod", "foundry": @system.abilities.str.mod },
+    { "pdf": "StrProf", "foundry": @system.abilities.str.proficient },
+    { "pdf": "StrRW", "foundry": @system.abilities.str.save },
+
+    { "pdf": "Ges", "foundry": @system.abilities.dex.value },
+    { "pdf": "GesMod", "foundry": @system.abilities.dex.mod },
+    { "pdf": "GesProf", "foundry": @system.abilities.dex.proficient },
+    { "pdf": "GesRW", "foundry": @system.abilities.dex.save },
+
+    { "pdf": "Kon", "foundry": @system.abilities.con.value },
+    { "pdf": "KonMod", "foundry": @system.abilities.con.mod },
+    { "pdf": "KonProf", "foundry": @system.abilities.con.proficient },
+    { "pdf": "KonRW", "foundry": @system.abilities.con.save },
+
+    { "pdf": "Int", "foundry": @system.abilities.int.value },
+    { "pdf": "IntMod", "foundry": @system.abilities.int.mod },
+    { "pdf": "IntProf", "foundry": @system.abilities.int.proficient },
+    { "pdf": "IntRW", "foundry": @system.abilities.int.save },
+
+    { "pdf": "Wei", "foundry": @system.abilities.wis.value },
+    { "pdf": "WeiMod", "foundry": @system.abilities.wis.mod },
+    { "pdf": "WeiProf", "foundry": @system.abilities.wis.proficient },
+    { "pdf": "WeiRW", "foundry": @system.abilities.wis.save },
+
+    { "pdf": "Cha", "foundry": @system.abilities.cha.value },
+    { "pdf": "ChaMod", "foundry": @system.abilities.cha.mod },
+    { "pdf": "ChaProf", "foundry": @system.abilities.cha.proficient },
+    { "pdf": "ChaRW", "foundry": @system.abilities.cha.save },
+
+    { "pdf": "Rüstungsklasse", "foundry": @system.attributes.ac.value },
+    { "pdf": "Initiative", "foundry": @system.attributes.init.total },
+    { "pdf": "Bewegungsrate", "foundry": Object.entries(@system.attributes.movement).filter(val => val[1]).map(val => val[0] === "hover" ? Object.entries(@system.attributes.movement)[6][0] : "" + val[0] !== "units" && val[0] !== "hover" ? val.join(": ") + Object.entries(@system.attributes.movement)[5][1] : "").filter(String).join(", ") },
+
+    { "pdf": "AkrobatikProf", "foundry": @system.skills.acr.value >= 1},
+    { "pdf": "AkrobatikExp", "foundry": @system.skills.acr.value >= 2},
+    { "pdf": "AkrobatikGes", "foundry": @system.skills.acr.total },
+
+    { "pdf": "ArkaneKundeProf", "foundry": @system.skills.arc.value >= 1},
+    { "pdf": "ArkaneKundeExp", "foundry": @system.skills.arc.value >= 2},
+    { "pdf": "ArkaneKundeInt", "foundry": @system.skills.arc.total },
+
+    { "pdf": "AthletikProf", "foundry": @system.skills.ath.value >= 1},
+    { "pdf": "AthletikExp", "foundry": @system.skills.ath.value >= 2},
+    { "pdf": "AthletikStr", "foundry": @system.skills.ath.total },
+
+    { "pdf": "AuftretenProf", "foundry": @system.skills.prf.value >= 1},
+    { "pdf": "AuftretenExp", "foundry": @system.skills.prf.value >= 2},
+    { "pdf": "AuftretenCha", "foundry": @system.skills.prf.total },
+
+    { "pdf": "EinschüchternProf", "foundry": @system.skills.itm.value >= 1},
+    { "pdf": "EinschüchternExp", "foundry": @system.skills.itm.value >= 2},
+    { "pdf": "EinschüchternCha", "foundry": @system.skills.itm.total },
+
+    { "pdf": "FingerfertigkeitProf", "foundry": @system.skills.slt.value },
+    { "pdf": "FingerfertigkeitGes", "foundry": @system.skills.slt.total },
+
+    { "pdf": "GeschichteProf", "foundry": @system.skills.his.value },
+    { "pdf": "GeschichteInt", "foundry": @system.skills.his.total },
+
+    { "pdf": "HeilkundeProf", "foundry": @system.skills.med.value },
+    { "pdf": "HeilkundeWei", "foundry": @system.skills.med.total },
+
+    { "pdf": "HeimlichkeitProf", "foundry": @system.skills.ste.value },
+    { "pdf": "HeimlichkeitGes", "foundry": @system.skills.ste.total },
+
+    { "pdf": "MitTierenUmgehenProf", "foundry": @system.skills.ani.value },
+    { "pdf": "MitTierenUmgehenWei", "foundry": @system.skills.ani.total },
+
+    { "pdf": "MotivErkennenProf", "foundry": @system.skills.ins.value },
+    { "pdf": "MotivErkennenWei", "foundry": @system.skills.ins.total },
+
+    { "pdf": "NachforschungenProf", "foundry": @system.skills.inv.value },
+    { "pdf": "NachforschungenInt", "foundry": @system.skills.inv.total },
+
+    { "pdf": "NaturkundeProf", "foundry": @system.skills.nat.value },
+    { "pdf": "NaturkundeInt", "foundry": @system.skills.nat.total },
+
+    { "pdf": "ReligionProf", "foundry": @system.skills.rel.value },
+    { "pdf": "ReligionInt", "foundry": @system.skills.rel.total },
+
+    { "pdf": "TäuschenProf", "foundry": @system.skills.dec.value },
+    { "pdf": "TäuschenCha", "foundry": @system.skills.dec.total },
+
+    { "pdf": "ÜberlebenskunstProf", "foundry": @system.skills.sur.value },
+    { "pdf": "ÜberlebenskunstWei", "foundry": @system.skills.sur.total },
+
+    { "pdf": "ÜberzeugenProf", "foundry": @system.skills.per.value },
+    { "pdf": "ÜberzeugenCha", "foundry": @system.skills.per.total },
+
+    { "pdf": "WahrnehmungProf", "foundry": @system.skills.prc.value },
+    { "pdf": "WahrnehmungWei", "foundry": @system.skills.prc.total },
+
+    { "pdf": "TrefferpunkteMaximum", "foundry": @system.attributes.hp.max },
+    { "pdf": "AktTrefferpunkte", "foundry": @system.attributes.hp.value },
+    { "pdf": "TempTrefferpunkte", "foundry": @system.attributes.hp.temp },
+
+    { "pdf": "GesamtTW", "foundry": @system.attributes.hd },
+    { "pdf": "Trefferwürfel", "foundry": @system.attributes.hd },
+
+    { "pdf": "RWErfolg1", "foundry": @system.attributes.death.success >= 1 },
+    { "pdf": "RWErfolg2", "foundry": @system.attributes.death.success >= 2 },
+    { "pdf": "RWErfolg3", "foundry": @system.attributes.death.success >= 3 },
+
+    { "pdf": "RWFehlschlag1", "foundry": @system.attributes.death.failure >= 1 },
+    { "pdf": "RWFehlschlag2", "foundry": @system.attributes.death.failure >= 2 },
+    { "pdf": "RWFehlschlag3", "foundry": @system.attributes.death.failure >= 3 },
+
+    { "pdf": "Persönlichkeitsmerkmale", "foundry": @system.details.trait },
+    { "pdf": "Ideale", "foundry": @system.details.ideal },
+    { "pdf": "Bindungen", "foundry": @system.details.bond },
+    { "pdf": "Makel", "foundry": @system.details.flaw },
+
+    { "pdf": "Angriff1", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Angriff2", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Angriff3", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Angriff4", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Angriff5", "foundry": game.pdfsheet.localizedItemName(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "ÜB1", "foundry": game.pdfsheet.getNthAttackWeapon(1)?.system?.proficient },
+    { "pdf": "ÜB2", "foundry": game.pdfsheet.getNthAttackWeapon(2)?.system?.proficient },
+    { "pdf": "ÜB3", "foundry": game.pdfsheet.getNthAttackWeapon(3)?.system?.proficient },
+    { "pdf": "ÜB4", "foundry": game.pdfsheet.getNthAttackWeapon(4)?.system?.proficient },
+    { "pdf": "ÜB5", "foundry": game.pdfsheet.getNthAttackWeapon(5)?.system?.proficient },
+
+    { "pdf": "Attr1", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Attr2", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Attr3", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Attr4", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Attr5", "foundry": game.pdfsheet.attackModifier(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "Reichweite1", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Reichweite2", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Reichweite3", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Reichweite4", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Reichweite5", "foundry": game.pdfsheet.weaponRange(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "Bonus1", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Bonus2", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Bonus3", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Bonus4", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Bonus5", "foundry": game.pdfsheet.weaponBonus(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "Schaden1", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Schaden2", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Schaden3", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Schaden4", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Schaden5", "foundry": game.pdfsheet.damageFormula(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "Schadentyp1", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(1)) },
+    { "pdf": "Schadentyp2", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(2)) },
+    { "pdf": "Schadentyp3", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(3)) },
+    { "pdf": "Schadentyp4", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(4)) },
+    { "pdf": "Schadentyp5", "foundry": game.pdfsheet.localizedDamageType(game.pdfsheet.getNthAttackWeapon(5)) },
+
+    { "pdf": "PassiveWeisheit", "foundry": @system.skills.prc.passive },
+
+    { "pdf": "LeichteRüstungProf", "foundry": @system.traits.armorProf.value.has("lgt") },
+    { "pdf": "MittlereRüstungProf", "foundry": @system.traits.armorProf.value.has("med") },
+    { "pdf": "SchwereRüstungProf", "foundry": @system.traits.armorProf.value.has("hvy") },
+    { "pdf": "SchildeProf", "foundry": @system.traits.armorProf.value.has("shl") },
+
+    { "pdf": "EinfachWaffenProf", "foundry": @system.traits.weaponProf.value.has("sim") },
+    { "pdf": "KriegswaffenProf", "foundry": @system.traits.weaponProf.value.has("mar") },
+    { "pdf": "SonstigeWaffenProf", "foundry": Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").length > 0 || @system.traits.weaponProf.custom !== ""},
+    { "pdf": "SonstigeWaffen", "foundry": Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").concat(@system.traits.weaponProf.custom.split(";")).join(", ")},
+
+    { "pdf": "Sprache1", "foundry": Array.from(@system.traits.languages.value)[0] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[0]]) : "" },
+    { "pdf": "Sprache2", "foundry": Array.from(@system.traits.languages.value)[1] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[1]]) : "" },
+    { "pdf": "Sprache3", "foundry": Array.from(@system.traits.languages.value)[2] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[2]]) : "" },
+    { "pdf": "Sprache4", "foundry": Array.from(@system.traits.languages.value)[3] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[3]]) : "" },
+    { "pdf": "Sprache5", "foundry": Array.from(@system.traits.languages.value)[4] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[4]]) : "" },
+    { "pdf": "Sprache6", "foundry": Array.from(@system.traits.languages.value)[5] ? game.i18n.localize(game.dnd5e.config.languages[Array.from(@system.traits.languages.value)[5]]) : "" },
+
+    { "pdf": "WerkzeugUndAndere1", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[0] || ""},
+    { "pdf": "WerkzeugUndAndere2", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[1] || ""},
+    { "pdf": "WerkzeugUndAndere3", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[2] || ""},
+    { "pdf": "WerkzeugUndAndere4", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[3] || ""},
+    { "pdf": "WerkzeugUndAndere5", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[4] || ""},
+    { "pdf": "WerkzeugUndAndere6", "foundry": Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[5] || ""},
+
+    { "pdf": "Klassenmerkmale1", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i.name + " (" + i.system.source + ")").join('\n') },
+
+/* Page #2 */
+
+    { "pdf": "Klassenmerkmale1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.getFeatsAndTraits(), 600, 0.25)[0] || "" },
+    { "pdf": "Klassenmerkmale2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.getFeatsAndTraits(), 600, 0.25)[1] || "" },
+
+    { "pdf": "HochsprungOhneAnlauf", "foundry": Math.round(((@system.abilities.str.mod + 3)*0.3)/2*10)/10 },
+    { "pdf": "HochsprungMitAnlauf", "foundry": Math.round(((@system.abilities.str.mod + 3)*0.3)*10)/10 },
+    { "pdf": "WeitsprungOhneAnlauf", "foundry": Math.round(((@system.abilities.str.value + 3)*0.3)/2*10)/10 },
+    { "pdf": "WeitsprungMitAnlauf", "foundry": Math.round(((@system.abilities.str.value + 3)*0.3)*10)/10 },
+
+    { "pdf": "Inventar1",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[0] || ""},
+    { "pdf": "Inventar2",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[1] || ""},
+    { "pdf": "Inventar3",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[2] || ""},
+    { "pdf": "Inventar4",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[3] || ""},
+    { "pdf": "Inventar5",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[4] || ""},
+    { "pdf": "Inventar6",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[5] || ""},
+    { "pdf": "Inventar7",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[6] || ""},
+    { "pdf": "Inventar8",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[7] || ""},
+    { "pdf": "Inventar9",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[8] || ""},
+    { "pdf": "Inventar10", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[9] || ""},
+    { "pdf": "Inventar11", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[10] || ""},
+    { "pdf": "Inventar12", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[11] || ""},
+    { "pdf": "Inventar13", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[12] || ""},
+    { "pdf": "Inventar14", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[13] || ""},
+    { "pdf": "Inventar15", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[14] || ""},
+    { "pdf": "Inventar16", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[15] || ""},
+    { "pdf": "Inventar17", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[16] || ""},
+    { "pdf": "Inventar18", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[17] || ""},
+    { "pdf": "Inventar19", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[18] || ""},
+    { "pdf": "Inventar20", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[19] || ""},
+    { "pdf": "Inventar21", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[20] || ""},
+    { "pdf": "Inventar22", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[21] || ""},
+    { "pdf": "Inventar23", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[22] || ""},
+    { "pdf": "Inventar24", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[23] || ""},
+    { "pdf": "Inventar25", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[24] || ""},
+    { "pdf": "Inventar26", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[25] || ""},
+    { "pdf": "Inventar27", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[26] || ""},
+    { "pdf": "Inventar28", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[27] || ""},
+    { "pdf": "Inventar29", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[28] || ""},
+    { "pdf": "Inventar30", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[29] || ""},
+    { "pdf": "Inventar31", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[30] || ""},
+    { "pdf": "Inventar32", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[31] || ""},
+    { "pdf": "Inventar33", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[32] || ""},
+    { "pdf": "Inventar34", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[33] || ""},
+    { "pdf": "Inventar35", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[34] || ""},
+    { "pdf": "Inventar36", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[35] || ""},
+    { "pdf": "Inventar37", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[36] || ""},
+    { "pdf": "Inventar38", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[37] || ""},
+    
+    { "pdf": "Inventar39", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.name)[0] || ""},
+    { "pdf": "Inventar40", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.name)[1] || ""},
+    { "pdf": "Inventar41", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.name)[2] || ""},
+
+    { "pdf": "InventarAnz1",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[0] || ""},
+    { "pdf": "InventarAnz2",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[1] || ""},
+    { "pdf": "InventarAnz3",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[2] || ""},
+    { "pdf": "InventarAnz4",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[3] || ""},
+    { "pdf": "InventarAnz5",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[4] || ""},
+    { "pdf": "InventarAnz6",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[5] || ""},
+    { "pdf": "InventarAnz7",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[6] || ""},
+    { "pdf": "InventarAnz8",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[7] || ""},
+    { "pdf": "InventarAnz9",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[8] || ""},
+    { "pdf": "InventarAnz10", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[9] || ""},
+    { "pdf": "InventarAnz11", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[10] || ""},
+    { "pdf": "InventarAnz12", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[11] || ""},
+    { "pdf": "InventarAnz13", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[12] || ""},
+    { "pdf": "InventarAnz14", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[13] || ""},
+    { "pdf": "InventarAnz15", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[14] || ""},
+    { "pdf": "InventarAnz16", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[15] || ""},
+    { "pdf": "InventarAnz17", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[16] || ""},
+    { "pdf": "InventarAnz18", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[17] || ""},
+    { "pdf": "InventarAnz19", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[18] || ""},
+    { "pdf": "InventarAnz20", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[19] || ""},
+    { "pdf": "InventarAnz21", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[20] || ""},
+    { "pdf": "InventarAnz22", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[21] || ""},
+    { "pdf": "InventarAnz23", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[22] || ""},
+    { "pdf": "InventarAnz24", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[23] || ""},
+    { "pdf": "InventarAnz25", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[24] || ""},
+    { "pdf": "InventarAnz26", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[25] || ""},
+    { "pdf": "InventarAnz27", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[26] || ""},
+    { "pdf": "InventarAnz28", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[27] || ""},
+    { "pdf": "InventarAnz29", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[28] || ""},
+    { "pdf": "InventarAnz30", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[29] || ""},
+    { "pdf": "InventarAnz31", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[30] || ""},
+    { "pdf": "InventarAnz32", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[31] || ""},
+    { "pdf": "InventarAnz33", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[32] || ""},
+    { "pdf": "InventarAnz34", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[33] || ""},
+    { "pdf": "InventarAnz35", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[34] || ""},
+    { "pdf": "InventarAnz36", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[35] || ""},
+    { "pdf": "InventarAnz37", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[36] || ""},
+    { "pdf": "InventarAnz38", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[37] || ""},
+
+    { "pdf": "InventarAnz39", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.quantity)[0] || ""},
+    { "pdf": "InventarAnz40", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.quantity)[1] || ""},
+    { "pdf": "InventarAnz41", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.quantity)[2] || ""},
+
+    { "pdf": "InventarGew1",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[0] || ""},
+    { "pdf": "InventarGew2",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[1] || ""},
+    { "pdf": "InventarGew3",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[2] || ""},
+    { "pdf": "InventarGew4",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[3] || ""},
+    { "pdf": "InventarGew5",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[4] || ""},
+    { "pdf": "InventarGew6",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[5] || ""},
+    { "pdf": "InventarGew7",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[6] || ""},
+    { "pdf": "InventarGew8",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[7] || ""},
+    { "pdf": "InventarGew9",  "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[8] || ""},
+    { "pdf": "InventarGew10", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[9] || ""},
+    { "pdf": "InventarGew11", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[10] || ""},
+    { "pdf": "InventarGew12", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[11] || ""},
+    { "pdf": "InventarGew13", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[12] || ""},
+    { "pdf": "InventarGew14", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[13] || ""},
+    { "pdf": "InventarGew15", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[14] || ""},
+    { "pdf": "InventarGew16", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[15] || ""},
+    { "pdf": "InventarGew17", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[16] || ""},
+    { "pdf": "InventarGew18", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[17] || ""},
+    { "pdf": "InventarGew19", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[18] || ""},
+    { "pdf": "InventarGew20", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[19] || ""},
+    { "pdf": "InventarGew21", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[20] || ""},
+    { "pdf": "InventarGew22", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[21] || ""},
+    { "pdf": "InventarGew23", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[22] || ""},
+    { "pdf": "InventarGew24", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[23] || ""},
+    { "pdf": "InventarGew25", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[24] || ""},
+    { "pdf": "InventarGew26", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[25] || ""},
+    { "pdf": "InventarGew27", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[26] || ""},
+    { "pdf": "InventarGew28", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[27] || ""},
+    { "pdf": "InventarGew29", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[28] || ""},
+    { "pdf": "InventarGew30", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[29] || ""},
+    { "pdf": "InventarGew31", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[30] || ""},
+    { "pdf": "InventarGew32", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[31] || ""},
+    { "pdf": "InventarGew33", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[32] || ""},
+    { "pdf": "InventarGew34", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[33] || ""},
+    { "pdf": "InventarGew35", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[34] || ""},
+    { "pdf": "InventarGew36", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[35] || ""},
+    { "pdf": "InventarGew37", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[36] || ""},
+    { "pdf": "InventarGew38", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[37] || ""},
+
+    { "pdf": "InventarGew39", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.weight)[0] || ""},
+    { "pdf": "InventarGew40", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.weight)[1] || ""},
+    { "pdf": "InventarGew41", "foundry": @items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.weight)[2] || ""},
+
+    { "pdf": "KM", "foundry": @system.currency.cp || ""},
+    { "pdf": "SM", "foundry": @system.currency.sp || ""},
+    { "pdf": "EM", "foundry": @system.currency.ep || ""},
+    { "pdf": "GM", "foundry": @system.currency.gp || ""},
+    { "pdf": "PM", "foundry": @system.currency.pp || ""},
+    
+/* Page #3 */
+
+    { "pdf": "Alter", "foundry": @system.details.age || "" },
+    { "pdf": "Körpergrösse", "foundry": @system.details.height || "" },
+    { "pdf": "SizeCat", "foundry": @system.traits.size === "tiny" ? 1 : @system.traits.size === "sm" ? 2 : @system.traits.size === "med" ? 3 : @system.traits.size === "lg" ? 5 : @system.traits.size === "huge" ? 6 : @system.traits.size === "grg" ? 7 : 0 },
+    { "pdf": "Gewicht", "foundry": @system.details.weight || ""},
+    { "pdf": "Augenfarbe", "foundry": @system.details.eyes || ""},
+    { "pdf": "Hautfarbe", "foundry": @system.details.skin || ""},
+    { "pdf": "Haarfarbe", "foundry": @system.details.hair || ""},
+    { "pdf": "Gesinnung", "foundry": @system.details.alignment || ""},
+    { "pdf": "Geschlecht", "foundry": @system.details.gender || ""},
+    { "pdf": "Aussehen", "foundry": @system.details.appearance || ""},
+
+    { "pdf": "Hintergrundgeschichte1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@system.details.biography?.value)?.trim(),400,0.5)[0] || "" },
+    { "pdf": "Hintergrundgeschichte2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@system.details.biography?.value)?.trim(),400,0.5)[1] || "" },
+
+    { "pdf": "Werdegang1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@system.details.description?.value)?.trim(),400,0.5)[0] || "" },
+    { "pdf": "Werdegang2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(@system.details.description?.value)?.trim(),400,0.5)[1] || "" },
+
+    { "pdf": "AttacksSpellcasting", "foundry": "" },
+    { "pdf": "Equipment", "foundry": @items.filter(i => !['feat', 'class', 'weapon', 'loot'].includes(i.type)).map(i => `${i.name} (${i.system.quantity})`).join(', ') },
+    { "pdf": "Features and Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.system.source}`).join('\n') },
+    { "pdf": "VerbOrgBild", "foundry": "" }, /* Images are not supported */
+    { "pdf": "VerbOrg1", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
+    { "pdf": "VerbOrgName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
+    { "pdf": "Treasure", "foundry": @items.filter(i => ['loot'].includes(i.type)).map(i => `${i.name} (${i.system.quantity})`).join(', ') },
+
+/* Page #4 */
+
+    { "pdf": "Zauberklasse", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name}`).join(' / ') }, /* Doesn't work with multiple classes properly */
+    { "pdf": "AttributZauberwirken", "foundry": @system.attributes.spellcasting.capitalize() || "" },
+    { "pdf": "ZauberRettungswurfSG", "foundry": @system.attributes.spelldc || "" },
+    { "pdf": "ZauberAngriffsbonus", "foundry": "+" + String(@system.attributes.spelldc - 8) }, /* Doesn't account for negative values */
+
+  /* Spellslots Max + counts*/
+    { "pdf": "ZauberplätzeGesamt1", "foundry": @system.spells.spell1.max || "" },
+    { "pdf": "ZauberplätzeVerbraucht1", "foundry": @system.spells.spell1.max - @system.spells.spell1.value || "" },
+    { "pdf": "ZauberplätzeGesamt2", "foundry": @system.spells.spell2.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht2", "foundry": @system.spells.spell2.max - @system.spells.spell2.value || "" },
+    { "pdf": "ZauberplätzeGesamt3", "foundry": @system.spells.spell3.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht3", "foundry": @system.spells.spell3.max - @system.spells.spell3.value || "" },
+    { "pdf": "ZauberplätzeGesamt4", "foundry": @system.spells.spell4.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht4", "foundry": @system.spells.spell4.max - @system.spells.spell4.value || "" },
+    { "pdf": "ZauberplätzeGesamt5", "foundry": @system.spells.spell5.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht5", "foundry": @system.spells.spell5.max - @system.spells.spell5.value || "" },
+    { "pdf": "ZauberplätzeGesamt6", "foundry": @system.spells.spell6.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht6", "foundry": @system.spells.spell6.max - @system.spells.spell6.value || "" },
+    { "pdf": "ZauberplätzeGesamt7", "foundry": @system.spells.spell7.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht7", "foundry": @system.spells.spell7.max - @system.spells.spell7.value || "" },
+    { "pdf": "ZauberplätzeGesamt8", "foundry": @system.spells.spell8.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht8", "foundry": @system.spells.spell8.max - @system.spells.spell8.value || "" },
+    { "pdf": "ZauberplätzeGesamt9", "foundry": @system.spells.spell9.max || "" }, 
+    { "pdf": "ZauberplätzeVerbraucht9", "foundry": @system.spells.spell9.max - @system.spells.spell9.value || "" },
+  /* Cantrips */
+    { "pdf": "Zaubertrick1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[0]?.name || "" },
+    { "pdf": "Zaubertrick2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[1]?.name || "" },
+    { "pdf": "Zaubertrick3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[2]?.name || "" },
+    { "pdf": "Zaubertrick4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[3]?.name || "" },
+    { "pdf": "Zaubertrick5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[4]?.name || "" },
+    { "pdf": "Zaubertrick6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[5]?.name || "" },
+    { "pdf": "Zaubertrick7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[6]?.name || "" },
+    { "pdf": "Zaubertrick8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0)[7]?.name || "" },
+  /* 1st Level Spells */
+    { "pdf": "Zauber1_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[0]?.name || "" },
+    { "pdf": "Zauber1_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[1]?.name || "" },
+    { "pdf": "Zauber1_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[2]?.name || "" },
+    { "pdf": "Zauber1_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[3]?.name || "" },
+    { "pdf": "Zauber1_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[4]?.name || "" },
+    { "pdf": "Zauber1_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[5]?.name || "" },
+    { "pdf": "Zauber1_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[6]?.name || "" },
+    { "pdf": "Zauber1_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[7]?.name || "" },
+    { "pdf": "Zauber1_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[8]?.name || "" },
+    { "pdf": "Zauber1_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[9]?.name || "" },
+    { "pdf": "Zauber1_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[10]?.name || "" },
+    { "pdf": "Zauber1_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[11]?.name || "" },
+    { "pdf": "Zauber1_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[12]?.name || "" },
+    { "pdf": "ZauberActive1_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[0]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[1]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[2]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[3]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[4]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[5]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[6]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[7]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[8]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[9]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[10]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[11]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive1_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[12]?.system.preparation.prepared || "" },
+  /* 2nd Level Spells */
+    { "pdf": "Zauber2_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.name || "" }, 
+    { "pdf": "Zauber2_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.name || "" }, 
+    { "pdf": "Zauber2_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.name || "" }, 
+    { "pdf": "Zauber2_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.name || "" }, 
+    { "pdf": "Zauber2_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.name || "" }, 
+    { "pdf": "Zauber2_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.name || "" }, 
+    { "pdf": "Zauber2_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.name || "" }, 
+    { "pdf": "Zauber2_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.name || "" }, 
+    { "pdf": "Zauber2_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.name || "" }, 
+    { "pdf": "Zauber2_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.name || "" }, 
+    { "pdf": "Zauber2_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[10]?.name || "" },
+    { "pdf": "Zauber2_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[11]?.name || "" },
+    { "pdf": "Zauber2_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[12]?.name || "" },
+    { "pdf": "ZauberActive2_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive2_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[10]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive2_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[11]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive2_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[12]?.system.preparation.prepared || "" },
+  /* 3rd Level Spells */
+    { "pdf": "Zauber3_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.name || "" }, 
+    { "pdf": "Zauber3_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.name || "" }, 
+    { "pdf": "Zauber3_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.name || "" }, 
+    { "pdf": "Zauber3_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.name || "" }, 
+    { "pdf": "Zauber3_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.name || "" }, 
+    { "pdf": "Zauber3_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.name || "" }, 
+    { "pdf": "Zauber3_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.name || "" }, 
+    { "pdf": "Zauber3_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.name || "" }, 
+    { "pdf": "Zauber3_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.name || "" }, 
+    { "pdf": "Zauber3_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.name || "" }, 
+    { "pdf": "Zauber3_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[10]?.name || "" },
+    { "pdf": "Zauber3_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[11]?.name || "" },
+    { "pdf": "Zauber3_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[12]?.name || "" },
+    { "pdf": "ZauberActive3_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive3_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[10]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive3_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[11]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive3_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[12]?.system.preparation.prepared || "" },
+  /* 4th Level Spells */
+    { "pdf": "Zauber4_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.name || "" }, 
+    { "pdf": "Zauber4_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.name || "" }, 
+    { "pdf": "Zauber4_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.name || "" }, 
+    { "pdf": "Zauber4_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.name || "" }, 
+    { "pdf": "Zauber4_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.name || "" }, 
+    { "pdf": "Zauber4_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.name || "" }, 
+    { "pdf": "Zauber4_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.name || "" }, 
+    { "pdf": "Zauber4_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.name || "" }, 
+    { "pdf": "Zauber4_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.name || "" }, 
+    { "pdf": "Zauber4_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.name || "" }, 
+    { "pdf": "Zauber4_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[10]?.name || "" },
+    { "pdf": "Zauber4_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[11]?.name || "" },
+    { "pdf": "Zauber4_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[12]?.name || "" },
+    { "pdf": "ZauberActive4_1",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_2",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_3",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_4",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_5",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_6",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_7",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_8",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_9",  "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_10", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.system.preparation.prepared || "" }, 
+    { "pdf": "ZauberActive4_11", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[10]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive4_12", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[11]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive4_13", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[12]?.system.preparation.prepared || "" },
+  /* 5th Level Spells */
+    { "pdf": "Zauber5_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[0]?.name || "" },
+    { "pdf": "Zauber5_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[1]?.name || "" },
+    { "pdf": "Zauber5_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[2]?.name || "" },
+    { "pdf": "Zauber5_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[3]?.name || "" },
+    { "pdf": "Zauber5_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[4]?.name || "" },
+    { "pdf": "Zauber5_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[5]?.name || "" },
+    { "pdf": "Zauber5_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[6]?.name || "" },
+    { "pdf": "Zauber5_8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[7]?.name || "" },
+    { "pdf": "Zauber5_9", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.name || "" },
+    { "pdf": "ZauberActive5_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[0]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[1]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[2]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[3]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[4]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[5]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[6]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[7]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive5_9", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.system.preparation.prepared || "" },   
+  /* 6th Level Spells */
+    { "pdf": "Zauber6_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.name || "" },
+    { "pdf": "Zauber6_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.name || "" },
+    { "pdf": "Zauber6_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[2]?.name || "" },
+    { "pdf": "Zauber6_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[3]?.name || "" },
+    { "pdf": "Zauber6_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[4]?.name || "" },
+    { "pdf": "Zauber6_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[5]?.name || "" },
+    { "pdf": "Zauber6_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[6]?.name || "" },
+    { "pdf": "Zauber6_8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[7]?.name || "" },
+    { "pdf": "Zauber6_9", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.name || "" },
+    { "pdf": "ZauberActive6_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[2]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[3]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[4]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[5]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[6]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[7]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive6_9", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.system.preparation.prepared || "" },   
+  /* 7th Level Spells */
+    { "pdf": "Zauber7_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.name || "" },
+    { "pdf": "Zauber7_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.name || "" },
+    { "pdf": "Zauber7_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[2]?.name || "" },
+    { "pdf": "Zauber7_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[3]?.name || "" },
+    { "pdf": "Zauber7_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[4]?.name || "" },
+    { "pdf": "Zauber7_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[5]?.name || "" },
+    { "pdf": "Zauber7_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[6]?.name || "" },
+    { "pdf": "Zauber7_8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[7]?.name || "" },
+    { "pdf": "Zauber7_9", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.name || "" },
+    { "pdf": "ZauberActive7_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[2]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[3]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[4]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[5]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[6]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_8", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[7]?.system.preparation.prepared || "" },   
+    { "pdf": "ZauberActive7_9", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.system.preparation.prepared || "" },   
+  /* 8th Level Spells */
+    { "pdf": "Zauber8_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[0]?.name || "" },
+    { "pdf": "Zauber8_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[1]?.name || "" },
+    { "pdf": "Zauber8_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[2]?.name || "" },
+    { "pdf": "Zauber8_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[3]?.name || "" },
+    { "pdf": "Zauber8_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[4]?.name || "" },
+    { "pdf": "Zauber8_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[5]?.name || "" },
+    { "pdf": "Zauber8_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[6]?.name || "" },
+    { "pdf": "ZauberActive8_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[0]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive8_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[1]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive8_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[2]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive8_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[3]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive8_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[4]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive8_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[5]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive8_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[6]?.system.preparation.prepared || "" },
+  /* 9th Level Spells */
+    { "pdf": "Zauber9_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[0]?.name || "" },
+    { "pdf": "Zauber9_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[1]?.name || "" },
+    { "pdf": "Zauber9_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[2]?.name || "" },
+    { "pdf": "Zauber9_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[3]?.name || "" },
+    { "pdf": "Zauber9_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[4]?.name || "" },
+    { "pdf": "Zauber9_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[5]?.name || "" },
+    { "pdf": "Zauber9_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[6]?.name || "" },
+    { "pdf": "ZauberActive9_1", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[0]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive9_2", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[1]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive9_3", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[2]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive9_4", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[3]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive9_5", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[4]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive9_6", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[5]?.system.preparation.prepared || "" },
+    { "pdf": "ZauberActive9_7", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[6]?.system.preparation.prepared || "" },
+
+    { "pdf": "", "foundry": "" }
+]

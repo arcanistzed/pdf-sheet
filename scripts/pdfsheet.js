@@ -240,7 +240,7 @@ class Pdfconfig extends FormApplication {
 		let mapping = game.settings.get(Pdfconfig.ID, "mapping");
 
 		// Parse dynamic keys
-		mapping = mapping.replaceAll("@", "actor.data.");
+		mapping = mapping.replaceAll("@", game.release.generation > 10 ? "actor." : "actor.data.");
 
 		// Log un-evaluated mapping
 		console.log("Raw mapping:", mapping);
