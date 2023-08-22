@@ -641,7 +641,7 @@ Minimum requirements: Foundry VTT Version 11 | PF2e system version: 5.3.2
     { "pdf": "Allies", "foundry": @system.details.biography.allies.replace('<p>', '').replace('</p>', '') || '' },
     { "pdf": "Enemies", "foundry": @system.details.biography.enemies.replace('<p>', '').replace('</p>', '') || '' },
 
-    { "pdf": "Organizations", "foundry": @system.details.biography.organizations?.replace('<p>', '').replace('</p>', '') || '' },
+    { "pdf": "Organizations", "foundry": @system.details.biography.organaizations?.replace('<p>', '').replace('</p>', '') || '' },
 
 
     /* ACTIONS AND ACTIVITIES */
