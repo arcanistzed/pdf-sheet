@@ -2,7 +2,7 @@
 [
   /* Page #1 */
   { "pdf": "ClassLevel", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.system.levels}`).join(' / ') },
-  { "pdf": "Background", "foundry": @system.details.background },
+  { "pdf": "Background", "foundry": @items.find((item)=>item.type==='background').name },
   { "pdf": "PlayerName", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
   { "pdf": "CharacterName", "foundry": @name },
   { "pdf": "Race", "foundry": @system.details.race },
@@ -149,15 +149,15 @@
       let b = @system.traits.weaponProf.custom.split(";").filter(x => String(x) && x?.length);
 
       if (a?.length > 0) { s = `${s}Weapons: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
+      a = Array.from(@system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)).join(', ');
       b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).first();
+      a = Array.from(@system.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)).join(', ');
       b = @system.traits.toolProf.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Tools: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
+      a = Array.from(@system.traits.languages.value.map(x => game.dnd5e.config.languages[x])).join(', ');
       b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
       return s;
