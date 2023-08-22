@@ -144,7 +144,7 @@
   { "pdf": "CP", "foundry": @system.currency.cp || "" },
   { "pdf": "ProficienciesLang", "foundry": (function() {
       let s = "";
-      let a = @system.traits.weaponProf?.value.map(x => game.dnd5e.config.weaponProficiencies[x]
+      let a = @system.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name).first();
       let b = @system.traits.weaponProf.custom.split(";").filter(x => String(x) && x?.length);
 
