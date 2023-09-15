@@ -72,6 +72,7 @@ Please share any mappings you create with me and I will include them in the modu
 ## Support
 
 Please consider supporting me on [my Patreon](https://patreon.com/arcanistzed) if you like my work. You can see a list of all my projects on [my website](https://arcanist.me).
+From september 2023 the module is mantained with the collaboration of Gioppo Luca, you can find me in the arcanistzed discord server
 
 ## Bugs
 
@@ -80,6 +81,10 @@ You can submit bugs via [Github Issues](https://github.com/arcanistzed/pdf-sheet
 ## Contact me
 
 Come hang out on my [my Discord server](https://discord.gg/AAkZWWqVav) or [click here to send me an email](mailto:arcanistzed@gmail.com?subject=Export%20Sheet%20to%20PDF%20module).
+
+## New extended character sheet for 5e
+If you use homebrew content or your player does not have access to all the playing data it is useful for the master to print the whole description of spells and equipment in the extended description.
+The classic character sheet does not allow to export that content, from now on the master can use the __dnd5ev11extended.mapping__ file together with the pdf in the __/pdf__ folder and give the players a complete character book with all the needed information.
 
 ## TODO
 

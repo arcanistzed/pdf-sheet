@@ -193,12 +193,12 @@
   /* Page #2 */
 
   { "pdf": "CharacterName 2", "foundry": @name || "" },
-  { "pdf": "Age", "foundry": @flags["tidy5e-sheet"].age || "" },
-  { "pdf": "Height", "foundry": @flags["tidy5e-sheet"].height || "" },
-  { "pdf": "Weight", "foundry": @flags["tidy5e-sheet"].weight || "" },
-  { "pdf": "Eyes", "foundry": @flags["tidy5e-sheet"].eyes || "" },
-  { "pdf": "Skin", "foundry": @flags["tidy5e-sheet"].skin || "" },
-  { "pdf": "Hair", "foundry": @flags["tidy5e-sheet"].hair || "" },
+  { "pdf": "Age", "foundry": @flags["tidy5e-sheet"]?.age || "" },
+  { "pdf": "Height", "foundry": @flags["tidy5e-sheet"]?.height || "" },
+  { "pdf": "Weight", "foundry": @flags["tidy5e-sheet"]?.weight || "" },
+  { "pdf": "Eyes", "foundry": @flags["tidy5e-sheet"]?.eyes || "" },
+  { "pdf": "Skin", "foundry": @flags["tidy5e-sheet"]?.skin || "" },
+  { "pdf": "Hair", "foundry": @flags["tidy5e-sheet"]?.hair || "" },
   { "pdf": "Faction Symbol Image", "foundry": "" }, /* Images are not supported */
   { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
   { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
