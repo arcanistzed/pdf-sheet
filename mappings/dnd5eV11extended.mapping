@@ -1,4 +1,4 @@
-/* PDF: https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf */
+/* PDF: https://github.com/arcanistzed/pdf-sheet/pdf/Extended character sheet 5e.pdf */
 [
   /* Page #1 */
   { "pdf": "ClassLevel", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.system.levels}`).join(' / ') },
