@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.23.1 - 15 Sept 2023
+
+**Merged pull requests:**
+
+- feature: new extended character sheet [\#86](https://github.com/arcanistzed/pdf-sheet/pull/86) ([gioppoluca](https://github.com/gioppoluca))
+
 ## 0.23.0 - 27 Ago 2023
 
 
