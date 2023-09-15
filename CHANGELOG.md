@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.23.0 - 27 Ago 2023
+
+
+**Fixed bugs:**
+
+- \[Bug\]: V11 dnd5e not working [\#81](https://github.com/arcanistzed/pdf-sheet/issues/81)
+- \[Bug\]: Empty PDF when exporting PF1e [\#75](https://github.com/arcanistzed/pdf-sheet/issues/75)
+- \[Bug\]: german dnd5e: PDF Sheet | Invalid mapping Javascript Object [\#67](https://github.com/arcanistzed/pdf-sheet/issues/67)
+
+**Merged pull requests:**
+
+- Update module.js for pushing next release [\#84](https://github.com/arcanistzed/pdf-sheet/pull/84) ([dyoung418](https://github.com/dyoung418))
+- Fixed for v11 and closes \#10 [\#82](https://github.com/arcanistzed/pdf-sheet/pull/82) ([gioppoluca](https://github.com/gioppoluca))
+- Fixes pf2e mapping and adds pf2e-extended with full feature descriptions [\#80](https://github.com/arcanistzed/pdf-sheet/pull/80) ([dyoung418](https://github.com/dyoung418))
+- Add starfinder mapping [\#70](https://github.com/arcanistzed/pdf-sheet/pull/70) ([Beff42](https://github.com/Beff42))
+- Background was not appearing [\#68](https://github.com/arcanistzed/pdf-sheet/pull/68) ([SebaSOFT](https://github.com/SebaSOFT))
+
 ## 0.22.4 - 4 Feb 2023
 
 DnD5e mapping: compatibility with Foundry v10.291 & DnD5e 2.1.4 (thanks to @SebaSOFT)
