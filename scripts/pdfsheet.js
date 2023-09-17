@@ -53,7 +53,6 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
 			/* global ace */
-
 			// Create an editor
 			newTextBox = document.createElement("div");
 			editor = ace.edit(newTextBox);
@@ -74,6 +73,26 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 			editor.getSession().on(
 				"changeAnnotation",
 				debounce(() => editor.getSession().setAnnotations(), 1)
+			);
+			newTextBoxNPC = document.createElement("div");
+			editorNPC = ace.edit(newTextBoxNPC);
+
+			// Set to the default options
+			editorNPC.setOptions(ace.userSettings);
+
+			// Set to JavaScript mode
+			editorNPC.session.setMode("ace/mode/javascript");
+
+			// Copy the value from the old textbox into the Ace Editor
+			editorNPC.setValue(oldTextBoxNPC.value);
+
+			// After a short wait (to make sure the editor is loaded), beautify the editor contents
+			setTimeout(() => editorNPC.execCommand("beautify"), 500);
+
+			// Hide annotations
+			editorNPC.getSession().on(
+				"changeAnnotation",
+				debounce(() => editorNPC.getSession().setAnnotations(), 1)
 			);
 		} else {
 			// Otherwise create new textarea
