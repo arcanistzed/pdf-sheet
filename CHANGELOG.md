@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.24.0 - 17 Sept 2023
+
+**Merged pull requests:**
+
+- feature: NPC sheet export [\#90](https://github.com/arcanistzed/pdf-sheet/pull/90) ([gioppoluca](https://github.com/gioppoluca))
+
 ## 0.23.1 - 15 Sept 2023
 
 **Merged pull requests:**
