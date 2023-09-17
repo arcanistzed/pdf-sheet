@@ -11,6 +11,15 @@ Hooks.on("init", () => {
 		default: "[]",
 	});
 
+	game.settings.register(Pdfconfig.ID, "mapping-npc", {
+		name: "pdfsheet.settings.mapping-npc.Name",
+		hint: "pdfsheet.settings.mapping-npc.Hint",
+		scope: "world",
+		config: true,
+		type: String,
+		default: "[]",
+	});
+
 	if (game.version && isNewerVersion(game.version, "9.230")) {
 		game.keybindings.register(Pdfconfig.ID, "showConfig", {
 			name: "Show Config",
@@ -35,10 +44,15 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 		// Get the old text box
 		const oldTextBox = html[0].querySelector("[name='pdf-sheet.mapping']");
 
+		// NPC part (just duplicate the previous fields)
+		let editorNPC, newTextBoxNPC;
+
+		// Get the old text box
+		const oldTextBoxNPC = html[0].querySelector("[name='pdf-sheet.mapping-npc']");
+
 		// If Ace Library is enabled use an Ace Editor
 		if (game.modules.get("acelib")?.active) {
 			/* global ace */
-
 			// Create an editor
 			newTextBox = document.createElement("div");
 			editor = ace.edit(newTextBox);
@@ -60,12 +74,37 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 				"changeAnnotation",
 				debounce(() => editor.getSession().setAnnotations(), 1)
 			);
+			newTextBoxNPC = document.createElement("div");
+			editorNPC = ace.edit(newTextBoxNPC);
+
+			// Set to the default options
+			editorNPC.setOptions(ace.userSettings);
+
+			// Set to JavaScript mode
+			editorNPC.session.setMode("ace/mode/javascript");
+
+			// Copy the value from the old textbox into the Ace Editor
+			editorNPC.setValue(oldTextBoxNPC.value);
+
+			// After a short wait (to make sure the editor is loaded), beautify the editor contents
+			setTimeout(() => editorNPC.execCommand("beautify"), 500);
+
+			// Hide annotations
+			editorNPC.getSession().on(
+				"changeAnnotation",
+				debounce(() => editorNPC.getSession().setAnnotations(), 1)
+			);
 		} else {
 			// Otherwise create new textarea
 			newTextBox = document.createElement("textarea");
 
 			// Copy the value from the old textbox into the new one
 			newTextBox.value = oldTextBox.value;
+			// Otherwise create new textarea NPC
+			newTextBoxNPC = document.createElement("textarea");
+
+			// Copy the value from the old textbox into the new one
+			newTextBoxNPC.value = oldTextBoxNPC.value;
 		}
 
 		// Don't show the old textbox
@@ -80,17 +119,37 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 		// Insert the new textbox right after the old one
 		oldTextBox.after(newTextBox);
 
+		// Don't show the old textbox NPC
+		oldTextBoxNPC.style.display = "none";
+
+		// Give the editor some height
+		newTextBoxNPC.style.height = "20em";
+
+		// Make the editor take up the full width
+		oldTextBoxNPC.parentElement.style.flex = "100%";
+
+		// Insert the new textbox right after the old one
+		oldTextBoxNPC.after(newTextBoxNPC);
+
 		if (game.modules.get("acelib")?.active) {
 			// Update whenever the ace editor changes
 			editor.on("change", () => {
 				// Copy the value from the ace editor to the old textbox
 				oldTextBox.value = editor.getValue();
 			});
+			editorNPC.on("change", () => {
+				// Copy the value from the ace editor to the old textbox
+				oldTextBoxNPC.value = editorNPC.getValue();
+			});
 		} else {
 			// Update whenever the new textbox changes
 			newTextBox.addEventListener("change", () => {
 				// Copy the value from the new textbox to the old one
 				oldTextBox.value = newTextBox.value;
+			});
+			newTextBoxNPC.addEventListener("change", () => {
+				// Copy the value from the new textbox to the old one
+				oldTextBoxNPC.value = newTextBoxNPC.value;
 			});
 		}
 
@@ -109,6 +168,28 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 				// Create the option
 				const option = document.createElement("option");
 				mappingSelect.append(option);
+
+				// Add just the name of the system as the text
+				name = name.split("/").at(-1).replace(".mapping", "");
+				option.innerHTML = name;
+			});
+		});
+
+		// Create mapping select menu NPC
+		const mappingSelectNPC = document.createElement("select");
+		mappingSelectNPC.style.margin = "10px 0";
+		oldTextBoxNPC.parentNode.before(mappingSelectNPC);
+
+		// Browse and get list of included mapping files
+		FilePicker.browse("data", "modules/pdf-sheet/mappings", { extensions: [".mapping"] }).then(results => {
+			// Add the default option first
+			results.files.unshift("");
+
+			// Add options for each included mapping
+			results.files.forEach(name => {
+				// Create the option
+				const option = document.createElement("option");
+				mappingSelectNPC.append(option);
 
 				// Add just the name of the system as the text
 				name = name.split("/").at(-1).replace(".mapping", "");
@@ -138,13 +219,34 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 				newTextBox.value = mapping;
 			}
 		});
+		mappingSelectNPC.addEventListener("change", async () => {
+			// Fetch selected mapping if not empty
+			const mapping = mappingSelectNPC.value
+				? await fetch(getRoute(`/modules/pdf-sheet/mappings/${mappingSelectNPC.value}.mapping`)).then(response =>
+						response.text()
+				  )
+				: "";
+
+			// Copy the mapping to the old text box
+			oldTextBoxNPC.value = mapping;
+			if (game.modules.get("acelib")?.active) {
+				// Copy the mapping to the ace editor
+				editorNPC.setValue(mapping);
+			} else {
+				// Copy the mapping to the new textbox
+				newTextBoxNPC.value = mapping;
+			}
+		});
 	}
 });
 
 // Add button to Actor Sheet for opening app
 Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
+	console.log("check the sheet")
+	console.log(sheet)
+	console.log(sheet.actor)
 	// If this is not a player character sheet, return without adding the button
-	if (!["character", "PC", "Player"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
+	if (!["character", "PC", "Player", "npc"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
 
 	buttons.unshift({
 		label: "Export to PDF",
@@ -237,10 +339,21 @@ class Pdfconfig extends FormApplication {
 		console.log("PDF fields:", pdfFields);
 
 		// Get mapping from settings
-		let mapping = game.settings.get(Pdfconfig.ID, "mapping");
+		let mapping = ""
+		
+		if (["character", "PC", "Player"].includes(actor.type ?? actor.data.type)) {
+			console.log("got mapping for PC")
+			mapping = game.settings.get(Pdfconfig.ID, "mapping");
+		}
+		if (["npc"].includes(actor.type ?? actor.data.type)) {
+			console.log("got mapping for NPC")
+			mapping = game.settings.get(Pdfconfig.ID, "mapping-npc");
+		}
+
 
 		// Parse dynamic keys
 		mapping = mapping.replaceAll("@", game.release.generation > 10 ? "actor." : "actor.data.");
+
 
 		// Log un-evaluated mapping
 		console.log("Raw mapping:", mapping);
