@@ -1,0 +1,200 @@
+/* PDF: https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf */
+[
+  { "pdf": "NpcName", "foundry": @name },
+  { "pdf": "Race", "foundry": @system.details.race },
+  { "pdf": "Type", "foundry": @system.details.type.value + " (" + game.dnd5e.config.actorSizes[@system.traits.size] + ")" + " - " + @system.details.alignment},
+  { "pdf": "str", "foundry": @system.abilities.str.value },
+  { "pdf": "STRmod", "foundry": @system.abilities.str.mod + " (sv: " + @system.abilities.str.save + ")"},
+  { "pdf": "dex", "foundry": @system.abilities.dex.value },
+  { "pdf": "DEXmod", "foundry": @system.abilities.dex.mod + " (sv: " + @system.abilities.dex.save + ")" },
+  { "pdf": "con", "foundry": @system.abilities.con.value },
+  { "pdf": "CONmod", "foundry": @system.abilities.con.mod + " (sv: " + @system.abilities.con.save + ")" },
+  { "pdf": "int", "foundry": @system.abilities.int.value },
+  { "pdf": "INTmod", "foundry": @system.abilities.int.mod + " (sv: " + @system.abilities.int.save + ")" },
+  { "pdf": "wis", "foundry": @system.abilities.wis.value },
+  { "pdf": "WISmod", "foundry": @system.abilities.wis.mod + " (sv: " + @system.abilities.wis.save + ")" },
+  { "pdf": "cha", "foundry": @system.abilities.cha.value },
+  { "pdf": "CHAmod", "foundry": @system.abilities.cha.mod + " (sv: " + @system.abilities.cha.save + ")" },
+  { "pdf": "str-prof", "foundry": @system.abilities.str.proficient },
+  { "pdf": "dex-prof", "foundry": @system.abilities.dex.proficient },
+  { "pdf": "con-prof", "foundry": @system.abilities.con.proficient },
+  { "pdf": "int-prof", "foundry": @system.abilities.int.proficient },
+  { "pdf": "wis-prof", "foundry": @system.abilities.wis.proficient },
+  { "pdf": "cha-prof", "foundry": @system.abilities.cha.proficient },
+  { "pdf": "ProfBonus", "foundry": @system.attributes.prof },
+  { "pdf": "AC", "foundry": @system.attributes.ac.value },
+  { "pdf": "initiative", "foundry": @system.attributes.init.total },
+  { "pdf": "HPMax", "foundry": @system.attributes.hp.max },
+  { "pdf": "HPCurrent", "foundry": @system.attributes.hp.value },
+  { "pdf": "Speed", "foundry": (function() {
+      const mo = actor.system.attributes.movement;
+      const mt = Object.entries(game.dnd5e.config.movementTypes).map(e => e[0]);
+      const ma = Object.entries(mo).filter(e => e[1] && mt.includes(e[0]));
+      if (mo.walk && ma?.length === 1) {
+        return `${ma[0][1]}${mo.units}${mo.hover ? "\n(hover)" : ""}`;
+      } else {
+        return ma.map(m => `${m[0].substring(0,2)}:${m[1]}${mo.units}`).join('\n').concat(mo.hover ? "\n(hover)" : "");
+      }
+    })()
+  },
+  { "pdf": "features", "foundry": @items.filter(i => ["feat", "trait"].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.system.source}: \n${((h) => {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(i.system.description.value.substring(0,599))}${(i.system.description.value.length>600)?'...':''}\n`).join("\n")
+  },
+  { "pdf": "Wpn1 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
+  { "pdf": "Wpn1 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn1 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Wpn2 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
+  { "pdf": "Wpn2 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn2 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Wpn3 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
+  { "pdf": "Wpn3 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn3 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Wpn4 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[3]?.name || "" },
+  { "pdf": "Wpn4 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[3];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn4 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[3]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Wpn5 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[4]?.name || "" },
+  { "pdf": "Wpn5 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[4];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn5 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[4]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Wpn6 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[5]?.name || "" },
+  { "pdf": "Wpn6 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[5];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn6 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[5]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Wpn7 Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[6]?.name || "" },
+  { "pdf": "Wpn7 AtkBonus", "foundry": (function() {
+    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[6];
+    theWeapon?.prepareFinalAttributes();
+    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+    })()
+  },
+  { "pdf": "Wpn7 Damage", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[6]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Skills", "foundry": (function() {
+      let skill_text = "";
+      Object.keys(actor.system.skills).forEach(key => {
+        let row = game.dnd5e.config.skills[key].label + ": " + actor.system.skills[key].mod;
+        skill_text += row + "\n";
+      });
+      return skill_text;
+    })()
+  },
+  { "pdf": "PersonalityTraits", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.trait)
+  },
+  { "pdf": "Ideals", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.ideal)
+  },
+  { "pdf": "Bonds", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.bond)
+  },
+  { "pdf": "HD", "foundry": @system.attributes.hp.formula },
+  { "pdf": "Flaws", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.flaw)
+  },
+  { "pdf": "equipment", "foundry": @items.filter(i => ['weapon', 'equipment', 'tool'].includes(i.type)).map(i => (i.system.quantity <= 1) ? i.name : `${i.name} (${i.system.quantity})`).join(', ') },
+  { "pdf": "CP", "foundry": @system.currency.cp || "" },
+  { "pdf": "SP", "foundry": @system.currency.sp || "" },
+  { "pdf": "EP", "foundry": @system.currency.ep || "" },
+  { "pdf": "GP", "foundry": @system.currency.gp || "" },
+  { "pdf": "PP", "foundry": @system.currency.pp || "" },
+  { "pdf": "PPerception", "foundry": @system.skills.prc.passive },
+  { "pdf": "biography", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h.value;
+      return d.textContent || d.innerText || "";
+    })(@system.details.biography)
+  },
+  { "pdf": "senses", "foundry": (function() {
+      let senses_text = "";
+      Object.keys(actor.system.attributes.senses).forEach(key => {
+        if(key != "units" && actor.system.attributes.senses[key] > 0){
+          let row = key + ": " + actor.system.attributes.senses[key] + " " + actor.system.attributes.senses["units"];
+          senses_text += row + "\n";
+        };
+      });
+      return senses_text;
+    })()
+  },
+  { "pdf": "spells", "foundry": (function() {
+      let spell_text = "";
+      actor.items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => {x.name = x.name + ((typeof x.flags['items-with-spells-5e'] !== 'undefined') ? '[' +fromUuidSync(x.flags['items-with-spells-5e']['parent-item']).name + ']' : '');return x} ).forEach(object => {
+        let row = object.system.level + " - " + object.name;
+        spell_text += row + "\n";
+      });
+        
+      return spell_text;
+    })()
+  },
+
+  { "pdf": "", "foundry": "" }
+]
