@@ -32,6 +32,11 @@
         "title": "Télécharger une feuille de personnage non-officielle en PDF pour Pathfinder 2e",
         "url": "https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo"
       },
+      "pf2e-remastered": {
+        "label": "PDF pour Pathfinder 2e Remastered",
+        "title": "Téléchargez une feuille de personnage non-officielle Remastered en PDF pour Pathfinder 2e",
+        "url": "https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered.pdf"
+      },
       "dcc": {
         "label": "PDF pour Dungeon Crawl Classics",
         "title": "Téléchargez une feuille de personnage PDF de Goodman Games pour Dungeon Crawl Classics.",

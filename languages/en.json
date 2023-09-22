@@ -32,6 +32,11 @@
         "title": "Download an unofficial character sheet PDF for Pathfinder 2e",
         "url": "https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo"
       },
+      "pf2e-remastered": {
+        "label": "PDF for Pathfinder 2e Remastered",
+        "title": "Download an unofficial remastered character sheet PDF for Pathfinder 2e",
+        "url": "https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered.pdf"
+      },
       "dcc": {
         "label": "PDF for Dungeon Crawl Classics",
         "title": "Download a character sheet PDF from Goodman Games for Dungeon Crawl Classics",

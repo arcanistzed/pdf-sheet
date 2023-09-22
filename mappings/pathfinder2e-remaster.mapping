@@ -1,0 +1,1649 @@
+[
+    /*
+    Pathfinder 2e Charactersheet Remastered mapping for Foundry VTT module 'Export Sheet to PDF' - 17/09/2023
+    Author: [Bushvin](https://github.com/bushvin)
+    Version: 1.0.0
+
+    Based off Pathfinder2e character sheet mapping
+    Original PDF: https://drive.google.com/file/d/1GKtOprwITSUP1sXCLXjqKc-N9JvwmgGy/view
+    Minimum requirements: Foundry VTT Version 11 | PF2e system version: 5.5.1
+
+    TODO:
+      - find a way to link <ATTRIBUTE>_Partial
+    */
+
+    /* ---------- PAGE 1 ----------*/
+
+    { "pdf": "CharacterName", "foundry": @name },
+    { "pdf": "PlayerName", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
+
+    { "pdf": "Ancestry", "foundry": @ancestry.name },
+    { "pdf": "Heritage_Traits", "foundry": @heritage.name },
+    { "pdf": "Background", "foundry": @background.name },
+    { "pdf": "Class", "foundry": @class.name },
+    { "pdf": "Size", "foundry": @system.traits.size.value },
+
+    { "pdf": "DeityPhilosofy", "foundry": @deity?.name ?? "" },
+
+    { "pdf": "Level", "foundry": @system.details.level.value },
+    { "pdf": "XP", "foundry": @system.details.xp.value },
+
+    { "pdf": "HeroPoints_1", "foundry": @system.resources.heroPoints.value >= 1 || '' },
+    { "pdf": "HeroPoints_2", "foundry": @system.resources.heroPoints.value >= 2 || '' },
+    { "pdf": "HeroPoints_3", "foundry": @system.resources.heroPoints.value >= 3 || '' },
+
+    /* ABILITIES */
+
+    { "pdf": "STR", "foundry": (@abilities.str.mod < 0 ? @abilities.str.mod : '+' + @abilities.str.mod) || '+0' },
+    { "pdf": "DEX", "foundry": (@abilities.dex.mod < 0 ? @abilities.dex.mod : '+' + @abilities.dex.mod) || '+0' },
+    { "pdf": "CON", "foundry": (@abilities.con.mod < 0 ? @abilities.con.mod : '+' + @abilities.con.mod) || '+0' },
+    { "pdf": "INT", "foundry": (@abilities.int.mod < 0 ? @abilities.int.mod : '+' + @abilities.int.mod) || '+0' },
+    { "pdf": "WIS", "foundry": (@abilities.wis.mod < 0 ? @abilities.wis.mod : '+' + @abilities.wis.mod) || '+0' },
+    { "pdf": "CHA", "foundry": (@abilities.cha.mod < 0 ? @abilities.cha.mod : '+' + @abilities.cha.mod) || '+0' },
+
+    /* ATTRIBUTES */
+
+    { "pdf": "AC", "foundry": @armorClass.value },
+    { "pdf": "AC_DexMod", "foundry": @armorClass.modifiers.filter(i => i.type === 'ability').map(i => i.modifier) },
+    { "pdf": "AC_ProfMod", "foundry": @armorClass.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier) },
+    { "pdf": "AC_ItemMod", "foundry": @armorClass.modifiers.filter(i => i.type === 'item').map(i => i.modifier || 0) },
+
+    { "pdf": "Unarmored_T", "foundry": @system.martial.unarmored.rank >= 1 || '' },
+    { "pdf": "Unarmored_E", "foundry": @system.martial.unarmored.rank >= 2 || '' },
+    { "pdf": "Unarmored_M", "foundry": @system.martial.unarmored.rank >= 3 || '' },
+    { "pdf": "Unarmored_L", "foundry": @system.martial.unarmored.rank >= 4 || '' },
+    { "pdf": "Light_T", "foundry": @system.martial.light.rank >= 1 || '' },
+    { "pdf": "Light_E", "foundry": @system.martial.light.rank >= 2 || '' },
+    { "pdf": "Light_M", "foundry": @system.martial.light.rank >= 3 || '' },
+    { "pdf": "Light_L", "foundry": @system.martial.light.rank >= 4 || '' },
+    { "pdf": "Medium_T", "foundry": @system.martial.medium.rank >= 1 || '' },
+    { "pdf": "Medium_E", "foundry": @system.martial.medium.rank >= 2 || '' },
+    { "pdf": "Medium_M", "foundry": @system.martial.medium.rank >= 3 || '' },
+    { "pdf": "Medium_L", "foundry": @system.martial.medium.rank >= 4 || '' },
+    { "pdf": "Heavy_T", "foundry": @system.martial.heavy.rank >= 1 || '' },
+    { "pdf": "Heavy_E", "foundry": @system.martial.heavy.rank >= 2 || '' },
+    { "pdf": "Heavy_M", "foundry": @system.martial.heavy.rank >= 3 || '' },
+    { "pdf": "Heavy_L", "foundry": @system.martial.heavy.rank >= 4 || '' },
+
+    { "pdf": "MaxHP", "foundry": @hitPoints.max },
+    { "pdf": "CurrentHP", "foundry": @hitPoints.value },
+    { "pdf": "TempHP", "foundry": @hitPoints.temp },
+
+    { "pdf": "Dying_1", "foundry": @system.attributes.dying.value >= 1 || '' },
+    { "pdf": "Dying_2", "foundry": @system.attributes.dying.value >= 2 || '' },
+    { "pdf": "Dying_3", "foundry": @system.attributes.dying.value >= 3 || '' },
+    { "pdf": "Dying_4", "foundry": @system.attributes.dying.value >= 4 || '' },
+    { "pdf": "Wounded", "foundry": @system.attributes.wounded.value + '/' + @system.attributes.wounded.max },
+
+    /* SHIELD */
+
+    { "pdf": "AC_ShieldMod", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i => i.system.acBonus)[0] || '' },
+    { "pdf": "ShieldHardness", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i => i.system.hardness)[0] || '-' },
+    { "pdf": "ShieldMaxHP", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i => i.system.hp.max)[0] || '-' },
+    { "pdf": "ShieldBT", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i => i.system.hp.brokenThreshold)[0] || '-' },
+    { "pdf": "ShieldCurHP", "foundry": @items.filter(i => i.system.category === 'shield' && i.isEquipped).map(i => i.system.hp.value)[0] || '-' },
+
+    /* RESISTANCES - IMMUNITIES - CONDITIONS - WEAKNESSES*/
+
+    { "pdf": "Resistances_Immunities", "foundry": ['R: ' + @system.attributes.resistances.map(i => ' ' + i.type + ' ' + i.value), '\nI: ' + @system.attributes.immunities.map(i => i.type)].filter(x => String(x)).join(", ").trim() },
+    { "pdf": "Conditions", "foundry": @conditions.map(i => i.name).join(", ") },
+
+    /* SAVES */
+
+    { "pdf": "FortSave", "foundry": '+' + @saves.fortitude.mod },
+    { "pdf": "FortSave_ConMod", "foundry": @saves.fortitude.modifiers.filter(i => i.type === 'ability' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "FortSave_ProfMod", "foundry": @saves.fortitude.modifiers.filter(i => i.type === 'proficiency' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "FortSave_ItemMod", "foundry": @saves.fortitude.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "FortSave_T", "foundry": @saves.fortitude.rank >= 1 || '' },
+    { "pdf": "FortSave_E", "foundry": @saves.fortitude.rank >= 2 || '' },
+    { "pdf": "FortSave_M", "foundry": @saves.fortitude.rank >= 3 || '' },
+    { "pdf": "FortSave_L", "foundry": @saves.fortitude.rank >= 4 || '' },
+
+    { "pdf": "RefSave", "foundry": '+' + @saves.reflex.mod },
+    { "pdf": "RefSave_DexMod", "foundry": @saves.reflex.modifiers.filter(i => i.type === 'ability' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "RefSave_ProfMod", "foundry": @saves.reflex.modifiers.filter(i => i.type === 'proficiency' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "RefSave_ItemMod", "foundry": @saves.reflex.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "RefSave_T", "foundry": @saves.reflex.rank >= 1 || '' },
+    { "pdf": "RefSave_E", "foundry": @saves.reflex.rank >= 2 || '' },
+    { "pdf": "RefSave_M", "foundry": @saves.reflex.rank >= 3 || '' },
+    { "pdf": "RefSave_L", "foundry": @saves.reflex.rank >= 4 || '' },
+
+    { "pdf": "WillSave", "foundry": '+' + @saves.will.mod },
+    { "pdf": "WillSave_WisMod", "foundry": @saves.will.modifiers.filter(i => i.type === 'ability' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "WillSave_ProfMod", "foundry": @saves.will.modifiers.filter(i => i.type === 'proficiency' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "WillSave_ItemMod", "foundry": @saves.will.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "WillSave_T", "foundry": @saves.will.rank >= 1 || '' },
+    { "pdf": "WillSave_E", "foundry": @saves.will.rank >= 2 || '' },
+    { "pdf": "WillSave_M", "foundry": @saves.will.rank >= 3 || '' },
+    { "pdf": "WillSave_L", "foundry": @saves.will.rank >= 4 || '' },
+
+    { "pdf": "SavesNotes", "foundry":
+            'FOR: ' + @saves.fortitude.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier) + ' \n' +
+            'REF: ' + @saves.reflex.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier) + ' \n' +
+            'WILL: ' + @saves.will.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier)
+    },
+
+    /* PERCEPTION  */
+
+    { "pdf": "Perception", "foundry": '+' + @perception.mod },
+    { "pdf": "Percept_WisMod", "foundry": @perception.modifiers.filter(i => i.type === 'ability' && i.enabled).map(i => i.modifier) || 0 },
+    { "pdf": "Percept_ProfMod", "foundry": @perception.modifiers.filter(i => i.type === 'proficiency' && i.enabled).map(i => i.modifier) },
+    { "pdf": "Percept_ItemMod", "foundry": @perception.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier) || 0 },
+
+    { "pdf": "Percept_T", "foundry": @perception.rank >= 1 || '' },
+    { "pdf": "Percept_E", "foundry": @perception.rank >= 2 || '' },
+    { "pdf": "Percept_M", "foundry": @perception.rank >= 3 || '' },
+    { "pdf": "Percept_L", "foundry": @perception.rank >= 4 || '' },
+
+    { "pdf": "Senses", "foundry": @system.traits.senses.filter(i => i.type).map(i => i.label).join(", ") + ' \n' + @system.attributes.perception.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier) },
+
+    /* CLASS DC */
+
+    { "pdf": "ClassDC", "foundry": @classDC.mod + 10 },
+    { "pdf": "ClassDC_KeyMod", "foundry": @classDC.attributeModifier.value },
+    { "pdf": "ClassDC_ProfMod", "foundry": @classDC.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier) || 0 },
+    { "pdf": "ClassDC_ItemMod", "foundry": @classDC.modifiers.filter(i => i.type === 'item').map(i => i.modifier) || 0 },
+
+    /* SPEED */
+
+    { "pdf": "Speed", "foundry":
+        @system.attributes.speed.value + @system.attributes.speed.totalModifier + @items.filter(i => i.type === 'armor' && i.isEquipped ).map(i => i.speedPenalty).reduce((a,v) => {return a+v},0)
+    },
+    {
+        "pdf": "SpeedNotes", "foundry":
+            @system.attributes.speed.otherSpeeds.map(i => ' ' + i.label + ' ' + i.value).join(", ") + ' \n' +
+            @system.attributes.speed.modifiers.map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier)
+    },
+
+    /* MELEE STRIKES */
+    /* MELEE 1 */
+    { "pdf": "Melee1_Name", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+        .map(i => i.label)[0] || ''
+    },
+    { "pdf": "Melee1_AtkMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => (i.totalModifier < 0 ? '' : '+') + i.totalModifier)[0] || ''
+    },
+    { "pdf": "Melee1_AtkStrMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[0]?.filter(a => a.type === 'ability' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Melee1_AtkProfMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency').map(a => a.modifier) || ''
+    },
+    { "pdf": "Melee1_AtkItemMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[0]?.filter(a => a.type === 'item' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Melee1_Damage", "foundry":
+        (
+            @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.item.system.damage.dice + i.item.system.damage.die)[0] || ''
+        ) + (
+            @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.modifiers)[0]?.filter(a => a.ability === 'str').map(a => (a.modifier < 0 ? '' : '+') + a.modifier)[0] || ''
+        )
+    },
+    { "pdf": "Melee1_DmgB", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'bludgeoning')[0] || false
+    },
+    { "pdf": "Melee1_DmgP", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'piercing')[0] || false
+    },
+    { "pdf": "Melee1_DmgS", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'slashing' || i.item.system.traits.value.includes('versatile-s'))[0] || false
+    },
+    { "pdf": "Melee1_Traits_Notes", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .map(i => i.item.system.traits)[0]?.value.map(a => a).join(", ") || ''
+    },
+
+    /* MELEE 2 */
+    { "pdf": "Melee2_Name", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+        .map(i => i.label)[1] || ''
+    },
+    { "pdf": "Melee2_AtkMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => (i.totalModifier < 0 ? '' : '+') + i.totalModifier)[1] || ''
+    },
+    { "pdf": "Melee2_AtkStrMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Melee2_AtkProfMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency').map(a => a.modifier) || ''
+    },
+    { "pdf": "Melee2_AtkItemMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[1]?.filter(a => a.type === 'item' && a.enabled).map(a => a.modifier)[0] || ''
+    },
+    { "pdf": "Melee2_Damage", "foundry":
+        (
+            @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.item.system.damage.dice + i.item.system.damage.die)[1] || ''
+        ) + (
+            @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.modifiers)[1]?.filter(a => a.ability === 'str').map(a => (a.modifier < 0 ? '' : '+') + a.modifier)[0] || ''
+        )
+    },
+    { "pdf": "Melee2_DmgB", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'bludgeoning')[1] || false
+    },
+    { "pdf": "Melee2_DmgP", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'piercing')[1] || false
+    },
+    { "pdf": "Melee2_DmgS", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'slashing' || i.item.system.traits.value.includes('versatile-s'))[1] || false
+    },
+    { "pdf": "Melee2_Traits_Notes", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .map(i => i.item.system.traits)[1]?.value.map(a => a).join(", ") || ''
+    },
+
+    /* MELEE 3 */
+    { "pdf": "Melee3_Name", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+        .map(i => i.label)[2] || ''
+    },
+    { "pdf": "Melee3_AtkMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => (i.totalModifier < 0 ? '' : '+') + i.totalModifier)[2] || ''
+    },
+    { "pdf": "Melee3_AtkStrMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[2]?.filter(a => a.type === 'ability' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Melee3_AtkProfMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[2]?.filter(a => a.type === 'proficiency').map(a => a.modifier)[0] || ''
+    },
+    { "pdf": "Melee3_AtkItemMod", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[2]?.filter(a => a.type === 'item' && a.enabled).map(a => a.modifier)[0] || ''
+    },
+    { "pdf": "Melee3_Damage", "foundry":
+        (
+            @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.item.system.damage.dice + i.item.system.damage.die)[2] || ''
+        ) + (
+            @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.modifiers)[2]?.filter(a => a.ability === 'str').map(a => (a.modifier < 0 ? '' : '+') + a.modifier)[0] || ''
+        )
+    },
+    { "pdf": "Melee3_DmgB", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'bludgeoning')[2] || false
+    },
+    { "pdf": "Melee3_DmgP", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'piercing')[2] || false
+    },
+    { "pdf": "Melee3_DmgS", "foundry":
+        @system.actions.filter(a => (a.description === 'PF2E.Strike.Melee.Description' || a.description === 'PF2E.Strike.Unarmed.Description'))
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'slashing' || i.item.system.traits.value.includes('versatile-s'))[2] || false
+    },
+    { "pdf": "Melee3_Traits_Notes", "foundry":
+        @system.actions.filter(i => (i.description === 'PF2E.Strike.Melee.Description' || i.description === 'PF2E.Strike.Unarmed.Description'))
+            .map(i => i.item.system.traits)[2]?.value.map(a => a).join(", ") || ''
+    },
+
+    /* RANGED STRIKES */
+    /* RANGED 1 */
+    { "pdf": "Ranged1_Name", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+        .map(i => i.label)[0] || ''
+    },
+    { "pdf": "Ranged1_AtkMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => (i.totalModifier < 0 ? '' : '+') + i.totalModifier)[0] || ''
+    },
+    { "pdf": "Ranged1_AtkDexMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[0]?.filter(a => a.type === 'ability' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Ranged1_AtkProfMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[0]?.filter(a => a.type === 'proficiency').map(a => a.modifier) || ''
+    },
+    { "pdf": "Ranged1_AtkItemMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[0]?.filter(a => a.type === 'item' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Ranged1_Damage", "foundry":
+        (
+            @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.item.system.damage.dice + i.item.system.damage.die)[0] || ''
+        )
+    },
+    { "pdf": "Ranged1_DmgB", "foundry":
+        @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'bludgeoning')[0] || false
+    },
+    { "pdf": "Ranged1_DmgP", "foundry":
+        @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'piercing')[0] || false
+    },
+    { "pdf": "Ranged1_DmgS", "foundry":
+        @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'slashing' || i.item.system.traits.value.includes('versatile-s'))[0] || false
+    },
+    { "pdf": "Ranged1_Traits_Notes", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .map(i => i.item.system.traits)[0]?.value.map(a => a).join(", ") || ''
+    },
+
+    /* RANGED 2 */
+    { "pdf": "Ranged2_Name", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+        .map(i => i.label)[1] || ''
+    },
+    { "pdf": "Ranged2_AtkMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => (i.totalModifier < 0 ? '' : '+') + i.totalModifier)[1] || ''
+    },
+    { "pdf": "Ranged2_AtkDexMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[1]?.filter(a => a.type === 'ability' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Ranged2_AtkProfMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[1]?.filter(a => a.type === 'proficiency').map(a => a.modifier) || ''
+    },
+    { "pdf": "Ranged2_AtkItemMod", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.modifiers)[1]?.filter(a => a.type === 'item' && a.enabled).map(a => a.modifier) || ''
+    },
+    { "pdf": "Ranged2_Damage", "foundry":
+        (
+            @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+                .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+                .map(i => i.item.system.damage.dice + i.item.system.damage.die)[1] || ''
+        )
+    },
+    { "pdf": "Ranged2_DmgB", "foundry":
+        @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'bludgeoning')[1] || false
+    },
+    { "pdf": "Ranged2_DmgP", "foundry":
+        @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'piercing')[1] || false
+    },
+    { "pdf": "Ranged2_DmgS", "foundry":
+        @system.actions.filter(a => a.description === 'PF2E.Strike.Ranged.Description')
+            .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) )
+            .map(i => i.item.system.damage.damageType === 'slashing' || i.item.system.traits.value.includes('versatile-s'))[1] || false
+    },
+    { "pdf": "Ranged2_Traits_Notes", "foundry":
+        @system.actions.filter(i => i.description === 'PF2E.Strike.Ranged.Description')
+            .map(i => i.item.system.traits)[1]?.value.map(a => a).join(", ") || ''
+    },
+
+    /* WEAPON PROFICIENCIES */
+
+    { "pdf": "Unarmed_T", "foundry": @system.martial.unarmed.rank >= 1 || false },
+    { "pdf": "Unarmed_E", "foundry": @system.martial.unarmed.rank >= 2 || false },
+    { "pdf": "Unarmed_M", "foundry": @system.martial.unarmed.rank >= 3 || false },
+    { "pdf": "Unarmed_L", "foundry": @system.martial.unarmed.rank >= 4 || false },
+
+    { "pdf": "Simple_T", "foundry": @system.martial.simple.rank >= 1 || false },
+    { "pdf": "Simple_E", "foundry": @system.martial.simple.rank >= 2 || false },
+    { "pdf": "Simple_M", "foundry": @system.martial.simple.rank >= 3 || false },
+    { "pdf": "Simple_L", "foundry": @system.martial.simple.rank >= 4 || false },
+
+    { "pdf": "Martial_T", "foundry": @system.martial.martial.rank >= 1 || false },
+    { "pdf": "Martial_E", "foundry": @system.martial.martial.rank >= 2 || false },
+    { "pdf": "Martial_M", "foundry": @system.martial.martial.rank >= 3 || false },
+    { "pdf": "Martial_L", "foundry": @system.martial.martial.rank >= 4 || false },
+
+    { "pdf": "Advanced_T", "foundry": @system.martial.advanced.rank >= 1 || false },
+    { "pdf": "Advanced_E", "foundry": @system.martial.advanced.rank >= 2 || false },
+    { "pdf": "Advanced_M", "foundry": @system.martial.advanced.rank >= 3 || false },
+    { "pdf": "Advanced_L", "foundry": @system.martial.advanced.rank >= 4 || false },
+
+    { "pdf": "WeapProfOther_T", "foundry": false },
+    { "pdf": "WeapProfOther_E", "foundry": false },
+    { "pdf": "WeapProfOther_M", "foundry": false },
+    { "pdf": "WeapProfOther_L", "foundry": false },
+
+    { "pdf": "OtherWeaponType", "foundry": '' },
+
+    /* LANGUAGES */
+
+    { "pdf": "Languages", "foundry": @system.traits.languages.value.concat([@system.traits.languages.custom]).filter(function(a) {return a.trim() != ''}).join(", ") },
+
+    /* SKILLS */
+
+    { "pdf": "Acrobatics", "foundry": (@skills.acrobatics.mod < 0 ? '' : '+') + @skills.acrobatics.mod || '0' },
+    { "pdf": "Acro_Mod", "foundry": @skills.acrobatics.attributeModifier.modifier || '0' },
+    { "pdf": "Acro_ProfMod", "foundry": @skills.acrobatics.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Acro_T", "foundry": @skills.acrobatics.rank >= 1 || false },
+    { "pdf": "Acro_E", "foundry": @skills.acrobatics.rank >= 2 || false },
+    { "pdf": "Acro_M", "foundry": @skills.acrobatics.rank >= 3 || false },
+    { "pdf": "Acro_L", "foundry": @skills.acrobatics.rank >= 4 || false },
+    { "pdf": "Acro_ItemMod", "foundry": @skills.acrobatics.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+    { "pdf": "Acro_ArmorMod", "foundry": @skills.acrobatics.modifiers.filter(i => i.slug === 'armor-check-penalty' ).map(i => i.modifier) || '0' },
+
+    { "pdf": "Arcana", "foundry": (@skills.arcana.mod < 0 ? '' : '+') + @skills.arcana.mod || '0' },
+    { "pdf": "Arcana_Mod", "foundry": @skills.arcana.attributeModifier.modifier || '0' },
+    { "pdf": "Arcana_ProfMod", "foundry": @skills.arcana.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Arcana_T", "foundry": @skills.arcana.rank >= 1 || false },
+    { "pdf": "Arcana_E", "foundry": @skills.arcana.rank >= 2 || false },
+    { "pdf": "Arcana_M", "foundry": @skills.arcana.rank >= 3 || false },
+    { "pdf": "Arcana_L", "foundry": @skills.arcana.rank >= 4 || false },
+    { "pdf": "Arcana_ItemMod", "foundry": @skills.arcana.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Athletics", "foundry": (@skills.athletics.mod < 0 ? '' : '+') + @skills.athletics.mod || '0' },
+    { "pdf": "Ath_Mod", "foundry": @skills.athletics.attributeModifier.modifier || '0' },
+    { "pdf": "Ath_ProfMod", "foundry": @skills.athletics.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Ath_T", "foundry": @skills.athletics.rank >= 1 || false },
+    { "pdf": "Ath_E", "foundry": @skills.athletics.rank >= 2 || false },
+    { "pdf": "Ath_M", "foundry": @skills.athletics.rank >= 3 || false },
+    { "pdf": "Ath_L", "foundry": @skills.athletics.rank >= 4 || false },
+    { "pdf": "Ath_ItemMod", "foundry":
+        @skills.athletics.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty')
+            .map(i =>
+                ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+    { "pdf": "Ath_ArmorMod", "foundry": @skills.athletics.modifiers.filter(i => i.slug === 'armor-check-penalty' ).map(i => i.modifier) || '0' },
+
+    { "pdf": "Crafting", "foundry": (@skills.crafting.mod < 0 ? '' : '+') + @skills.crafting.mod || '0' },
+    { "pdf": "Craft_Mod", "foundry": @skills.crafting.attributeModifier.modifier || '' },
+    { "pdf": "Craft_ProfMod", "foundry": @skills.crafting.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Craft_T", "foundry": @skills.crafting.rank >= 1 || false },
+    { "pdf": "Craft_E", "foundry": @skills.crafting.rank >= 2 || false },
+    { "pdf": "Craft_M", "foundry": @skills.crafting.rank >= 3 || false },
+    { "pdf": "Craft_L", "foundry": @skills.crafting.rank >= 4 || false },
+    { "pdf": "Craft_ItemMod", "foundry": @skills.crafting.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Deception", "foundry": (@skills.deception.mod < 0 ? '' : '+') + @skills.deception.mod || '0' },
+    { "pdf": "Decept_Mod", "foundry": @skills.deception.attributeModifier.modifier || '0' },
+    { "pdf": "Decept_ProfMod", "foundry": @skills.deception.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Decept_T", "foundry": @skills.deception.rank >= 1 || false },
+    { "pdf": "Decept_E", "foundry": @skills.deception.rank >= 2 || false },
+    { "pdf": "Decept_M", "foundry": @skills.deception.rank >= 3 || false },
+    { "pdf": "Decept_L", "foundry": @skills.deception.rank >= 4 || false },
+    { "pdf": "Decept_ItemMod", "foundry": @skills.deception.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Diplomacy", "foundry": (@skills.diplomacy.mod < 0 ? '' : '+') + @skills.diplomacy.mod || '0' },
+    { "pdf": "Diplo_Mod", "foundry": @skills.diplomacy.attributeModifier.modifier || '0' },
+    { "pdf": "Diplo_ProfMod", "foundry": @skills.diplomacy.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '' },
+    { "pdf": "Diplo_T", "foundry": @skills.diplomacy.rank >= 1 || false },
+    { "pdf": "Diplo_E", "foundry": @skills.diplomacy.rank >= 2 || false },
+    { "pdf": "Diplo_M", "foundry": @skills.diplomacy.rank >= 3 || false },
+    { "pdf": "Diplo_L", "foundry": @skills.diplomacy.rank >= 4 || false },
+    { "pdf": "Diplo_ItemMod", "foundry": @skills.diplomacy.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Intimidation", "foundry": (@skills.intimidation.mod < 0 ? '' : '+') + @skills.intimidation.mod || '0' },
+    { "pdf": "Intim_Mod", "foundry": @skills.intimidation.attributeModifier.modifier || '' },
+    { "pdf": "Intim_ProfMod", "foundry": @skills.intimidation.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Intim_T", "foundry": @skills.intimidation.rank >= 1 || false },
+    { "pdf": "Intim_E", "foundry": @skills.intimidation.rank >= 2 || false },
+    { "pdf": "Intim_M", "foundry": @skills.intimidation.rank >= 3 || false },
+    { "pdf": "Intim_L", "foundry": @skills.intimidation.rank >= 4 || false },
+    { "pdf": "Intim_ItemMod", "foundry": @skills.intimidation.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Medicine", "foundry": (@skills.medicine.mod < 0 ? '' : '+') + @skills.medicine.mod || '0' },
+    { "pdf": "Med_Mod", "foundry": @skills.medicine.attributeModifier.modifier || '0' },
+    { "pdf": "Med_ProfMod", "foundry": @skills.medicine.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Med_T", "foundry": @skills.medicine.rank >= 1 || false },
+    { "pdf": "Med_E", "foundry": @skills.medicine.rank >= 2 || false },
+    { "pdf": "Med_M", "foundry": @skills.medicine.rank >= 3 || false },
+    { "pdf": "Med_L", "foundry": @skills.medicine.rank >= 4 || false },
+    { "pdf": "Med_ItemMod", "foundry": @skills.medicine.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Nature", "foundry": (@skills.nature.mod < 0 ? '' : '+') + @skills.nature.mod || '0' },
+    { "pdf": "Nature_Mod", "foundry": @skills.nature.attributeModifier.modifier || '0' },
+    { "pdf": "Nature_ProfMod", "foundry": @skills.nature.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Nature_T", "foundry": @skills.nature.rank >= 1 || false },
+    { "pdf": "Nature_E", "foundry": @skills.nature.rank >= 2 || false },
+    { "pdf": "Nature_M", "foundry": @skills.nature.rank >= 3 || false },
+    { "pdf": "Nature_L", "foundry": @skills.nature.rank >= 4 || false },
+    { "pdf": "Nature_ItemMod", "foundry": @skills.nature.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Occultism", "foundry": (@skills.occultism.mod < 0 ? '' : '+') + @skills.occultism.mod || '0' },
+    { "pdf": "Occult_Mod", "foundry": @skills.occultism.attributeModifier.modifier || '' },
+    { "pdf": "Occult_ProfMod", "foundry": @skills.occultism.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Occult_T", "foundry": @skills.occultism.rank >= 1 || false },
+    { "pdf": "Occult_E", "foundry": @skills.occultism.rank >= 2 || false },
+    { "pdf": "Occult_M", "foundry": @skills.occultism.rank >= 3 || false },
+    { "pdf": "Occult_L", "foundry": @skills.occultism.rank >= 4 || false },
+    { "pdf": "Occult_ItemMod", "foundry": @skills.occultism.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Performance", "foundry": (@skills.performance.mod < 0 ? '' : '+') + @skills.performance.mod || '0' },
+    { "pdf": "Perf_Mod", "foundry": @skills.performance.attributeModifier.modifier || '0' },
+    { "pdf": "Perf_ProfMod", "foundry": @skills.performance.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Perf_T", "foundry": @skills.performance.rank >= 1 || false },
+    { "pdf": "Perf_E", "foundry": @skills.performance.rank >= 2 || false },
+    { "pdf": "Perf_M", "foundry": @skills.performance.rank >= 3 || false },
+    { "pdf": "Perf_L", "foundry": @skills.performance.rank >= 4 || false },
+    { "pdf": "Perf_ItemMod", "foundry": @skills.performance.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Religion", "foundry": (@skills.religion.mod < 0 ? '' : '+') + @skills.religion.mod || '0' },
+    { "pdf": "Religion_Mod", "foundry": @skills.religion.attributeModifier.modifier || '0' },
+    { "pdf": "Religion_ProfMod", "foundry": @skills.religion.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Religion_T", "foundry": @skills.religion.rank >= 1 || false },
+    { "pdf": "Religion_E", "foundry": @skills.religion.rank >= 2 || false },
+    { "pdf": "Religion_M", "foundry": @skills.religion.rank >= 3 || false },
+    { "pdf": "Religion_L", "foundry": @skills.religion.rank >= 4 || false },
+    { "pdf": "Religion_ItemMod", "foundry": @skills.religion.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Society", "foundry": (@skills.society.mod < 0 ? '' : '+') + @skills.society.mod || '0' },
+    { "pdf": "Society_Mod", "foundry": @skills.society.attributeModifier.modifier || '0' },
+    { "pdf": "Society_ProfMod", "foundry": @skills.society.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Society_T", "foundry": @skills.society.rank >= 1 || false },
+    { "pdf": "Society_E", "foundry": @skills.society.rank >= 2 || false },
+    { "pdf": "Society_M", "foundry": @skills.society.rank >= 3 || false },
+    { "pdf": "Society_L", "foundry": @skills.society.rank >= 4 || false },
+    { "pdf": "Society_ItemMod", "foundry": @skills.society.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Stealth", "foundry": (@skills.stealth.mod < 0 ? '' : '+') + @skills.stealth.mod || '0' },
+    { "pdf": "Stealth_Mod", "foundry": @skills.stealth.attributeModifier.modifier || '' },
+    { "pdf": "Stealth_ProfMod", "foundry": @skills.stealth.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Stealth_T", "foundry": @skills.stealth.rank >= 1 || false },
+    { "pdf": "Stealth_E", "foundry": @skills.stealth.rank >= 2 || false },
+    { "pdf": "Stealth_M", "foundry": @skills.stealth.rank >= 3 || false },
+    { "pdf": "Stealth_L", "foundry": @skills.stealth.rank >= 4 || false },
+    { "pdf": "Stealth_ItemMod", "foundry": @skills.stealth.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+    { "pdf": "Stealth_ArmorMod", "foundry": @skills.stealth.modifiers.filter(i => i.slug === 'armor-check-penalty' ).map(i => i.modifier) || '0' },
+
+    { "pdf": "Survival", "foundry": (@skills.survival.mod < 0 ? '' : '+') + @skills.survival.mod || '0' },
+    { "pdf": "Survival_Mod", "foundry": @skills.survival.attributeModifier.modifier || '0' },
+    { "pdf": "Survival_ProfMod", "foundry": @skills.survival.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Survival_T", "foundry": @skills.survival.rank >= 1 || false },
+    { "pdf": "Survival_E", "foundry": @skills.survival.rank >= 2 || false },
+    { "pdf": "Survival_M", "foundry": @skills.survival.rank >= 3 || false },
+    { "pdf": "Survival_L", "foundry": @skills.survival.rank >= 4 || false },
+    { "pdf": "Survival_ItemMod", "foundry": @skills.survival.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+
+    { "pdf": "Thievery", "foundry": (@skills.thievery.mod < 0 ? '' : '+') + @skills.thievery.mod || '0' },
+    { "pdf": "Thievery_Mod", "foundry": @skills.thievery.attributeModifier.modifier || '0' },
+    { "pdf": "Thievery_ProfMod", "foundry": @skills.thievery.modifiers.filter(i => i.type == 'proficiency').map(i => i.modifier) || '0' },
+    { "pdf": "Thievery_T", "foundry": @skills.thievery.rank >= 1 || false },
+    { "pdf": "Thievery_E", "foundry": @skills.thievery.rank >= 2 || false },
+    { "pdf": "Thievery_M", "foundry": @skills.thievery.rank >= 3 || false },
+    { "pdf": "Thievery_L", "foundry": @skills.thievery.rank >= 4 || false },
+    { "pdf": "Thievery_ItemMod", "foundry": @skills.acrobatics.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => ([i.modifier].reduce((partialSum, a) => partialSum + a, 0) < 0 ? [i.modifier].reduce((partialSum, a) => partialSum + a, 0) : '+' + [i.modifier].reduce((partialSum, a) => partialSum + a, 0)) || '0') },
+    { "pdf": "Thievery_ArmorMod", "foundry": @skills.acrobatics.modifiers.filter(i => i.slug === 'armor-check-penalty' ).map(i => i.modifier) || '0' },
+
+    /* Lore Skills */
+    { "pdf": "Lore1_Name", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.label)[0] || '' },
+    { "pdf": "Lore1", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.mod < 0 ? i.mod : '+' + i.mod)[0] || '0' },
+    { "pdf": "Lore1_Mod", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.attributeModifier.modifier)[0] || '0' },
+    { "pdf": "Lore1_ProfMod", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier))[0] || '0' },
+    { "pdf": "Lore1_T", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[0] >= 1 || false },
+    { "pdf": "Lore1_E", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[0] >= 2 || false },
+    { "pdf": "Lore1_M", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[0] >= 3 || false },
+    { "pdf": "Lore1_L", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[0] >= 4 || false },
+    { "pdf": "Lore1_ItemMod", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => i.modifier))[0] || '0' },
+
+    { "pdf": "Lore2_Name", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.label)[1] || '' },
+    { "pdf": "Lore2", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.mod < 0 ? i.mod : '+' + i.mod)[1] || '0' },
+    { "pdf": "Lore2_Mod", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.attributeModifier.modifier)[1] || '0' },
+    { "pdf": "Lore2_ProfMod", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier))[1] || '0' },
+    { "pdf": "Lore2_T", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[1] >= 1 || false },
+    { "pdf": "Lore2_E", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[1] >= 2 || false },
+    { "pdf": "Lore2_M", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[1] >= 3 || false },
+    { "pdf": "Lore2_L", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.rank)[1] >= 4 || false },
+    { "pdf": "Lore2_ItemMod", "foundry": Object.values(@skills).filter(i => i.lore).map(i => i.modifiers.filter(i => i.type === 'item' && i.enabled && i.slug !== 'armor-check-penalty').map(i => i.modifier))[1] || '0' },
+
+    /* ---------- PAGE 2 ----------*/
+    /* Ancestry and General Feats */
+    { "pdf": "1_Ancestry_Hertitage_Abilities", "foundry":
+        @items.filter(i => i.type === 'feat' && (i.category === 'ancestryfeature' || i.category == 'heritage'))
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name).join(', ')
+    },
+    { "pdf": "1_Ancestry_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-1').map(i => i.name) || '' },
+    { "pdf": "1_Background_Skill_Feat" , "foundry": @background.system.items[Object.keys(@background.system.items)[0]].name },
+    { "pdf": "2_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-2').map(i => i.name) || '' },
+    { "pdf": "3_General_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'general-3').map(i => i.name) || '' },
+    { "pdf": "4_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-4').map(i => i.name) || '' },
+    { "pdf": "5_Ancestry_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-5').map(i => i.name) || '' },
+    { "pdf": "6_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-6').map(i => i.name) || '' },
+    { "pdf": "7_General_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'general-7').map(i => i.name) || '' },
+    { "pdf": "8_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-8').map(i => i.name) || '' },
+    { "pdf": "9_Ancestry_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-9').map(i => i.name) || '' },
+    { "pdf": "10_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-10').map(i => i.name) || '' },
+    { "pdf": "11_General_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'general-11').map(i => i.name) || '' },
+    { "pdf": "12_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-12').map(i => i.name) || '' },
+    { "pdf": "13_Ancestry_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-13').map(i => i.name) || '' },
+    { "pdf": "14_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-14').map(i => i.name) || '' },
+    { "pdf": "15_General_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'general-15').map(i => i.name) || '' },
+    { "pdf": "16_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-16').map(i => i.name) || '' },
+    { "pdf": "17_Ancestry_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-17').map(i => i.name) || '' },
+    { "pdf": "18_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-18').map(i => i.name) || '' },
+    { "pdf": "19_General_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'general-19').map(i => i.name) || '' },
+    { "pdf": "20_Skill_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'skill-20').map(i => i.name) || '' },
+
+    /* Class feats and features */
+    { "pdf": "1_Class_Feats_Features", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.level.value === 1 && (i.system.category === 'classfeature' || i.system.category === 'class'))
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name) || ''
+    },
+    { "pdf": "2_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-2').map(i => i.name) || '' },
+    { "pdf": "3_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 3)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "4_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-4').map(i => i.name) || '' },
+    { "pdf": "5_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 5)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "6_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-6').map(i => i.name) || '' },
+    { "pdf": "7_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 7)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+        },
+    { "pdf": "8_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-8').map(i => i.name) || '' },
+    { "pdf": "9_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 9)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "10_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-10').map(i => i.name) || '' },
+    { "pdf": "11_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 11)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "12_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-12').map(i => i.name) || '' },
+    { "pdf": "13_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 13)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "14_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-14').map(i => i.name) || '' },
+    { "pdf": "15_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 15)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "16_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-16').map(i => i.name) || '' },
+    { "pdf": "17_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 17)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "18_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-18').map(i => i.name) || '' },
+    { "pdf": "19_Class_Feature", "foundry":
+        @items.filter(i => i.type === 'feat' && i.system.category === 'classfeature' && i.system.level.value === 18)
+            .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+            .map(i => i.name)
+    },
+    { "pdf": "20_Class_Feat", "foundry": @items.filter(i => i.type === 'feat' && i.system.location === 'class-20').map(i => i.name) || '' },
+
+    {
+        "pdf": "Held_Items", "foundry":
+            @inventory.filter(i => i.system.usage.type === 'held' && i.type !== 'consumable')
+                .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+                .map(i => '- ' + ((i.system.quantity > 1) ? i.system.quantity + ' ' : '') + i.name + (i.isMagical ? '* ' : ' ') +  i.system.weight.value).join('\n') || ''
+    },
+
+    {
+        "pdf": "Consumables", "foundry":
+            @inventory.filter(i => i.type === 'consumable')
+                .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+                .map(i => '- ' + ((i.system.quantity > 1) ? i.system.quantity + ' ' : '') + i.name + (i.isMagical ? '* ' : ' ') +  i.system.weight.value).join('\n') || ''
+    },
+
+    {
+        "pdf": "Worn_Items", "foundry":
+            @inventory.filter(i => i.system.usage.type === 'worn' && i.type !== 'consumable')
+                .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) )
+                .map(i => '- ' + ((i.system.quantity > 1) ? i.system.quantity + ' ' : '') + i.name + (i.isMagical ? '* ' : ' ') +  i.system.weight.value).join('\n') || ''
+    },
+
+    { "pdf": "Copper", "foundry": @inventory.coins.cp || 0 },
+    { "pdf": "Silver", "foundry": @inventory.coins.sp || 0 },
+    { "pdf": "Gold", "foundry": @inventory.coins.gp || 0 },
+    { "pdf": "Platinum", "foundry": @inventory.coins.pp || 0 },
+
+    { "pdf": "CurrentBulk", "foundry": @inventory.bulk.value.normal },
+
+    /* ---------- PAGE 3 ----------*/
+
+    { "pdf": "Ethnicity", "foundry": @system.details.ethnicity.value || '' },
+    { "pdf": "Nationality", "foundry": @system.details.nationality.value || '' },
+
+    { "pdf": "Birthplace", "foundry": @system.details.biography.birthPlace || '' },
+
+    { "pdf": "Age", "foundry": @system.details.age.value || '' },
+    { "pdf": "GenderPronouns", "foundry": @system.details.gender.value || '' },
+
+    { "pdf": "Height", "foundry": @system.details.height.value || '' },
+    { "pdf": "Weight", "foundry": @system.details.weight.value || '' },
+
+    { "pdf": "Appearance", "foundry": @system.details.biography.appearance.replace('<p>', '').replace('</p>', '') || '' },
+
+    { "pdf": "Attitude", "foundry": @system.details.biography.attitude || '' },
+    { "pdf": "Likes", "foundry": @system.details.biography.likes || '' },
+    { "pdf": "Dislikes", "foundry": @system.details.biography.dislikes || '' },
+    { "pdf": "Catchphrases", "foundry": @system.details.biography.catchphrases || '' },
+
+    { "pdf": "CampaignNotes", "foundry": @system.details.biography.campaignNotes.replace('<p>', '').replace('</p>', '') || '' },
+
+    { "pdf": "Allies", "foundry": @system.details.biography.allies.replace('<p>', '').replace('</p>', '') || '' },
+    { "pdf": "Enemies", "foundry": @system.details.biography.enemies.replace('<p>', '').replace('</p>', '') || '' },
+
+    { "pdf": "Organizations", "foundry": @system.details.biography.organaizations?.replace('<p>', '').replace('</p>', '') || '' },
+
+    {"pdf": "Activity1_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[0] || ''
+    },
+    {"pdf": "Activity1_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[0]] || ''
+    },
+    {"pdf": "Activity1_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[0] || ''
+    },
+    {"pdf": "Activity1_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[0] || ''
+    },
+    {"pdf": "Activity1_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[0] || ''
+    },
+
+    {"pdf": "Activity2_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[1] || ''
+    },
+    {"pdf": "Activity2_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[1]] || ''
+    },
+    {"pdf": "Activity2_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[1] || ''
+    },
+    {"pdf": "Activity2_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[1] || ''
+    },
+    {"pdf": "Activity2_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[1] || ''
+    },
+
+    {"pdf": "Activity3_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[2] || ''
+    },
+    {"pdf": "Activity3_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[2]] || ''
+    },
+    {"pdf": "Activity3_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[2] || ''
+    },
+    {"pdf": "Activity3_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[2] || ''
+    },
+    {"pdf": "Activity3_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[2] || ''
+    },
+
+    {"pdf": "Activity4_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[3] || ''
+    },
+    {"pdf": "Activity4_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[3]] || ''
+    },
+    {"pdf": "Activity4_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[3] || ''
+    },
+    {"pdf": "Activity4_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[3] || ''
+    },
+    {"pdf": "Activity4_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[3] || ''
+    },
+
+    {"pdf": "Activity5_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[4] || ''
+    },
+    {"pdf": "Activity5_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[4]] || ''
+    },
+    {"pdf": "Activity5_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[4] || ''
+    },
+    {"pdf": "Activity5_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[4] || ''
+    },
+    {"pdf": "Activity5_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[4] || ''
+    },
+
+    {"pdf": "Activity6_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[5] || ''
+    },
+    {"pdf": "Activity6_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[5]] || ''
+    },
+    {"pdf": "Activity6_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[5] || ''
+    },
+    {"pdf": "Activity6_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[5] || ''
+    },
+    {"pdf": "Activity6_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[5] || ''
+    },
+
+    {"pdf": "Activity7_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[6] || ''
+    },
+    {"pdf": "Activity7_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[6]] || ''
+    },
+    {"pdf": "Activity7_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[6] || ''
+    },
+    {"pdf": "Activity7_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[6] || ''
+    },
+    {"pdf": "Activity7_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[6] || ''
+    },
+
+    {"pdf": "Activity8_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.name)[7] || ''
+    },
+    {"pdf": "Activity8_ActionCount", "foundry":
+        ['','á','â','ã'][@items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.actions.value)[7]] || ''
+    },
+    {"pdf": "Activity8_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[7] || ''
+    },
+    {"pdf": "Activity8_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[7] || ''
+    },
+    {"pdf": "Activity8_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => i.system.source.value)[7] || ''
+    },
+
+
+
+    {"pdf": "Activity9_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[0] || ''
+    },
+    {"pdf": "Activity9_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[0] || ''
+    },
+    {"pdf": "Activity9_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[0] || ''
+    },
+    {"pdf": "Activity9_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[0] || ''
+    },
+    {"pdf": "Activity9_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[0] || ''
+    },
+
+    {"pdf": "Activity10_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[1] || ''
+    },
+    {"pdf": "Activity10_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[1] || ''
+    },
+    {"pdf": "Activity10_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[1] || ''
+    },
+    {"pdf": "Activity10_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[1] || ''
+    },
+    {"pdf": "Activity10_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[1] || ''
+    },
+
+    {"pdf": "Activity11_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[2] || ''
+    },
+    {"pdf": "Activity11_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[2] || ''
+    },
+    {"pdf": "Activity11_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[2] || ''
+    },
+    {"pdf": "Activity11_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[2] || ''
+    },
+    {"pdf": "Activity11_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[2] || ''
+    },
+
+    {"pdf": "Activity12_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[3] || ''
+    },
+    {"pdf": "Activity12_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[3] || ''
+    },
+    {"pdf": "Activity12_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[3] || ''
+    },
+    {"pdf": "Activity12_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[3] || ''
+    },
+    {"pdf": "Activity12_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[3] || ''
+    },
+
+    {"pdf": "Activity13_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[4] || ''
+    },
+    {"pdf": "Activity13_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[4] || ''
+    },
+    {"pdf": "Activity13_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[4] || ''
+    },
+    {"pdf": "Activity13_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[4] || ''
+    },
+    {"pdf": "Activity13_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[4] || ''
+    },
+
+    {"pdf": "Activity14_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[5] || ''
+    },
+    {"pdf": "Activity14_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[5] || ''
+    },
+    {"pdf": "Activity14_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[5] || ''
+    },
+    {"pdf": "Activity14_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[5] || ''
+    },
+    {"pdf": "Activity14_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[5] || ''
+    },
+
+    {"pdf": "Activity15_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[6] || ''
+    },
+    {"pdf": "Activity15_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[6] || ''
+    },
+    {"pdf": "Activity15_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[6] || ''
+    },
+    {"pdf": "Activity15_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[6] || ''
+    },
+    {"pdf": "Activity15_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[6] || ''
+    },
+
+    {"pdf": "Activity16_Name", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.name)[7] || ''
+    },
+    {"pdf": "Activity16_ActionCount", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (i.system.actionType.value === 'reaction' ? 'ä' : 'à'))[7] || ''
+    },
+    {"pdf": "Activity16_Traits", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => [i.system.traits.rarity].concat(i.system.traits.value).join(', '))[7] || ''
+    },
+    {"pdf": "Activity16_Frequency", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[7] || ''
+    },
+    {"pdf": "Activity16_Reference", "foundry":
+        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
+        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+        .reverse()
+        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
+        .reverse()
+        .map(i => i.system.source.value)[7] || ''
+    },
+
+
+    /* ---------- PAGE 4 ----------*/
+
+    /* Magical Tradition */
+    { "pdf": "Arcane", "foundry":
+        @spellcasting.filter(i => i.system?.tradition?.value === 'arcane' && (i.system?.prepared?.value === 'prepared' || i.system?.prepared?.value === 'spontaneous')).length || false
+    },
+    { "pdf": "Occult", "foundry":
+        @spellcasting.filter(i => i.system?.tradition?.value === 'occult' && (i.system?.prepared?.value === 'prepared' || i.system?.prepared?.value === 'spontaneous')).length || false
+    },
+    { "pdf": "Primal", "foundry":
+        @spellcasting.filter(i => i.system?.tradition?.value === 'primal' && (i.system?.prepared?.value === 'prepared' || i.system?.prepared?.value === 'spontaneous')).length || false
+    },
+    { "pdf": "Divine", "foundry":
+        @spellcasting.filter(i => i.system?.tradition?.value === 'divine' && (i.system?.prepared?.value === 'prepared' || i.system?.prepared?.value === 'spontaneous')).length || false
+    },
+
+    { "pdf": "Prepared_Caster", "foundry":
+        @spellcasting.filter(i => (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && i.system.prepared.value === 'prepared').length || false
+    },
+    { "pdf": "Spontaneous_Caster", "foundry":
+        @spellcasting.filter(i => (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && i.system.prepared.value === 'spontaneous').length || false
+    },
+
+    { "pdf": "SpellAttack", "foundry":
+        @spellcasting.filter(i => i.system.tradition.value !== '')
+            .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
+            .map(i => i.statistic.check.mod)[0] || ''
+    },
+
+    { "pdf": "SpellAtk_KeyMod", "foundry":
+        @spellcasting.filter(i => i.system.tradition.value !== '')
+            .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
+            .map(i => i.statistic.attributeModifier.value)[0] || ''
+    },
+
+    { "pdf": "SpellAtk_ProfMod", "foundry":
+            @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+        ).map(i => i.statistic.check.modifiers)[0]?.filter(a => a.type == 'proficiency').map(a => a.modifier)[0] || ''
+    },
+
+    { "pdf": "SpellAtk_T", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 1) || "")[0] },
+    { "pdf": "SpellAtk_E", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 2) || "")[0] },
+    { "pdf": "SpellAtk_M", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 3) || "")[0] },
+    { "pdf": "SpellAtk_L", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 4) || "")[0] },
+
+    { "pdf": "SpellDC", "foundry":
+        @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+        ).map(i => i.statistic.dc.value)[0] || ''
+
+        },
+
+    {
+        "pdf": "SpellDC_KeyMod", "foundry":
+        @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+        ).map(i => i.statistic.dc.modifiers)[0]?.filter(a => a.type == 'ability').map(a => a.modifier)[0] || ''
+    },
+    { "pdf": "SpellDC_ProfMod", "foundry":
+        @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+        ).map(i => i.statistic.dc.modifiers)[0]?.filter(a => a.type == 'proficiency').map(a => a.modifier)[0] || ''
+
+    },
+
+    { "pdf": "SpellDC_T", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 1) || "")[0] },
+    { "pdf": "SpellDC_E", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 2) || "")[0] },
+    { "pdf": "SpellDC_M", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 3) || "")[0] },
+    { "pdf": "SpellDC_L", "foundry": @items.filter(i => i.type === 'spellcastingEntry').map(i => (i.system.proficiency.value >= 4) || "")[0] },
+
+    { "pdf": "Cantrip_Rank", "foundry": @items.filter(i => i.type === 'spell' && i.isCantrip)[0] ? Math.round(@system.details.level.value / 2) : '' },
+    { "pdf": "Cantrip_Slots", "foundry": @items.filter(i => i.type === 'spellcastingEntry' && (i.spells.entry.system.prepared.value === 'prepared' || i.spells.entry.system.prepared.value === 'spontaneous')).map( i => (i.spells.entry.system.slots.slot0.max > 0) ? i.spells.entry.system.slots.slot1.max : 0).reduce((accum, current) => accum + current, 0 ) },
+    { "pdf": "Lvl1_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot1.max) || ''
+    },
+    { "pdf": "Lvl2_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot2.max) || ''
+    },
+    { "pdf": "Lvl3_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot3.max) || ''
+    },
+    { "pdf": "Lvl4_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot4.max) || ''
+    },
+    { "pdf": "Lvl5_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot5.max) || ''
+    },
+    { "pdf": "Lvl6_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot6.max) || ''
+    },
+    { "pdf": "Lvl7_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot7.max) || ''
+    },
+    { "pdf": "Lvl8_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot8.max) || ''
+    },
+    { "pdf": "Lvl9_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot9.max) || ''
+    },
+    { "pdf": "Lvl10_Slots", "foundry":
+    @spellcasting.filter(i =>
+        (
+            i.system.tradition.value === 'arcane' ||
+            i.system.tradition.value === 'occult' ||
+            i.system.tradition.value === 'primal' ||
+            i.system.tradition.value === 'divine'
+        ) && (
+            i.system.prepared.value === 'prepared' ||
+            i.system.prepared.value === 'spontaneous'
+        )
+    ).map(i => i.spells.entry.system.slots.slot10.max) || ''
+    },
+    { "pdf": "Focus_Spell_Rank", "foundry": @items.filter(i => i.type === 'spell' && i.system.category.value === 'focus')[0] ? Math.round(@system.details.level.value / 2) : '' },
+    { "pdf": "Focus_Point_1", "foundry": @system.resources.focus.max >= 1 || false },
+    { "pdf": "Focus_Point_2", "foundry": @system.resources.focus.max >= 2 || false },
+    { "pdf": "Focus_Point_3", "foundry": @system.resources.focus.max >= 3 || false },
+
+    { "pdf": "Cantrips_List", "foundry":
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && i.isCantrip)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name).join('\n')
+    },
+    { "pdf": "Spells1_List", "foundry":
+        [].concat(
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 1).length >= 1 ? ['Level 1 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 1)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 2).length >= 1 ? ['', 'Level 2 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 2)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 3).length >= 1 ? ['', 'Level 3 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 3)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 4).length >= 1 ? ['', 'Level 4 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 4)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+    ).join('\n')
+
+    },
+    { "pdf": "Spells2_List", "foundry":
+        [].concat(
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 5).length >= 1 ? ['Level 5 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 5)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 6).length >= 1 ? ['', 'Level 6 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 6)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 7).length >= 1 ? ['', 'Level 7 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 7)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 8).length >= 1 ? ['', 'Level 8 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 8)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+            (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 9).length >= 1 ? ['', 'Level 9 Spells:'] : []),
+            @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 9)
+                .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+                .map(i => '- ' + i.name),
+
+        (@items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 10).length >= 1 ? ['', 'Level 10 Spells:'] : []),
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 10)
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name),
+
+        ).join('\n')
+
+    },
+    { "pdf": "Focus_Spell_List", "foundry":
+        @items.filter(i => i.type === 'spell' && i.system.category.value === 'focus')
+            .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
+            .map(i => '- ' + i.name).join('\n')
+    }
+]
