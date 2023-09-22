@@ -1,0 +1,1534 @@
+[
+    /************************************************************************************************************
+     Call of Cthulhu 7th Edition Export to PDF Mapping v3
+     September 2023. Required for v11+ of this sheet.
+     ---------------------------------------------------------------------------------------------
+
+    The Call of Cthulhu 7th Edition Foundry VTT system (CoC7), as maintained by the Miskatonic
+    Investigative Society (https://github.com/Miskatonic-Investigative-Society/CoC7-FoundryVTT)
+    implements an extensible skills and specialisation model, as encouraged by Chaosium's Call of
+    Cthulhu 7th Edition rules.
+    
+    The skills model, combined with the many era variants of CoC, hinders the feasibilty of a one-size-fits-all
+    mapping for CoC. However, this mapping should support all pdf sheet variants as laid out on the Chaosium site
+    under the "Updated Investigator Sheets" heading on this page:
+
+    https://www.chaosium.com/cthulhu-character-sheets/
+
+    Using this mapping, some entries on the resulting pdf may be blank. This is an unavoidable consequence
+    of the flexible skills model and number of era variants. It means that the mapping has no entry that references
+    that skill.
+    
+    Warning: Do not attempt to use the sheets from the Chaosium page under the "Legacy Investigator Sheets"
+    heading, they are not compatible with the Export to PDF module.
+
+    ************************************************************************************************************
+    Note: due to indirection introduced in Versions >=8 of the CoC 7e (Unofficial sheet) to the Actor
+    data model, a small number of skills are blank on the output pdf and should be completed
+    manually. These include:
+
+    * Some Specialisation skills, notably weapons.
+    * Dodge skill
+
+    Also note that there does not appear to be any way of digitally populating the image on the
+    sheet. It appears to have always been intended as simply a space to glue a paper thumbnail.
+    ************************************************************************************************************
+
+    ************************************************************************************************************/
+
+    /* Actor Identification *********************/
+    {
+        "pdf": "Investigators_Name",
+        "foundry": @name ?? ''
+    },
+    {
+        "pdf": "Residence",
+        "foundry": @system.infos.residence ?? ''
+    },
+    {
+        "pdf": "Age",
+        "foundry": @system.infos.age ?? ''
+    },
+    {
+        "pdf": "Occupation",
+        "foundry": @occupation?.name ?? ''
+    },
+    {
+        "pdf": "Birthplace",
+        "foundry": @system.infos.birthplace ?? ''
+    },
+    {
+        "pdf": "Archetype",
+        "foundry": @archetype?.name ?? ''
+    },
+    {
+        "pdf": "Pronouns",
+        "foundry": @system.infos.sex ?? ''
+    },
+
+    /* Characteristics *********************/
+    {
+        "pdf": "STR",
+        "foundry": @system.characteristics.str.value ?? ''
+    },
+    {
+        "pdf": "STR_half",
+        "foundry": Math.floor( @system.characteristics.str.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "STR_fifth",
+        "foundry": Math.floor( @system.characteristics.str.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "CON",
+        "foundry": @system.characteristics.con.value ?? ''
+    },
+    {
+        "pdf": "CON_half",
+        "foundry": Math.floor( @system.characteristics.con.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "CON_fifth",
+        "foundry": Math.floor( @system.characteristics.con.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "DEX",
+        "foundry": @system.characteristics.dex.value ?? ''
+    },
+    {
+        "pdf": "DEX_half",
+        "foundry": Math.floor( @system.characteristics.dex.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "DEX_fifth",
+        "foundry": Math.floor( @system.characteristics.dex.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "INT",
+        "foundry": @system.characteristics.int.value ?? ''
+    },
+    {
+        "pdf": "INT_half",
+        "foundry": Math.floor( @system.characteristics.int.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "INT_fifth",
+        "foundry": Math.floor( @system.characteristics.int.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "SIZ",
+        "foundry": @system.characteristics.siz.value ?? ''
+    },
+    {
+        "pdf": "SIZ_half",
+        "foundry": Math.floor( @system.characteristics.siz.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "SIZ_fifth",
+        "foundry": Math.floor( @system.characteristics.siz.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "POW",
+        "foundry": @system.characteristics.pow.value ?? ''
+    },
+    {
+        "pdf": "POW_half",
+        "foundry": Math.floor( @system.characteristics.pow.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "POW_fifth",
+        "foundry": Math.floor( @system.characteristics.pow.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "APP",
+        "foundry": @system.characteristics.app.value ?? ''
+    },
+    {
+        "pdf": "APP_half",
+        "foundry": Math.floor( @system.characteristics.app.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "APP_fifth",
+        "foundry": Math.floor( @system.characteristics.app.value / 5 ) ?? ''
+    },
+    {
+        "pdf": "EDU",
+        "foundry": @system.characteristics.edu.value ?? ''
+    },
+    {
+        "pdf": "EDU_half",
+        "foundry": Math.floor( @system.characteristics.edu.value / 2 ) ?? ''
+    },
+    {
+        "pdf": "EDU_fifth",
+        "foundry": Math.floor( @system.characteristics.edu.value / 5 ) ?? ''
+    },
+
+    /* Attributes *********************/
+    {
+        "pdf": "StartingHP",
+        "foundry": @system.attribs.hp.max ?? ''
+    },
+    {
+        "pdf": "CurrentHP",
+        "foundry": @system.attribs.hp.value ?? ''
+    },
+    {
+        "pdf": "StartingMagic",
+        "foundry": @system.attribs.mp.max
+    },
+    {
+        "pdf": "CurrentMagic",
+        "foundry": @system.attribs.mp.value ?? ''
+    },
+    {
+        "pdf": "StartingLuck",
+        "foundry": @system.attribs.lck.max
+    },
+    {
+        "pdf": "CurrentLuck",
+        "foundry": @system.attribs.lck.value ?? ''
+    },
+    {
+        "pdf": "StartingSanity",
+        "foundry": @system.attribs.san.max
+    },
+    {
+        "pdf": "CurrentSanity",
+        "foundry": @system.attribs.san.value ?? ''
+    },
+    {
+        "pdf": "MOV",
+        "foundry": @system.attribs.mov?.value ?? ''
+    },
+    {
+        "pdf": "Build",
+        "foundry": @system.attribs.build.value ?? ''
+    },
+    {
+        "pdf": "DamageBonus",
+        "foundry": @system.attribs.db.value ?? ''
+    },
+    {
+        "pdf": "InsaneSanity",
+        "foundry": @dailySanLimit ?? ''
+    },
+    {
+        "pdf": "MaxSanity",
+        "foundry": @sanMax ?? ''
+    },
+
+    /* Status Flags *********************/
+    {
+        "pdf": "TempInsanity_Chk",
+        "foundry": @system.conditions.tempoInsane.value
+    },
+    {
+        "pdf": "IndefInsanity_Chk",
+        "foundry": @system.conditions.indefInsane.value
+    },
+    {
+        "pdf": "MajorWound_Chk",
+        "foundry": @system.conditions.criticalWounds.value
+    },
+    {
+        "pdf": "Unconscious_Chk",
+        "foundry": @system.conditions.unconscious.value
+    },
+    {
+        "pdf": "Dying_Chk",
+        "foundry": @system.conditions.dying.value
+    },
+
+    /* Skills *********************/
+    {
+        "pdf": "Skill_Accounting_Chk",
+        "foundry": @items.find(item => (item.name === 'Accounting' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.accounting') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Accounting",
+        "foundry": @items.find(item => (item.name === 'Accounting' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.accounting') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Accounting_half",
+        "foundry": (@items.find(item => (item.name === 'Accounting' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.accounting') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Accounting' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.accounting') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Accounting_fifth",
+        "foundry": (@items.find(item => (item.name === 'Accounting' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.accounting') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Accounting' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.accounting') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Appraise_Chk",
+        "foundry": @items.find(item => (item.name === 'Appraise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.appraise') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Appraise",
+        "foundry": @items.find(item => (item.name === 'Appraise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.appraise') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Appraise_half",
+        "foundry": (@items.find(item => (item.name === 'Appraise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.appraise') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Appraise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.appraise') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Appraise_fifth",
+        "foundry": (@items.find(item => (item.name === 'Appraise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.appraise') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Appraise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.appraise') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Archaeology_Chk",
+        "foundry": @items.find(item => (item.name === 'Archaeology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.archaeology') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Archaeology",
+        "foundry": @items.find(item => (item.name === 'Archaeology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.archaeology') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Archaeology_half",
+        "foundry": (@items.find(item => (item.name === 'Archaeology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.archaeology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Archaeology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.archaeology') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Archaeology_fifth",
+        "foundry": (@items.find(item => (item.name === 'Archaeology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.archaeology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Archaeology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.archaeology') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Anthropology_Chk",
+        "foundry": @items.find(item => (item.name === 'Anthropology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.anthropology') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Anthropology",
+        "foundry": @items.find(item => (item.name === 'Anthropology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.anthropology') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Anthropology_half",
+        "foundry": (@items.find(item => (item.name === 'Anthropology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.anthropology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Anthropology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.anthropology') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Anthropology_fifth",
+        "foundry": (@items.find(item => (item.name === 'Anthropology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.anthropology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Anthropology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.anthropology') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_ArtCraft1_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_ArtCraft1",
+        "foundry": @items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "SkillDef_ArtCraft1",
+        "foundry": @items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_ArtCraft1_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_ArtCraft1_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_ArtCraft2_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_ArtCraft2",
+        "foundry": @items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? ''
+    },
+    {
+        "pdf": "SkillDef_ArtCraft2",
+        "foundry": @items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_ArtCraft2_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 2)
+    },
+    {
+        "pdf": "Skill_ArtCraft2_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Art/Craft' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.art-craft-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Charm_Chk",
+        "foundry": @items.find(item => (item.name === 'Charm' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.charm') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Charm",
+        "foundry": @items.find(item => (item.name === 'Charm' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.charm') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Charm_half",
+        "foundry": (@items.find(item => (item.name === 'Charm' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.charm') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Charm' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.charm') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Charm_fifth",
+        "foundry": (@items.find(item => (item.name === 'Charm' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.charm') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Charm' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.charm') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Climb_Chk",
+        "foundry": @items.find(item => (item.name === 'Climb' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.climb') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Climb",
+        "foundry": @items.find(item => (item.name === 'Climb' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.climb') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Climb_half",
+        "foundry": (@items.find(item => (item.name === 'Climb' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.climb') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Climb' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.climb') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Climb_fifth",
+        "foundry": (@items.find(item => (item.name === 'Climb' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.climb') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Climb' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.climb') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Computer_Chk",
+        "foundry": @items.find(item => (item.name === 'Computer Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.computer-use') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Computer",
+        "foundry": @items.find(item => (item.name === 'Computer Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.computer-use') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Computer_half",
+        "foundry": (@items.find(item => (item.name === 'Computer Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.computer-use') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Computer Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.computer-use') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Computer_fifth",
+        "foundry": (@items.find(item => (item.name === 'Computer Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.computer-use') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Computer Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.computer-use') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Credit",
+        "foundry": @items.find(item => (item.name === 'Credit Rating' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.credit-rating') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Credit_half",
+        "foundry": (@items.find(item => (item.name === 'Credit Rating' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.credit-rating') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Credit Rating' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.credit-rating') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Credit_fifth",
+        "foundry": (@items.find(item => (item.name === 'Credit Rating' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.credit-rating') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Credit Rating' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.credit-rating') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Cthulhu",
+        "foundry": @items.find(item => (item.name === 'Cthulhu Mythos' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.cthulhu-mythos') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Cthulhu_half",
+        "foundry": (@items.find(item => (item.name === 'Cthulhu Mythos' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.cthulhu-mythos') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Cthulhu Mythos' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.cthulhu-mythos') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Cthulhu_fifth",
+        "foundry": (@items.find(item => (item.name === 'Cthulhu Mythos' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.cthulhu-mythos') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Cthulhu Mythos' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.cthulhu-mythos') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Demo_Chk",
+        "foundry": @items.find(item => (item.name === 'Demolitions' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.demolitions') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Demo",
+        "foundry": @items.find(item => (item.name === 'Demolitions' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.demolitions') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Demo_half",
+        "foundry": (@items.find(item => (item.name === 'Demolitions' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.demolitions') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Demolitions' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.demolitions') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Demo_fifth",
+        "foundry": (@items.find(item => (item.name === 'Demolitions' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.demolitions') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Demolitions' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.demolitions') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Disguise_Chk",
+        "foundry": @items.find(item => (item.name === 'Disguise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.disguise') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Disguise",
+        "foundry": @items.find(item => (item.name === 'Disguise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.disguise') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Disguise_half",
+        "foundry": (@items.find(item => (item.name === 'Disguise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.disguise') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Disguise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.disguise') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Disguise_fifth",
+        "foundry": (@items.find(item => (item.name === 'Disguise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.disguise') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Disguise' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.disguise') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Diving_Chk",
+        "foundry": @items.find(item => (item.name === 'Diving' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.diving') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Diving",
+        "foundry": @items.find(item => (item.name === 'Diving' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.diving') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Diving_half",
+        "foundry": (@items.find(item => (item.name === 'Diving' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.diving') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Diving' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.diving') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Diving_fifth",
+        "foundry": (@items.find(item => (item.name === 'Diving' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.diving') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Diving' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.diving') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Dodge_Chk",
+        "foundry": @items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Dodge",
+        "foundry": @items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Dodge_half",
+        "foundry": (@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Dodge_fifth",
+        "foundry": (@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Dodge_Copy_Chk",
+        "foundry": @items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Dodge_Copy",
+        "foundry": @items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Dodge_Copy_half",
+        "foundry": (@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Dodge_Copy_fifth",
+        "foundry": (@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Dodge' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.dodge') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Drive_Chk",
+        "foundry": @items.find(item => (item.name === 'Drive Auto' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.drive-auto') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Drive",
+        "foundry": @items.find(item => (item.name === 'Drive Auto' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.drive-auto') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Drive_half",
+        "foundry": (@items.find(item => (item.name === 'Drive Auto' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.drive-auto') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Drive Auto' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.drive-auto') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Drive_fifth",
+        "foundry": (@items.find(item => (item.name === 'Drive Auto' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.drive-auto') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Drive Auto' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.drive-auto') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_ElecRepair_Chk",
+        "foundry": @items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_ElecRepair",
+        "foundry": @items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_ElecRepair_half",
+        "foundry": (@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_ElecRepair_fifth",
+        "foundry": (@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Elec_Chk",
+        "foundry": @items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Elec",
+        "foundry": @items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Elec_half",
+        "foundry": (@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Elec_fifth",
+        "foundry": (@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Electrical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.electrical-repair') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_FastTalk_Chk",
+        "foundry": @items.find(item => (item.name === 'Fast Talk' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fast-talk') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_FastTalk",
+        "foundry": @items.find(item => (item.name === 'Fast Talk' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fast-talk') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_FastTalk_half",
+        "foundry": (@items.find(item => (item.name === 'Fast Talk' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fast-talk') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fast Talk' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fast-talk') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_FastTalk_fifth",
+        "foundry": (@items.find(item => (item.name === 'Fast Talk' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fast-talk') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fast Talk' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fast-talk') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Fighting_Chk",
+        "foundry": @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Fighting",
+        "foundry": @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Fighting_half",
+        "foundry": (@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Fighting_fifth",
+        "foundry": (@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Fighting1_Chk",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Fighting1",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Fighting1",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Fighting1_half",
+        "foundry": (@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Fighting1_fifth",
+        "foundry": (@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Fighting2_Chk",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Fighting2",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Fighting2",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Fighting2_half",
+        "foundry": (@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Fighting2_fifth",
+        "foundry": (@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => ((item.system.specialization === 'Fighting' && !['Brawl', 'Throw'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.fighting-/) && !['i.skill.fighting-brawl', 'i.skill.fighting-throw'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 5)
+    },
+    {
+        "pdf": "Skill_FireArmsHandguns_Chk",
+        "foundry": @items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_FireArmsHandguns",
+        "foundry": @items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_FireArmsHandguns_half",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_FireArmsHandguns_fifth",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_FirearmsHandguns_Chk",
+        "foundry": @items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_FirearmsHandguns",
+        "foundry": @items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_FirearmsHandguns_half",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_FirearmsHandguns_fifth",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Handgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-handgun') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_FireArmsRifles_Chk",
+        "foundry": @items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_FireArmsRifles",
+        "foundry": @items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_FireArmsRifles_half",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_FireArmsRifles_fifth",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_FirearmsRifles_Chk",
+        "foundry": @items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_FirearmsRifles",
+        "foundry": @items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_FirearmsRifles_half",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_FirearmsRifles_fifth",
+        "foundry": (@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Firearms (Rifle/Shotgun)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.firearms-rifle-shotgun') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Firearms_Chk",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Firearms",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Firearms",
+        "foundry": @items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Firearms_half",
+        "foundry": (@items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Firearms_fifth",
+        "foundry": (@items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => ((item.system.specialization === 'Firearms' && !['Rifle/Shotgun', 'Handgun'].includes(item.system.skillName)) || (item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.firearms-/) && !['i.skill.firearms-rifle-shotgun', 'i.skill.firearms-handgun'].includes(item.flags?.CoC7?.cocidFlag?.id))) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_FirstAid_Chk",
+        "foundry": @items.find(item => (item.name === 'First Aid' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.first-aid') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_FirstAid",
+        "foundry": @items.find(item => (item.name === 'First Aid' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.first-aid') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_FirstAid_half",
+        "foundry": (@items.find(item => (item.name === 'First Aid' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.first-aid') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'First Aid' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.first-aid') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_FirstAid_fifth",
+        "foundry": (@items.find(item => (item.name === 'First Aid' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.first-aid') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'First Aid' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.first-aid') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_History_Chk",
+        "foundry": @items.find(item => (item.name === 'History' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.history') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_History",
+        "foundry": @items.find(item => (item.name === 'History' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.history') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_History_half",
+        "foundry": (@items.find(item => (item.name === 'History' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.history') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'History' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.history') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_History_fifth",
+        "foundry": (@items.find(item => (item.name === 'History' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.history') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'History' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.history') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Intimidate_Chk",
+        "foundry": @items.find(item => (item.name === 'Intimidate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.intimidate') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Intimidate",
+        "foundry": @items.find(item => (item.name === 'Intimidate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.intimidate') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Intimidate_half",
+        "foundry": (@items.find(item => (item.name === 'Intimidate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.intimidate') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Intimidate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.intimidate') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Intimidate_fifth",
+        "foundry": (@items.find(item => (item.name === 'Intimidate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.intimidate') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Intimidate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.intimidate') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Jump_Chk",
+        "foundry": @items.find(item => (item.name === 'Jump' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.jump') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Jump",
+        "foundry": @items.find(item => (item.name === 'Jump' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.jump') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Jump_half",
+        "foundry": (@items.find(item => (item.name === 'Jump' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.jump') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Jump' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.jump') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Jump_fifth",
+        "foundry": (@items.find(item => (item.name === 'Jump' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.jump') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Jump' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.jump') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_OwnLanguage_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_OwnLanguage",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_OwnLanguage",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_OwnLanguage_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_OwnLanguage_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_OtherLanguage_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_OtherLanguage",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 2)
+    },
+    {
+        "pdf": "Skill_OtherLanguage_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 5)
+    },
+    {
+        "pdf": "Skill_OtherLanguage1_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_OtherLanguage1",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage1",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage1_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value / 2)
+    },
+    {
+        "pdf": "Skill_OtherLanguage1_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value / 5)
+    },
+    {
+        "pdf": "Skill_OtherLanguage2_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_OtherLanguage2",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage2",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage2_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.value / 2)
+    },
+    {
+        "pdf": "Skill_OtherLanguage2_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[3]?.value / 5)
+    },
+    {
+        "pdf": "Skill_OtherLanguage3_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_OtherLanguage3",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage3",
+        "foundry": @items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_OtherLanguage3_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.value / 2)
+    },
+    {
+        "pdf": "Skill_OtherLanguage3_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Language' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.language-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[4]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Law_Chk",
+        "foundry": @items.find(item => (item.name === 'Law' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.law') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Law",
+        "foundry": @items.find(item => (item.name === 'Law' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.law') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Law_half",
+        "foundry": (@items.find(item => (item.name === 'Law' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.law') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Law' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.law') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Law_fifth",
+        "foundry": (@items.find(item => (item.name === 'Law' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.law') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Law' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.law') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_LibraryUse_Chk",
+        "foundry": @items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_LibraryUse",
+        "foundry": @items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_LibraryUse_half",
+        "foundry": (@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_LibraryUse_fifth",
+        "foundry": (@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Library_Chk",
+        "foundry": @items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Library",
+        "foundry": @items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Library_half",
+        "foundry": (@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Library_fifth",
+        "foundry": (@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Library Use' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.library-use') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Listen_Chk",
+        "foundry": @items.find(item => (item.name === 'Listen' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.listen') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Listen",
+        "foundry": @items.find(item => (item.name === 'Listen' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.listen') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Listen_half",
+        "foundry": (@items.find(item => (item.name === 'Listen' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.listen') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Listen' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.listen') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Listen_fifth",
+        "foundry": (@items.find(item => (item.name === 'Listen' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.listen') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Listen' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.listen') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Locksmith_Chk",
+        "foundry": @items.find(item => (item.name === 'Locksmith' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.locksmith') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Locksmith",
+        "foundry": @items.find(item => (item.name === 'Locksmith' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.locksmith') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Locksmith_half",
+        "foundry": (@items.find(item => (item.name === 'Locksmith' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.locksmith') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Locksmith' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.locksmith') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Locksmith_fifth",
+        "foundry": (@items.find(item => (item.name === 'Locksmith' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.locksmith') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Locksmith' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.locksmith') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_MechRepair_Chk",
+        "foundry": @items.find(item => (item.name === 'Mechanical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.mechanical-repair') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_MechRepair",
+        "foundry": @items.find(item => (item.name === 'Mechanical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.mechanical-repair') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_MechRepair_half",
+        "foundry": (@items.find(item => (item.name === 'Mechanical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.mechanical-repair') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Mechanical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.mechanical-repair') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_MechRepair_fifth",
+        "foundry": (@items.find(item => (item.name === 'Mechanical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.mechanical-repair') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Mechanical Repair' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.mechanical-repair') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Medicine_Chk",
+        "foundry": @items.find(item => (item.name === 'Medicine' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.medicine') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Medicine",
+        "foundry": @items.find(item => (item.name === 'Medicine' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.medicine') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Medicine_half",
+        "foundry": (@items.find(item => (item.name === 'Medicine' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.medicine') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Medicine' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.medicine') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Medicine_fifth",
+        "foundry": (@items.find(item => (item.name === 'Medicine' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.medicine') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Medicine' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.medicine') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_NaturalWorld_Chk",
+        "foundry": @items.find(item => (item.name === 'Natural World' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.natural-world') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_NaturalWorld",
+        "foundry": @items.find(item => (item.name === 'Natural World' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.natural-world') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_NaturalWorld_half",
+        "foundry": (@items.find(item => (item.name === 'Natural World' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.natural-world') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Natural World' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.natural-world') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_NaturalWorld_fifth",
+        "foundry": (@items.find(item => (item.name === 'Natural World' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.natural-world') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Natural World' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.natural-world') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Navigate_Chk",
+        "foundry": @items.find(item => (item.name === 'Navigate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.navigate') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Navigate",
+        "foundry": @items.find(item => (item.name === 'Navigate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.navigate') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Navigate_half",
+        "foundry": (@items.find(item => (item.name === 'Navigate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.navigate') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Navigate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.navigate') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Navigate_fifth",
+        "foundry": (@items.find(item => (item.name === 'Navigate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.navigate') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Navigate' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.navigate') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Occult_Chk",
+        "foundry": @items.find(item => (item.name === 'Occult' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.occult') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Occult",
+        "foundry": @items.find(item => (item.name === 'Occult' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.occult') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Occult_half",
+        "foundry": (@items.find(item => (item.name === 'Occult' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.occult') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Occult' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.occult') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Occult_fifth",
+        "foundry": (@items.find(item => (item.name === 'Occult' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.occult') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Occult' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.occult') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Persuade_Chk",
+        "foundry": @items.find(item => (item.name === 'Persuade' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.persuade') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Persuade",
+        "foundry": @items.find(item => (item.name === 'Persuade' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.persuade') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Persuade_half",
+        "foundry": (@items.find(item => (item.name === 'Persuade' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.persuade') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Persuade' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.persuade') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Persuade_fifth",
+        "foundry": (@items.find(item => (item.name === 'Persuade' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.persuade') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Persuade' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.persuade') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Pilot_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Pilot",
+        "foundry": @items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Pilot",
+        "foundry": @items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Pilot_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Pilot_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Pilot' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.pilot-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Psychoanalysis_Chk",
+        "foundry": @items.find(item => (item.name === 'Psychoanalysis' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychoanalysis') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Psychoanalysis",
+        "foundry": @items.find(item => (item.name === 'Psychoanalysis' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychoanalysis') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Psychoanalysis_half",
+        "foundry": (@items.find(item => (item.name === 'Psychoanalysis' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychoanalysis') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Psychoanalysis' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychoanalysis') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Psychoanalysis_fifth",
+        "foundry": (@items.find(item => (item.name === 'Psychoanalysis' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychoanalysis') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Psychoanalysis' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychoanalysis') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Psychology_Chk",
+        "foundry": @items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Psychology",
+        "foundry": @items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Psychology_half",
+        "foundry": (@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Psychology_fifth",
+        "foundry": (@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Psyschology_Chk",
+        "foundry": @items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Psyschology",
+        "foundry": @items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Psyschology_half",
+        "foundry": (@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Psyschology_fifth",
+        "foundry": (@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Psychology' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.psychology') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_ReadLips_Chk",
+        "foundry": @items.find(item => (item.name === 'Read Lips' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.read-lips') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_ReadLips",
+        "foundry": @items.find(item => (item.name === 'Read Lips' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.read-lips') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_ReadLips_half",
+        "foundry": (@items.find(item => (item.name === 'Read Lips' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.read-lips') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Read Lips' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.read-lips') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_ReadLips_fifth",
+        "foundry": (@items.find(item => (item.name === 'Read Lips' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.read-lips') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Read Lips' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.read-lips') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Ride_Chk",
+        "foundry": @items.find(item => (item.name === 'Ride' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.ride') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Ride",
+        "foundry": @items.find(item => (item.name === 'Ride' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.ride') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Ride_half",
+        "foundry": (@items.find(item => (item.name === 'Ride' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.ride') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Ride' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.ride') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Ride_fifth",
+        "foundry": (@items.find(item => (item.name === 'Ride' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.ride') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Ride' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.ride') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Science1_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Science1",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Science1",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Science1_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Science1_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Science2_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Science2",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Science2",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Science2_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Science2_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[1]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Science3_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Science3",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Science3",
+        "foundry": @items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Science3_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Science3_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Science' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.science-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[2]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Sleight_Chk",
+        "foundry": @items.find(item => (item.name === 'Sleight of Hand' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.sleight-of-hand') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Sleight",
+        "foundry": @items.find(item => (item.name === 'Sleight of Hand' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.sleight-of-hand') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Sleight_half",
+        "foundry": (@items.find(item => (item.name === 'Sleight of Hand' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.sleight-of-hand') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Sleight of Hand' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.sleight-of-hand') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Sleight_fifth",
+        "foundry": (@items.find(item => (item.name === 'Sleight of Hand' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.sleight-of-hand') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Sleight of Hand' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.sleight-of-hand') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_SpotHidden_Chk",
+        "foundry": @items.find(item => (item.name === 'Spot Hidden' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.spot-hidden') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_SpotHidden",
+        "foundry": @items.find(item => (item.name === 'Spot Hidden' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.spot-hidden') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_SpotHidden_half",
+        "foundry": (@items.find(item => (item.name === 'Spot Hidden' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.spot-hidden') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Spot Hidden' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.spot-hidden') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_SpotHidden_fifth",
+        "foundry": (@items.find(item => (item.name === 'Spot Hidden' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.spot-hidden') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Spot Hidden' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.spot-hidden') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Stealth_Chk",
+        "foundry": @items.find(item => (item.name === 'Stealth' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.stealth') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Stealth",
+        "foundry": @items.find(item => (item.name === 'Stealth' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.stealth') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Stealth_half",
+        "foundry": (@items.find(item => (item.name === 'Stealth' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.stealth') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Stealth' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.stealth') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Stealth_fifth",
+        "foundry": (@items.find(item => (item.name === 'Stealth' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.stealth') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Stealth' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.stealth') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Survival_Chk",
+        "foundry": @items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "SkillDef_Survival",
+        "foundry": @items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.name ?? ''
+    },
+    {
+        "pdf": "Skill_Survival",
+        "foundry": @items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Survival_half",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 2)
+    },
+    {
+        "pdf": "Skill_Survival_fifth",
+        "foundry": (@items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => (item.system.specialization === 'Survival' || item.flags?.CoC7?.cocidFlag?.id.match(/^i.skill.survival-/)) && item.type === 'skill').sort((a, b) => b.value-a.value)[0]?.value / 5)
+    },
+    {
+        "pdf": "Skill_Swim_Chk",
+        "foundry": @items.find(item => (item.name === 'Swim' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.swim') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Swim",
+        "foundry": @items.find(item => (item.name === 'Swim' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.swim') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Swim_half",
+        "foundry": (@items.find(item => (item.name === 'Swim' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.swim') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Swim' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.swim') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Swim_fifth",
+        "foundry": (@items.find(item => (item.name === 'Swim' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.swim') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Swim' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.swim') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Throw_Chk",
+        "foundry": @items.find(item => (item.name === 'Fighting (Throw)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-throw') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Throw",
+        "foundry": @items.find(item => (item.name === 'Fighting (Throw)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-throw') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Throw_half",
+        "foundry": (@items.find(item => (item.name === 'Fighting (Throw)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-throw') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Throw)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-throw') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Throw_fifth",
+        "foundry": (@items.find(item => (item.name === 'Fighting (Throw)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-throw') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Throw)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-throw') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Skill_Track_Chk",
+        "foundry": @items.find(item => (item.name === 'Track' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.track') && item.type === 'skill')?.system.flags?.developement ?? false
+    },
+    {
+        "pdf": "Skill_Track",
+        "foundry": @items.find(item => (item.name === 'Track' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.track') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Skill_Track_half",
+        "foundry": (@items.find(item => (item.name === 'Track' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.track') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Track' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.track') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Skill_Track_fifth",
+        "foundry": (@items.find(item => (item.name === 'Track' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.track') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Track' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.track') && item.type === 'skill')?.value / 5)
+    },
+
+    /* Weapons *********************/
+    {
+        "pdf": "Weapon_Regular0",
+        "foundry": @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Hard0",
+        "foundry": (@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 2)
+    },
+    {
+        "pdf": "Weapon_Extreme0",
+        "foundry": (@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 5)
+    },
+    {
+        "pdf": "Weapon_Name1",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.name ?? ''
+    },
+    {
+        "pdf": "Weapon_Regular1",
+        "foundry": @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Hard1",
+        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value / 2)
+    },
+    {
+        "pdf": "Weapon_Extreme1",
+        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value / 5)
+    },
+    {
+        "pdf": "Weapon_Damage1",
+        "foundry": ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
+    },
+    {
+        "pdf": "Weapon_Attacks1",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.usesPerRound?.normal ?? ''
+    },
+    {
+        "pdf": "Weapon_Range1",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.range?.normal?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Ammo1",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.bullets ?? ''
+    },
+    {
+        "pdf": "Weapon_Malf1",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.malfunction ?? ''
+    },
+    {
+        "pdf": "Weapon_Name2",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.name ?? ''
+    },
+    {
+        "pdf": "Weapon_Regular2",
+        "foundry": @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Hard2",
+        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value / 2)
+    },
+    {
+        "pdf": "Weapon_Extreme2",
+        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value / 5)
+    },
+    {
+        "pdf": "Weapon_Damage2",
+        "foundry": ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
+    },
+    {
+        "pdf": "Weapon_Attacks2",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.usesPerRound?.normal ?? ''
+    },
+    {
+        "pdf": "Weapon_Range2",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.range?.normal?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Ammo2",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.bullets ?? ''
+    },
+    {
+        "pdf": "Weapon_Malf2",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.malfunction ?? ''
+    },
+    {
+        "pdf": "Weapon_Name3",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.name ?? ''
+    },
+    {
+        "pdf": "Weapon_Regular3",
+        "foundry": @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Hard3",
+        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value / 2)
+    },
+    {
+        "pdf": "Weapon_Extreme3",
+        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value / 5)
+    },
+    {
+        "pdf": "Weapon_Damage3",
+        "foundry": ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
+    },
+    {
+        "pdf": "Weapon_Attacks3",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.usesPerRound?.normal ?? ''
+    },
+    {
+        "pdf": "Weapon_Range3",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.range?.normal?.value ?? ''
+    },
+    {
+        "pdf": "Weapon_Ammo3",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.bullets ?? ''
+    },
+    {
+        "pdf": "Weapon_Malf3",
+        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.malfunction ?? ''
+    },
+
+    /* Cash and Assets *********************/
+    {
+        "pdf": "SpendingLevel",
+        "foundry": (@system.flags.manualCredit ? @system.monetary.spendingLevel : CONFIG.Actor.documentClass.monetaryFormat(@system.monetary.format, @system.monetary.symbol, @spendingLevel))
+    },
+    {
+        "pdf": "Cash",
+        "foundry": (@system.flags.manualCredit ? @system.monetary.cash : CONFIG.Actor.documentClass.monetaryFormat(@system.monetary.format, @system.monetary.symbol, @cash))
+    },
+    {
+        "pdf": "Assets1",
+        "foundry": (@system.flags.manualCredit ? @system.monetary.assets : CONFIG.Actor.documentClass.monetaryFormat(@system.monetary.format, @system.monetary.symbol, @assets))
+    },
+
+    /* Backstory *********************/
+    {
+        "pdf": "PersonalDescription",
+        "foundry": @system.biography[0]?.value ?? ''
+    },
+    {
+        "pdf": "Ideology/Beliefs",
+        "foundry": @system.biography[1]?.value ?? ''
+    },
+    {
+        "pdf": "Significant People",
+        "foundry": @system.biography[2]?.value ?? ''
+    },
+    {
+        "pdf": "Locations",
+        "foundry": @system.biography[3]?.value ?? ''
+    },
+    {
+        "pdf": "Possessions",
+        "foundry": @system.biography[4]?.value ?? ''
+    },
+    {
+        "pdf": "Phobias/Manias",
+        "foundry": @system.biography[5]?.value ?? ''
+    },
+    {
+        "pdf": "Traits",
+        "foundry": @system.biography[6]?.value ?? ''
+    },
+    {
+        "pdf": "Injuries",
+        "foundry": @system.biography[7]?.value ?? ''
+    },
+    {
+        "pdf": "Encounters",
+        "foundry": @system.biography[8]?.value ?? ''
+    },
+
+    /* Gear and Possessions *********************/
+    /* <= 10 items, concatenated field arrays to accomodate varying numbers of items and/or pdf fields */
+    {
+        "pdf": "Gear/Possessions",
+        "foundry": (@items.filter(item => item.type === "item")[0]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[1]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[2]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[3]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[4]?.name ?? '')
+    },
+    {
+        "pdf": "Gear/Possessions1",
+        "foundry": (@items.filter(item => item.type === "item")[5]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[6]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[7]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[8]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "item")[9]?.name ?? '')
+    },
+
+    /* Gear and Possessions *********************/
+    {
+        "pdf": "Tomes/Spells",
+        "foundry": (@items.filter(item => item.type === "book")[0]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "book")[1]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "book")[2]?.name ?? '')
+    },
+
+    /* Pulp Talents *********************/
+    {
+        "pdf": "Pulp Talents",
+        "foundry": (@items.filter(item => item.type === "talent")[0]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "talent")[1]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "talent")[2]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "talent")[3]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "talent")[4]?.name ?? '') + "\n" +
+                   (@items.filter(item => item.type === "talent")[5]?.name ?? '')
+    },
+
+    /* End *********************/
+]
