@@ -1,0 +1,174 @@
+[
+    { "pdf": "Name","foundry": @name},  
+    { "pdf": "Descriptor", "foundry": @system.basic.descriptor.replace(/ \{[^)]*\}/, "") },
+    { "pdf": "Type", "foundry": @system.basic.type.replace(/ \{[^)]*\}/, "") },
+    { "pdf": "Focus", "foundry": @system.basic.focus.replace(/ \{[^)]*\}/, "") },
+    { "pdf": "Type_Focus_or_Other", "foundry": @system.basic.additionalSentence.replace(/ \{[^)]*\}/, "") },	
+    { "pdf": "Dominion", "foundry": @system.basic.additionalSentence.replace(/ \{[^)]*\}/, "") },	
+    { "pdf": "Tier", "foundry": @system.basic.tier },
+    { "pdf": "Effort", "foundry": @system.basic.effort },
+    { "pdf": "Increase_Capabilities", "foundry": @system.basic.advancement?.stats ?? ''},
+    { "pdf": "Extra_Effort", "foundry": @system.basic.advancement?.effort   ?? ''},
+    { "pdf": "Move_Toward_Perfection", "foundry": @system.basic.advancement?.edge   ?? ''},
+    { "pdf": "Skill_Training", "foundry": @system.basic.advancement?.skill   ?? ''},
+    { "pdf": "Other", "foundry": @system.basic.advancement?.other  ?? ''},
+	
+
+    { "pdf": "Cyphers_Limit", "foundry": @system.equipment.cypherLimit },
+    { "pdf": "XP", "foundry": @system.basic.xp },
+	
+    { "pdf": "Might_Pool", "foundry": @system.pools.might.value },
+    { "pdf": "Might", "foundry": @system.pools.might.max },
+    { "pdf": "Might_Edge", "foundry": @system.pools.might.edge },
+    
+    { "pdf": "Speed_Pool", "foundry": @system.pools.speed.value },
+    { "pdf": "Speed", "foundry": @system.pools.speed.max },
+    { "pdf": "Speed_Edge", "foundry": @system.pools.speed.edge },
+
+    { "pdf": "Intellect_Pool", "foundry": @system.pools.intellect.value },
+    { "pdf": "Intellect", "foundry": @system.pools.intellect.max },
+    { "pdf": "Intellect_Edge", "foundry": @system.pools.intellect.edge },
+    
+    { "pdf": "Recovery_Roll", "foundry": @system.combat.recoveries.roll.replaceAll('1d6', '').trim().replaceAll('+', '') },
+    { "pdf": "1_ACTION", "foundry": @system.combat.recoveries.oneAction },
+    { "pdf": "10_Min", "foundry": @system.combat.recoveries.tenMinutes },
+    { "pdf": "1_Hour", "foundry": @system.combat.recoveries.oneHour },
+    { "pdf": "10_Hours", "foundry": @system.combat.recoveries.tenHours },
+	
+    { "pdf": "Impaired", "foundry": @system.combat.damageTrack.state === 'Impaired'  ?? ''},
+    { "pdf": "Debilitated", "foundry": @system.combat.damageTrack.state === 'Debilitated'  ?? ''},
+
+    { "pdf": "Armor", "foundry": @system.combat.armor.ratingTotal },	
+		
+    { "pdf": "Notes","foundry": @system.notes?.replaceAll("</p>", "\n").replaceAll(/<br \/>/g, "\n").replaceAll(/<[^>]*>/g, "").trim() ?? ''},
+	
+    { "pdf": "Background","foundry": @system.description?.replaceAll("</p>", "\n").replaceAll(/<br \/>/g, "\n").replaceAll(/<[^>]*>/g, "").trim() ?? ''},
+
+    {
+    "pdf": "Cyphers",
+    "foundry": @items.filter(item => item.type === "cypher").map(item => `${item.name}`).join("\n") ?? ''
+    },	
+    {
+        "pdf": "Special_Abilities",
+	"foundry": new Array(@items.filter(item => item.type === "ability").sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).map(item => `${item.name}`).join("\n"),@items.filter(item => item.type === "power-shift").sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).map(item => `Power Shift (${item.system?.basic?.shifts ?? 1}): ${item.name}`).join("\n")).join('\n\n')
+    },	
+    {
+        "pdf": "Equipment",
+	"foundry": @items.filter(item => item.type === "equipment").map(item => `${item.name}`).join("\n") ?? ''
+    },
+
+    { "pdf": "Skills_1", "foundry": @items.filter(item => item.type === "skill")[0]?.name ?? ''},
+    { "pdf": "Skills_2", "foundry": @items.filter(item => item.type === "skill")[1]?.name ?? ''},
+    { "pdf": "Skills_3", "foundry": @items.filter(item => item.type === "skill")[2]?.name ?? ''},
+    { "pdf": "Skills_4", "foundry": @items.filter(item => item.type === "skill")[3]?.name ?? ''},
+    { "pdf": "Skills_5", "foundry": @items.filter(item => item.type === "skill")[4]?.name ?? ''},
+    { "pdf": "Skills_6", "foundry": @items.filter(item => item.type === "skill")[5]?.name ?? ''},
+    { "pdf": "Skills_7", "foundry": @items.filter(item => item.type === "skill")[6]?.name ?? ''},
+    { "pdf": "Skills_8", "foundry": @items.filter(item => item.type === "skill")[7]?.name ?? ''},
+    { "pdf": "Skills_9", "foundry": @items.filter(item => item.type === "skill")[8]?.name ?? ''},
+    { "pdf": "Skills_10", "foundry": @items.filter(item => item.type === "skill")[9]?.name ?? ''},
+    { "pdf": "Skills_11", "foundry": @items.filter(item => item.type === "skill")[10]?.name ?? ''},
+    { "pdf": "Skills_12", "foundry": @items.filter(item => item.type === "skill")[11]?.name ?? ''},
+    { "pdf": "Skills_13", "foundry": @items.filter(item => item.type === "skill")[12]?.name ?? ''},
+    { "pdf": "Skills_14", "foundry": @items.filter(item => item.type === "skill")[13]?.name ?? ''},
+	
+    { "pdf": "Skills_P_1", "foundry": @items.filter(item => item.type === "skill")[0]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_2", "foundry": @items.filter(item => item.type === "skill")[1]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_3", "foundry": @items.filter(item => item.type === "skill")[2]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_4", "foundry": @items.filter(item => item.type === "skill")[3]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_5", "foundry": @items.filter(item => item.type === "skill")[4]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_6", "foundry": @items.filter(item => item.type === "skill")[5]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_7", "foundry": @items.filter(item => item.type === "skill")[6]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_8", "foundry": @items.filter(item => item.type === "skill")[7]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_9", "foundry": @items.filter(item => item.type === "skill")[8]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_10", "foundry": @items.filter(item => item.type === "skill")[9]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_11", "foundry": @items.filter(item => item.type === "skill")[10]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_12", "foundry": @items.filter(item => item.type === "skill")[11]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_13", "foundry": @items.filter(item => item.type === "skill")[12]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+    { "pdf": "Skills_P_14", "foundry": @items.filter(item => item.type === "skill")[13]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
+
+    { "pdf": "Skills_T_1", "foundry": @items.filter(item => item.type === "skill")[0]?.system?.basic?.rating === 'Trained' ?? '' },
+    { "pdf": "Skills_S_1", "foundry": @items.filter(item => item.type === "skill")[0]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_1", "foundry": @items.filter(item => item.type === "skill")[0]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_2", "foundry": @items.filter(item => item.type === "skill")[1]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_2", "foundry": @items.filter(item => item.type === "skill")[1]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_2", "foundry": @items.filter(item => item.type === "skill")[1]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_3", "foundry": @items.filter(item => item.type === "skill")[2]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_3", "foundry": @items.filter(item => item.type === "skill")[2]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_3", "foundry": @items.filter(item => item.type === "skill")[2]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_4", "foundry": @items.filter(item => item.type === "skill")[3]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_4", "foundry": @items.filter(item => item.type === "skill")[3]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_4", "foundry": @items.filter(item => item.type === "skill")[3]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_5", "foundry": @items.filter(item => item.type === "skill")[4]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_5", "foundry": @items.filter(item => item.type === "skill")[4]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_5", "foundry": @items.filter(item => item.type === "skill")[4]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_6", "foundry": @items.filter(item => item.type === "skill")[5]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_6", "foundry": @items.filter(item => item.type === "skill")[5]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_6", "foundry": @items.filter(item => item.type === "skill")[5]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_7", "foundry": @items.filter(item => item.type === "skill")[6]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_7", "foundry": @items.filter(item => item.type === "skill")[6]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_7", "foundry": @items.filter(item => item.type === "skill")[6]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_8", "foundry": @items.filter(item => item.type === "skill")[7]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_8", "foundry": @items.filter(item => item.type === "skill")[7]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_8", "foundry": @items.filter(item => item.type === "skill")[7]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_9", "foundry": @items.filter(item => item.type === "skill")[8]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_9", "foundry": @items.filter(item => item.type === "skill")[8]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_9", "foundry": @items.filter(item => item.type === "skill")[8]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_10", "foundry": @items.filter(item => item.type === "skill")[9]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_10", "foundry": @items.filter(item => item.type === "skill")[9]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_10", "foundry": @items.filter(item => item.type === "skill")[9]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_11", "foundry": @items.filter(item => item.type === "skill")[10]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_11", "foundry": @items.filter(item => item.type === "skill")[10]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_11", "foundry": @items.filter(item => item.type === "skill")[10]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_12", "foundry": @items.filter(item => item.type === "skill")[11]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_12", "foundry": @items.filter(item => item.type === "skill")[11]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_12", "foundry": @items.filter(item => item.type === "skill")[11]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_13", "foundry": @items.filter(item => item.type === "skill")[12]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_13", "foundry": @items.filter(item => item.type === "skill")[12]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_13", "foundry": @items.filter(item => item.type === "skill")[12]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Skills_T_14", "foundry": @items.filter(item => item.type === "skill")[13]?.system?.basic?.rating === 'Trained'  ?? ''},
+    { "pdf": "Skills_S_14", "foundry": @items.filter(item => item.type === "skill")[13]?.system?.basic?.rating === 'Specialized' ?? ''},
+    { "pdf": "Skills_I_14", "foundry": @items.filter(item => item.type === "skill")[13]?.system?.basic?.rating === 'Inability' ?? ''},
+
+    { "pdf": "Attacks_1", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[0]?.name ?? ''},
+    { "pdf": "Attacks_2", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[1]?.name ?? ''},
+    { "pdf": "Attacks_3", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[2]?.name ?? ''},
+    { "pdf": "Attacks_4", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[3]?.name ?? ''},
+    { "pdf": "Attacks_5", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[4]?.name ?? ''},
+    { "pdf": "Attacks_6", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[5]?.name ?? ''},
+    { "pdf": "Attacks_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.name ?? ''},
+
+    { "pdf": "Attacks_Mod_1", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[0]?.system?.basic?.steps ?? '' },
+    { "pdf": "Attacks_Dam_1", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[0]?.system?.basic?.damage ?? ''},
+
+    { "pdf": "Attacks_Mod_2", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[1]?.system?.basic?.steps ?? ''},
+    { "pdf": "Attacks_Dam_2", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[1]?.system?.basic?.damage ?? ''},
+
+    { "pdf": "Attacks_Mod_3", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[2]?.system?.basic?.steps ?? ''},
+    { "pdf": "Attacks_Dam_3", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[2]?.system?.basic?.damage ?? ''},
+
+    { "pdf": "Attacks_Mod_4", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[3]?.system?.basic?.steps ?? ''},
+    { "pdf": "Attacks_Dam_4", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[3]?.system?.basic?.damage ?? ''},
+
+    { "pdf": "Attacks_Mod_5", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[4]?.system?.basic?.steps ?? ''},
+    { "pdf": "Attacks_Dam_5", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[4]?.system?.basic?.damage ?? ''},
+
+    { "pdf": "Attacks_Mod_6", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[5]?.system?.basic?.steps ?? ''},
+    { "pdf": "Attacks_Dam_6", "foundry": @items.filter(item => item.type === "attack")[5]?.system?.basic?.damage ?? ''},
+
+    { "pdf": "Attacks_Mod_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.system?.basic?.steps ?? ''},
+    { "pdf": "Attacks_Dam_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.system?.basic?.damage ?? ''},		
+]
