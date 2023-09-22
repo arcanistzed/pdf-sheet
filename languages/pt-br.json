@@ -1,0 +1,47 @@
+{
+  "pdfsheet": {
+    "settings": {
+      "mapping": {
+        "Name": "Mapeamento",
+        "Hint": "JSON que é usado para mapear os campos PDF para informações na ficha de personagem Foundry. Consulte o README para obter detalhes."
+      }
+    },
+    "download": {
+      "dnd5e": {
+        "label": "PDF para a ficha PT-BR do D&D 5ª edição",
+        "title": "Baixe o PDF preenchível não oficial adaptado da ficha de personagem oficial para D&D 5ª edição",
+        "url": "https://drive.google.com/file/d/1YochPfr_kVtgxmORsDmzrXSotMfeYo4o/view"
+      },
+      "starwars-ffg": {
+        "label": "PDF para Star Wars FFG",
+        "title": "Faça o download da ficha de personagem não oficial de Star Wars FFG",
+        "url": "http://holocast.terceiraterra.com/wp-content/uploads/EotE-CharacterSheet-Fillable-v4.pdf"
+      },
+      "shadowrun5e": {
+        "label": "PDF para SR5e",
+        "title": "Baixe um PDF de ficha de personagem não oficial para Shadowrun 5e",
+        "url": "https://drive.google.com/uc?export=download&id=1Gkaoi3JR6bfjhhq1PcgFpqGZlhTWv2oV"
+      },
+      "pf1": {
+        "label": "PDF para Pathfinder 1",
+        "title": "Faça o download de um PDF de ficha de personagem não oficial para Pathfinder 1",
+        "url": "https://cdn.discordapp.com/attachments/877667041119731734/940318362146308127/Pf1e-Foundry_to_PDF.pdf"
+      },
+      "pf2e": {
+        "label": "PDF para Pathfinder 2e",
+        "title": "Faça o download de um PDF de ficha de personagem não oficial para Pathfinder 2e",
+        "url": "https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo"
+      },
+      "dcc": {
+        "label": "PDF para Dungeon Crawl Classics",
+        "title": "Baixe um PDF da ficha de personagem da Goodman Games for Dungeon Crawl Classics",
+        "url": "https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf"
+      },
+      "swade": {
+        "label": "PDF para SWADE",
+        "title": "Veja o PDF oficial da ficha de personagem para SWADE na loja PEG",
+        "url": "https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/"
+      }
+    }
+  }
+}
