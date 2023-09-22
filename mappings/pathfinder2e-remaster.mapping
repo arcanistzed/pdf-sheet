@@ -146,11 +146,6 @@
 
     /* SPEED */
 
-    /*
-    @items.filter(i => i.type === 'armor' && i.isEquipped ).map(i => i.speedPenalty).reduce((a,v) => {return a+v},0)
-    */
-
-    /* FIXME: Include speed penalties for Armor & Bulk ) */
     { "pdf": "Speed", "foundry":
         @system.attributes.speed.value + @system.attributes.speed.totalModifier + @items.filter(i => i.type === 'armor' && i.isEquipped ).map(i => i.speedPenalty).reduce((a,v) => {return a+v},0)
     },
@@ -1331,15 +1326,6 @@
     },
 
 
-    /*
-        @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
-        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-        .reverse()
-        .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
-        .reverse()
-        .map(i => i.name + ' - ' + i.system.actionType.value + ' - ' + i.system.actions.value + ' - ' + [i.system.traits.rarity].concat(i.system.traits.value).join(',') ).join('\n') || ''
-
-    */
     /* ---------- PAGE 4 ----------*/
 
     /* Magical Tradition */
