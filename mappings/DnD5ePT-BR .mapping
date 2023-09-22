@@ -1,0 +1,442 @@
+/* PDF: https://drive.google.com/file/d/1YochPfr_kVtgxmORsDmzrXSotMfeYo4o/view */
+[
+  /* Page #1 */
+  { "pdf": "Campo de Texto8", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.system.levels}`).join(' / ') },
+  { "pdf": "Campo de Texto9", "foundry": @system.details.background },
+  { "pdf": "Campo de Texto10", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
+  { "pdf": "Campo de Texto0", "foundry": @name },
+  { "pdf": "Campo de Texto13", "foundry": @system.details.race },
+  { "pdf": "Campo de Texto12", "foundry": @system.details.alignment },
+  { "pdf": "Campo de Texto11", "foundry": @system.details.xp.value },
+  { "pdf": "Campo de Texto26", "foundry": @system.attributes.inspiration ? "x" : "" },
+  { "pdf": "Campo de Texto27", "foundry": @system.abilities.str.value },
+  { "pdf": "Campo de Texto28", "foundry": @system.attributes.prof },
+  { "pdf": "Campo de Texto25", "foundry": @system.attributes.ac.value },
+  { "pdf": "Campo de Texto23", "foundry": @system.attributes.init.total },
+  { "pdf": "Campo de Texto24", "foundry": (function() {
+      const mo = actor.system.attributes.movement;
+      const mt = Object.entries(game.dnd5e.config.movementTypes).map(e => e[0]);
+      const ma = Object.entries(mo).filter(e => e[1] && mt.includes(e[0]));
+      if (mo.walk && ma?.length === 1) {
+        return `${ma[0][1]}${mo.units}${mo.hover ? "\n(hover)" : ""}`;
+      } else {
+        return ma.map(m => `${m[0].substring(0,2)}:${m[1]}${mo.units}`).join('\n').concat(mo.hover ? "\n(hover)" : "");
+      }
+    })()
+  },
+  { "pdf": "Campo de Texto1", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.trait)
+  },
+  { "pdf": "Campo de Texto29", "foundry": @system.abilities.str.mod },
+  { "pdf": "Campo de Texto60", "foundry": @system.abilities.str.save },
+  { "pdf": "Campo de Texto30", "foundry": @system.abilities.dex.value },
+  { "pdf": "Campo de Texto2", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.ideal)
+  },
+  { "pdf": "Campo de Texto33", "foundry": @system.abilities.dex.mod },
+  { "pdf": "Campo de Texto3", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.bond)
+  },
+  { "pdf": "Campo de Texto32", "foundry": @system.abilities.con.value },
+  { "pdf": "Campo de Texto44", "foundry": @system.attributes.hd },
+  { "pdf": "Caixa de Seleção24", "foundry": @system.attributes.death.success },
+  { "pdf": "Caixa de Seleção25", "foundry": @system.attributes.death.success },
+  { "pdf": "Caixa de Seleção26", "foundry": @system.attributes.death.success },
+  { "pdf": "Campo de Texto31", "foundry": @system.abilities.con.mod },
+  { "pdf": "Caixa de Seleção27", "foundry": @system.attributes.death.failure },
+  { "pdf": "Caixa de Seleção28", "foundry": @system.attributes.death.failure },
+  { "pdf": "Caixa de Seleção29", "foundry": @system.attributes.death.failure },
+  { "pdf": "Campo de Texto43", "foundry": @system.attributes.hd },
+  { "pdf": "Campo de Texto4", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.flaw)
+  },
+  { "pdf": "Campo de Texto35", "foundry": @system.abilities.int.value },
+  { "pdf": "Campo de Texto61", "foundry": @system.abilities.dex.save },
+  { "pdf": "Campo de Texto62", "foundry": @system.abilities.con.save },
+  { "pdf": "Campo de Texto63", "foundry": @system.abilities.int.save },
+  { "pdf": "Campo de Texto64", "foundry": @system.abilities.wis.save },
+  { "pdf": "Campo de Texto65", "foundry": @system.abilities.cha.save },
+  { "pdf": "Campo de Texto66", "foundry": @system.skills.acr.total },
+  { "pdf": "Campo de Texto76", "foundry": @system.skills.ani.total },
+  { "pdf": "Campo de Texto68", "foundry": @system.skills.ath.total },
+  { "pdf": "Campo de Texto70", "foundry": @system.skills.dec.total },
+  { "pdf": "Campo de Texto72", "foundry": @system.skills.his.total },
+  { "pdf": "Campo de Texto45", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
+  { "pdf": "Campo de Texto48", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Campo de Texto51", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Campo de Texto74", "foundry": @system.skills.ins.total },
+  { "pdf": "Campo de Texto73", "foundry": @system.skills.itm.total },
+  { "pdf": "Campo de Texto46", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
+  { "pdf": "Campo de Texto49", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Campo de Texto47", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
+  { "pdf": "Campo de Texto50", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Caixa de Seleção0", "foundry": @system.abilities.str.proficient },
+  { "pdf": "Caixa de Seleção1", "foundry": @system.abilities.dex.proficient },
+  { "pdf": "Caixa de Seleção2", "foundry": @system.abilities.con.proficient },
+  { "pdf": "Caixa de Seleção3", "foundry": @system.abilities.int.proficient },
+  { "pdf": "Caixa de Seleção4", "foundry": @system.abilities.wis.proficient },
+  { "pdf": "Caixa de Seleção5", "foundry": @system.abilities.cha.proficient },
+  { "pdf": "Campo de Texto34", "foundry": @system.abilities.int.mod },
+  { "pdf": "Campo de Texto52", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Campo de Texto75", "foundry": @system.skills.inv.total },
+  { "pdf": "Campo de Texto36", "foundry": @system.abilities.wis.value },
+  { "pdf": "Campo de Texto67", "foundry": @system.skills.arc.total },
+  { "pdf": "Campo de Texto79", "foundry": @system.skills.prc.total },
+  { "pdf": "Campo de Texto39", "foundry": @system.abilities.wis.mod },
+  { "pdf": "Campo de Texto38", "foundry": @system.abilities.cha.value },
+  { "pdf": "Campo de Texto78", "foundry": @system.skills.nat.total },
+  { "pdf": "Campo de Texto69", "foundry": @system.skills.per.total },
+  { "pdf": "Campo de Texto77", "foundry": @system.skills.med.total },
+  { "pdf": "Campo de Texto82", "foundry": @system.skills.rel.total },
+  { "pdf": "Campo de Texto71", "foundry": @system.skills.ste.total },
+  { "pdf": "Caixa de Seleção6", "foundry": @system.skills.acr.value },
+  { "pdf": "Caixa de Seleção16", "foundry": @system.skills.ani.value },
+  { "pdf": "Caixa de Seleção7", "foundry": @system.skills.arc.value },
+  { "pdf": "Caixa de Seleção8", "foundry": @system.skills.ath.value },
+  { "pdf": "Caixa de Seleção10", "foundry": @system.skills.dec.value },
+  { "pdf": "Caixa de Seleção12", "foundry": @system.skills.his.value },
+  { "pdf": "Caixa de Seleção14", "foundry": @system.skills.ins.value },
+  { "pdf": "Caixa de Seleção13", "foundry": @system.skills.itm.value },
+  { "pdf": "Caixa de Seleção15", "foundry": @system.skills.inv.value },
+  { "pdf": "Caixa de Seleção17", "foundry": @system.skills.med.value },
+  { "pdf": "Caixa de Seleção18", "foundry": @system.skills.nat.value },
+  { "pdf": "Caixa de Seleção19", "foundry": @system.skills.prc.value },
+  { "pdf": "Caixa de Seleção9", "foundry": @system.skills.prf.value },
+  { "pdf": "Caixa de Seleção20", "foundry": @system.skills.per.value },
+  { "pdf": "Caixa de Seleção22", "foundry": @system.skills.rel.value },
+  { "pdf": "Caixa de Seleção21", "foundry": @system.skills.slt.value },
+  { "pdf": "Caixa de Seleção11", "foundry": @system.skills.ste.value },
+  { "pdf": "Caixa de Seleção23", "foundry": @system.skills.sur.value },
+  { "pdf": "Campo de Texto80", "foundry": @system.skills.per.total },
+  { "pdf": "Campo de Texto42", "foundry": @system.attributes.hp.max },
+  { "pdf": "Campo de Texto40", "foundry": @system.attributes.hp.value },
+  { "pdf": "Campo de Texto41", "foundry": @system.attributes.hp.temp },
+  { "pdf": "Campo de Texto53", "foundry": (function() {
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage;
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+    })()
+  },
+  { "pdf": "Campo de Texto81", "foundry": @system.skills.slt.total },
+  { "pdf": "Campo de Texto37", "foundry": @system.abilities.cha.mod },
+  { "pdf": "Campo de Texto83", "foundry": @system.skills.sur.total },
+  { "pdf": "Campo de Texto5", "foundry": "" },
+  { "pdf": "Campo de Texto54", "foundry": @system.skills.prc.passive },
+  { "pdf": "Campo de Texto55", "foundry": @system.currency.cp || "" },
+  { "pdf": "Campo de Texto7", "foundry": (function() {
+      let s = "";
+      let a = @system.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name).first();
+      let b = @system.traits.weaponProf.custom.split(";").filter(x => String(x) && x?.length);
+
+      if (a?.length > 0) { s = `${s}Weapons: ${a} ${b.join(', ')}\n`; }
+      a = @system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
+      b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
+      if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
+      a = @system.traits.toolProf.value.map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).first();
+      b = @system.traits.toolProf.custom.split(";").filter(x => String(x) && x?.length);
+      if (a?.length > 0) { s = `${s}Tools: ${a} ${b.join(', ')}\n`; }
+      a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
+      b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
+      if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
+      return s;
+    })()
+  },
+  { "pdf": "Campo de Texto57", "foundry": @system.currency.sp || "" },
+  { "pdf": "Campo de Texto58", "foundry": @system.currency.ep || "" },
+  { "pdf": "Campo de Texto59", "foundry": @system.currency.gp || "" },
+  { "pdf": "Campo de Texto56", "foundry": @system.currency.pp || "" },
+  { "pdf": "Campo de Texto6", "foundry": @items.filter(i => ['weapon', 'equipment', 'tool'].includes(i.type)).map(i => (i.system.quantity <= 1) ? i.name : `${i.name} (${i.system.quantity})`).join(', ') },
+  { "pdf": "Campo de Texto14", "foundry": @items.filter(i => ["feat", "trait"].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.system.source}: \n${((h) => {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(i.system.description.value.substring(0,299))}${(i.system.description.value.length>300)?'...':''}\n`).join("\n")
+  },
+
+  /* Page #2 */
+
+  { "pdf": "Campo de Texto84", "foundry": @name || "" },
+  { "pdf": "Campo de Texto85", "foundry": "" }, /* Idade nao suportada */
+  { "pdf": "Campo de Texto86", "foundry": "" }, /* Altura nao suportada */
+  { "pdf": "Campo de Texto87", "foundry": "" }, /* Peso nao suportado */
+  { "pdf": "Campo de Texto90", "foundry": "" }, /* Cor dos Olhos */
+  { "pdf": "Campo de Texto89", "foundry": "" }, /* Cor da Pele */
+  { "pdf": "Campo de Texto88", "foundry": "" }, /* Cor do Cabelo */
+  { "pdf": "Image77_af_image", "foundry": "" }, /* Images are not supported */
+  { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
+  { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
+  { "pdf": "Campo de Texto17", "foundry": (function(h) {
+      const d = document.createElement("div");
+      d.innerHTML = h;
+      return d.textContent || d.innerText || "";
+    })(@system.details.biography.value)
+  },
+  { "pdf": "Campo de Texto15", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(16).map(i => `${i.name} - ${i.system.source}`).join('\n') },
+  { "pdf": "Campo de Texto16", "foundry": @items.filter(i => ['backpack', 'consumable', 'loot'].includes(i.type)).map(i => (i.system.quantity <= 1) ? i.name : `${i.name} (${i.system.quantity})`).join(', ') },
+
+  /* Page #3 */
+  { "pdf": "Campo de Texto19", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name}`).join(' / ') }, /* Doesn't work with multiple classes properly */
+  { "pdf": "Campo de Texto20", "foundry": @system.attributes.spellcasting.capitalize() || "" },
+  { "pdf": "Campo de Texto21", "foundry": @system.attributes.spelldc || "" },
+  { "pdf": "Campo de Texto22", "foundry": "+" + String(@system.attributes.spelldc - 8) }, /* Doesn't account for negative values */
+  /* Spellslots Max + counts */
+  { "pdf": "Campo de Texto104", "foundry": @system.spells.spell1.max || "" },
+  { "pdf": "Campo de Texto103", "foundry": @system.spells.spell1.value || "" },
+  { "pdf": "Campo de Texto105", "foundry": @system.spells.spell2.max || "" },
+  { "pdf": "Campo de Texto102", "foundry": @system.spells.spell2.value || "" },
+  { "pdf": "Campo de Texto92", "foundry": @system.spells.spell3.max || "" },
+  { "pdf": "Campo de Texto91", "foundry": @system.spells.spell3.value || "" },
+  { "pdf": "Campo de Texto91", "foundry": @system.spells.spell4.max || "" },
+  { "pdf": "Campo de Texto98", "foundry": @system.spells.spell4.value || "" },
+  { "pdf": "Campo de Texto106", "foundry": @system.spells.spell5.max || "" },
+  { "pdf": "Campo de Texto99", "foundry": @system.spells.spell5.value || "" },
+  { "pdf": "Campo de Texto93", "foundry": @system.spells.spell6.max || "" },
+  { "pdf": "Campo de Texto94", "foundry": @system.spells.spell6.value || "" },
+  { "pdf": "Campo de Texto95", "foundry": @system.spells.spell7.max || "" },
+  { "pdf": "Campo de Texto96", "foundry": @system.spells.spell7.value || "" },
+  { "pdf": "Campo de Texto108", "foundry": @system.spells.spell8.max || "" },
+  { "pdf": "Campo de Texto101", "foundry": @system.spells.spell8.value || "" },
+  { "pdf": "Campo de Texto107", "foundry": @system.spells.spell9.max || "" },
+  { "pdf": "Campo de Texto100", "foundry": @system.spells.spell9.value || "" },
+  /* Cantrips */
+  { "pdf": "Campo de Texto134", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto135", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto136", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto137", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto138", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto139", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto140", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto141", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  /* Magias de 1º Círculo */
+  { "pdf": "Campo de Texto109", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto110", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto111", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto112", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto113", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto114", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto115", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto116", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto117", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Campo de Texto118", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
+  { "pdf": "Campo de Texto119", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
+  { "pdf": "Campo de Texto120", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
+
+  { "pdf": "Caixa De Seleção53", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção54", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção33", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção34", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção35", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção36", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção37", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção38", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção39", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[8]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção40", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[9]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção41", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[10]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção42", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[11]?.system.preparation.prepared || "" },
+  /* Magias de 2º Círculo */
+  { "pdf": "Campo de Texto121", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto122", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto123", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto124", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto125", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto126", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto127", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto128", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto129", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Campo de Texto130", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
+  { "pdf": "Campo de Texto131", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
+  { "pdf": "Campo de Texto132", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
+  { "pdf": "Campo de Texto133", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[12] || "" },
+
+  { "pdf": "Caixa De Seleção49", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção48", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção47", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção46", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção45", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção44", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção43", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção32", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção31", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção30", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção50", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[10]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção51", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[11]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção52", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[12]?.system.preparation.prepared || "" },
+  /* Magias de 3º Círculo */
+  { "pdf": "Campo de Texto208", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto207", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto206", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto205", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto204", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto203", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto202", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto201", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto200", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Campo de Texto199", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
+  { "pdf": "Campo de Texto198", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
+  { "pdf": "Campo de Texto197", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
+  { "pdf": "Campo de Texto196", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[12] || "" },
+
+  { "pdf": "Caixa De Seleção110", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção111", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção112", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção113", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção114", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção115", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção116", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção117", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção118", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção119", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção120", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[10]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção121", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[11]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção122", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[12]?.system.preparation.prepared || "" },
+
+  /* Magias de 4º Círculo */
+  { "pdf": "Campo de Texto195", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto194", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto193", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto192", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto191", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto190", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto189", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto188", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto187", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Campo de Texto186", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
+  { "pdf": "Campo de Texto185", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
+  { "pdf": "Campo de Texto184", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
+  { "pdf": "Campo de Texto183", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[12] || "" },
+
+  { "pdf": "Caixa De Seleção97", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção98", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção99", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção100", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção101", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção102", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção103", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção104", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção105", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção106", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção107", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[10]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção108", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[11]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção109", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[12]?.system.preparation.prepared || "" },
+
+  /* Magias de 5º Círculo */
+  { "pdf": "Campo de Texto182", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto181", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto180", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto179", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto178", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto177", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto176", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto175", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto174", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+
+  { "pdf": "Caixa De Seleção74", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção73", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção61", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção60", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção59", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção72", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção71", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção70", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção69", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.system.preparation.prepared || "" },
+
+  /* Magias de 6º Círculo */
+  { "pdf": "Campo de Texto173", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto172", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto171", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto170", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto169", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto168", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto167", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto166", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto165", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+
+  { "pdf": "Caixa De Seleção88", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção89", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção90", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção91", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção92", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção93", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção94", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção95", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção96", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.system.preparation.prepared || "" },
+
+  /* Magias de 7º Círculo */
+  { "pdf": "Campo de Texto164", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto163", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto162", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto161", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto160", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto159", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto158", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Campo de Texto157", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Campo de Texto156", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+
+  { "pdf": "Caixa De Seleção79", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção80", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção81", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção82", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção83", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção84", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção85", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[6]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção86", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[7]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção87", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.system.preparation.prepared || "" },
+
+  /* Magias de 8º Círculo */
+  { "pdf": "Campo de Texto155", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto154", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto153", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto152", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto151", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto150", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto149", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+
+  { "pdf": "Caixa De Seleção56", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção57", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção58", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção75", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção76", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção77", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção78", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[6]?.system.preparation.prepared || "" },
+
+  /* Magias de 9º Círculo */
+  { "pdf": "Campo de Texto148", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
+  { "pdf": "Campo de Texto147", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
+  { "pdf": "Campo de Texto146", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
+  { "pdf": "Campo de Texto145", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
+  { "pdf": "Campo de Texto144", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
+  { "pdf": "Campo de Texto143", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
+  { "pdf": "Campo de Texto142", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+
+  { "pdf": "Caixa De Seleção62", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[0]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção63", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[1]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção64", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[2]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção65", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[3]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção66", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[4]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção67", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[5]?.system.preparation.prepared || "" },
+  { "pdf": "Caixa De Seleção68", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[6]?.system.preparation.prepared || "" },
+
+  { "pdf": "", "foundry": "" }
+]
