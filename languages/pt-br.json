@@ -4,6 +4,10 @@
       "mapping": {
         "Name": "Mapeamento",
         "Hint": "JSON que é usado para mapear os campos PDF para informações na ficha de personagem Foundry. Consulte o README para obter detalhes."
+      },
+      "mapping-npc": {
+        "Name": "Mapeamento",
+        "Hint": "JSON que é usado para mapear os campos PDF para informações na ficha de NPC Foundry. Consulte o README para obter detalhes."
       }
     },
     "download": {
