@@ -4,6 +4,10 @@
       "mapping": {
         "Name": "Correspondances",
         "Hint": "JSON utilisé pour faire correspondre les champs du PDF aux informations de la feuille de personnage Foundry. Consultez le fichier README pour plus de détails."
+      },
+      "mapping-npc": {
+        "Name": "Correspondances",
+        "Hint": "JSON utilisé pour faire correspondre les champs du PDF aux informations de la feuille de NPC Foundry. Consultez le fichier README pour plus de détails."
       }
     },
     "download": {
