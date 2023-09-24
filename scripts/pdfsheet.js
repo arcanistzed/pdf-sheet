@@ -246,7 +246,9 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	console.log(sheet)
 	console.log(sheet.actor)
 	// If this is not a player character sheet, return without adding the button
-	if (!["character", "PC", "Player", "npc"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
+	// added pc for cypher system
+	// TODO: have to refactor this with something generic
+	if (!["character", "PC", "Player", "npc", "pc"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
 
 	buttons.unshift({
 		label: "Export to PDF",
@@ -341,7 +343,7 @@ class Pdfconfig extends FormApplication {
 		// Get mapping from settings
 		let mapping = ""
 		
-		if (["character", "PC", "Player"].includes(actor.type ?? actor.data.type)) {
+		if (["character", "PC", "Player", "pc"].includes(actor.type ?? actor.data.type)) {
 			console.log("got mapping for PC")
 			mapping = game.settings.get(Pdfconfig.ID, "mapping");
 		}
