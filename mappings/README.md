@@ -16,3 +16,4 @@ This directory contains mappings created by the community. Feel free to contribu
 * [Dungeon Crawl Classics](./0LevelFillableSheet.mapping) by `@OrganicByte#6682` - [PDF](https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf)
 *  [SWADE - Savage Worlds Adventure Edition](./SWADE-SavageWorldsAdventureEdition.mapping) by `@Samcho#8710` - [PDF](https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/)
 *  [Starfinder](./sfrpg.mapping) by `@Beff#1513` - [PDF](https://cdn.discordapp.com/attachments/877667041119731734/1076448094897573928/Autofillable_CharacterSheet.pdf)
+*  [D&D 5e - Italian](./dnd5e_ITA.mapping) by `@Bembe83` [PDF](https://gitlab.com/bembe83/file-repository/-/raw/main/D_D_5e_Scheda_Personaggio_FoundryVTT.pdf?inline=false)
