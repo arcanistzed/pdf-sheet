@@ -17,16 +17,16 @@
     { "pdf": "Cyphers_Limit", "foundry": @system.equipment.cypherLimit },
     { "pdf": "XP", "foundry": @system.basic.xp },
 	
-    { "pdf": "Might_Pool", "foundry": @system.pools.might.value },
-    { "pdf": "Might", "foundry": @system.pools.might.max },
+    { "pdf": "Might_Pool", "foundry": @system.pools.might.max },
+    { "pdf": "Might", "foundry": @system.pools.might.value },
     { "pdf": "Might_Edge", "foundry": @system.pools.might.edge },
     
-    { "pdf": "Speed_Pool", "foundry": @system.pools.speed.value },
-    { "pdf": "Speed", "foundry": @system.pools.speed.max },
+    { "pdf": "Speed_Pool", "foundry": @system.pools.speed.max },
+    { "pdf": "Speed", "foundry": @system.pools.speed.value },
     { "pdf": "Speed_Edge", "foundry": @system.pools.speed.edge },
 
-    { "pdf": "Intellect_Pool", "foundry": @system.pools.intellect.value },
-    { "pdf": "Intellect", "foundry": @system.pools.intellect.max },
+    { "pdf": "Intellect_Pool", "foundry": @system.pools.intellect.max },
+    { "pdf": "Intellect", "foundry": @system.pools.intellect.value },
     { "pdf": "Intellect_Edge", "foundry": @system.pools.intellect.edge },
     
     { "pdf": "Recovery_Roll", "foundry": @system.combat.recoveries.roll.replaceAll('1d6', '').trim().replaceAll('+', '') },
