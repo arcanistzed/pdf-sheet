@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.24.1](https://github.com/arcanistzed/pdf-sheet/tree/0.24.1) (2023-09-24)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.0...0.24.1)
+
+**Fixed bugs:**
+
+- \[Bug\]: PDF cannot be used [\#88](https://github.com/arcanistzed/pdf-sheet/issues/88)
+- \[Bug\]: Export button not displayed in Cypher System [\#83](https://github.com/arcanistzed/pdf-sheet/issues/83)
+
+**Merged pull requests:**
+
+- fix: closes \#83 [\#97](https://github.com/arcanistzed/pdf-sheet/pull/97) ([gioppoluca](https://github.com/gioppoluca))
+- fix: added missing language elements [\#96](https://github.com/arcanistzed/pdf-sheet/pull/96) ([gioppoluca](https://github.com/gioppoluca))
+- Updates CoC7 mapping [\#95](https://github.com/arcanistzed/pdf-sheet/pull/95) ([snap01](https://github.com/snap01))
+- Create cyphersystemV10.mapping [\#94](https://github.com/arcanistzed/pdf-sheet/pull/94) ([trevorschadt](https://github.com/trevorschadt))
+- feature:pf2e remastered charactersheet [\#93](https://github.com/arcanistzed/pdf-sheet/pull/93) ([bushvin](https://github.com/bushvin))
+- Create pt-br.json [\#74](https://github.com/arcanistzed/pdf-sheet/pull/74) ([IgorAK25](https://github.com/IgorAK25))
+- Update module.json [\#73](https://github.com/arcanistzed/pdf-sheet/pull/73) ([IgorAK25](https://github.com/IgorAK25))
+- D&D 5e Brazilian Portuguese sheet mapping [\#71](https://github.com/arcanistzed/pdf-sheet/pull/71) ([IgorAK25](https://github.com/IgorAK25))
+
 ## 0.24.0 - 17 Sept 2023
 
 **Merged pull requests:**
