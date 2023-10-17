@@ -48,22 +48,22 @@
     { "pdf": "AC_ProfMod", "foundry": @armorClass.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier) },
     { "pdf": "AC_ItemMod", "foundry": @armorClass.modifiers.filter(i => i.type === 'item').map(i => i.modifier || 0) },
 
-    { "pdf": "Unarmored_T", "foundry": @system.martial.unarmored.rank >= 1 || '' },
-    { "pdf": "Unarmored_E", "foundry": @system.martial.unarmored.rank >= 2 || '' },
-    { "pdf": "Unarmored_M", "foundry": @system.martial.unarmored.rank >= 3 || '' },
-    { "pdf": "Unarmored_L", "foundry": @system.martial.unarmored.rank >= 4 || '' },
-    { "pdf": "Light_T", "foundry": @system.martial.light.rank >= 1 || '' },
-    { "pdf": "Light_E", "foundry": @system.martial.light.rank >= 2 || '' },
-    { "pdf": "Light_M", "foundry": @system.martial.light.rank >= 3 || '' },
-    { "pdf": "Light_L", "foundry": @system.martial.light.rank >= 4 || '' },
-    { "pdf": "Medium_T", "foundry": @system.martial.medium.rank >= 1 || '' },
-    { "pdf": "Medium_E", "foundry": @system.martial.medium.rank >= 2 || '' },
-    { "pdf": "Medium_M", "foundry": @system.martial.medium.rank >= 3 || '' },
-    { "pdf": "Medium_L", "foundry": @system.martial.medium.rank >= 4 || '' },
-    { "pdf": "Heavy_T", "foundry": @system.martial.heavy.rank >= 1 || '' },
-    { "pdf": "Heavy_E", "foundry": @system.martial.heavy.rank >= 2 || '' },
-    { "pdf": "Heavy_M", "foundry": @system.martial.heavy.rank >= 3 || '' },
-    { "pdf": "Heavy_L", "foundry": @system.martial.heavy.rank >= 4 || '' },
+    { "pdf": "Unarmored_T", "foundry": @system.proficiencies.defenses.unarmored.rank >= 1 || '' },
+    { "pdf": "Unarmored_E", "foundry": @system.proficiencies.defenses.unarmored.rank >= 2 || '' },
+    { "pdf": "Unarmored_M", "foundry": @system.proficiencies.defenses.unarmored.rank >= 3 || '' },
+    { "pdf": "Unarmored_L", "foundry": @system.proficiencies.defenses.unarmored.rank >= 4 || '' },
+    { "pdf": "Light_T", "foundry": @system.proficiencies.defenses.light.rank >= 1 || '' },
+    { "pdf": "Light_E", "foundry": @system.proficiencies.defenses.light.rank >= 2 || '' },
+    { "pdf": "Light_M", "foundry": @system.proficiencies.defenses.light.rank >= 3 || '' },
+    { "pdf": "Light_L", "foundry": @system.proficiencies.defenses.light.rank >= 4 || '' },
+    { "pdf": "Medium_T", "foundry": @system.proficiencies.defenses.medium.rank >= 1 || '' },
+    { "pdf": "Medium_E", "foundry": @system.proficiencies.defenses.medium.rank >= 2 || '' },
+    { "pdf": "Medium_M", "foundry": @system.proficiencies.defenses.medium.rank >= 3 || '' },
+    { "pdf": "Medium_L", "foundry": @system.proficiencies.defenses.medium.rank >= 4 || '' },
+    { "pdf": "Heavy_T", "foundry": @system.proficiencies.defenses.heavy.rank >= 1 || '' },
+    { "pdf": "Heavy_E", "foundry": @system.proficiencies.defenses.heavy.rank >= 2 || '' },
+    { "pdf": "Heavy_M", "foundry": @system.proficiencies.defenses.heavy.rank >= 3 || '' },
+    { "pdf": "Heavy_L", "foundry": @system.proficiencies.defenses.heavy.rank >= 4 || '' },
 
     { "pdf": "MaxHP", "foundry": @hitPoints.max },
     { "pdf": "CurrentHP", "foundry": @hitPoints.value },
@@ -436,25 +436,25 @@
 
     /* WEAPON PROFICIENCIES */
 
-    { "pdf": "Unarmed_T", "foundry": @system.martial.unarmed.rank >= 1 || false },
-    { "pdf": "Unarmed_E", "foundry": @system.martial.unarmed.rank >= 2 || false },
-    { "pdf": "Unarmed_M", "foundry": @system.martial.unarmed.rank >= 3 || false },
-    { "pdf": "Unarmed_L", "foundry": @system.martial.unarmed.rank >= 4 || false },
+    { "pdf": "Unarmed_T", "foundry": @system.proficiencies.attacks.unarmed.rank >= 1 || false },
+    { "pdf": "Unarmed_E", "foundry": @system.proficiencies.attacks.unarmed.rank >= 2 || false },
+    { "pdf": "Unarmed_M", "foundry": @system.proficiencies.attacks.unarmed.rank >= 3 || false },
+    { "pdf": "Unarmed_L", "foundry": @system.proficiencies.attacks.unarmed.rank >= 4 || false },
 
-    { "pdf": "Simple_T", "foundry": @system.martial.simple.rank >= 1 || false },
-    { "pdf": "Simple_E", "foundry": @system.martial.simple.rank >= 2 || false },
-    { "pdf": "Simple_M", "foundry": @system.martial.simple.rank >= 3 || false },
-    { "pdf": "Simple_L", "foundry": @system.martial.simple.rank >= 4 || false },
+    { "pdf": "Simple_T", "foundry": @system.proficiencies.attacks.simple.rank >= 1 || false },
+    { "pdf": "Simple_E", "foundry": @system.proficiencies.attacks.simple.rank >= 2 || false },
+    { "pdf": "Simple_M", "foundry": @system.proficiencies.attacks.simple.rank >= 3 || false },
+    { "pdf": "Simple_L", "foundry": @system.proficiencies.attacks.simple.rank >= 4 || false },
 
-    { "pdf": "Martial_T", "foundry": @system.martial.martial.rank >= 1 || false },
-    { "pdf": "Martial_E", "foundry": @system.martial.martial.rank >= 2 || false },
-    { "pdf": "Martial_M", "foundry": @system.martial.martial.rank >= 3 || false },
-    { "pdf": "Martial_L", "foundry": @system.martial.martial.rank >= 4 || false },
+    { "pdf": "Martial_T", "foundry": @system.proficiencies.attacks.martial.rank >= 1 || false },
+    { "pdf": "Martial_E", "foundry": @system.proficiencies.attacks.martial.rank >= 2 || false },
+    { "pdf": "Martial_M", "foundry": @system.proficiencies.attacks.martial.rank >= 3 || false },
+    { "pdf": "Martial_L", "foundry": @system.proficiencies.attacks.martial.rank >= 4 || false },
 
-    { "pdf": "Advanced_T", "foundry": @system.martial.advanced.rank >= 1 || false },
-    { "pdf": "Advanced_E", "foundry": @system.martial.advanced.rank >= 2 || false },
-    { "pdf": "Advanced_M", "foundry": @system.martial.advanced.rank >= 3 || false },
-    { "pdf": "Advanced_L", "foundry": @system.martial.advanced.rank >= 4 || false },
+    { "pdf": "Advanced_T", "foundry": @system.proficiencies.attacks.advanced.rank >= 1 || false },
+    { "pdf": "Advanced_E", "foundry": @system.proficiencies.attacks.advanced.rank >= 2 || false },
+    { "pdf": "Advanced_M", "foundry": @system.proficiencies.attacks.advanced.rank >= 3 || false },
+    { "pdf": "Advanced_L", "foundry": @system.proficiencies.attacks.advanced.rank >= 4 || false },
 
     { "pdf": "WeapProfOther_T", "foundry": false },
     { "pdf": "WeapProfOther_E", "foundry": false },
@@ -807,10 +807,11 @@
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
             .map(i => (typeof i.frequency !== 'undefined' && i.frequency) !== null ? (i.frequency?.max + ' / ' + i.frequency?.per) : '')[0] || ''
     },
+
     {"pdf": "Activity1_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[0] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[0] || ''
     },
 
     {"pdf": "Activity2_Name", "foundry":
@@ -836,7 +837,7 @@
     {"pdf": "Activity2_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[1] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[1] || ''
     },
 
     {"pdf": "Activity3_Name", "foundry":
@@ -862,7 +863,7 @@
     {"pdf": "Activity3_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[2] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[2] || ''
     },
 
     {"pdf": "Activity4_Name", "foundry":
@@ -888,7 +889,7 @@
     {"pdf": "Activity4_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[3] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[3] || ''
     },
 
     {"pdf": "Activity5_Name", "foundry":
@@ -914,7 +915,7 @@
     {"pdf": "Activity5_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[4] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[4] || ''
     },
 
     {"pdf": "Activity6_Name", "foundry":
@@ -940,7 +941,7 @@
     {"pdf": "Activity6_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[5] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[5] || ''
     },
 
     {"pdf": "Activity7_Name", "foundry":
@@ -966,7 +967,7 @@
     {"pdf": "Activity7_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[6] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[6] || ''
     },
 
     {"pdf": "Activity8_Name", "foundry":
@@ -992,10 +993,8 @@
     {"pdf": "Activity8_Reference", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && i.system.actionType.value == 'action' )
             .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-            .map(i => i.system.source.value)[7] || ''
+            .map(i => i.system.publication?.title || i.system.source?.value)[7] || ''
     },
-
-
 
     {"pdf": "Activity9_Name", "foundry":
         @items.filter(i => (typeof i.system.actionType?.value !== 'undefined' && i.system.actionType?.value !== null) && ( i.system.actionType.value === 'reaction' || i.system.actionType.value === 'free'))
@@ -1035,7 +1034,7 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[0] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[0] || ''
     },
 
     {"pdf": "Activity10_Name", "foundry":
@@ -1076,7 +1075,7 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[1] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[1] || ''
     },
 
     {"pdf": "Activity11_Name", "foundry":
@@ -1117,7 +1116,7 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[2] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[2] || ''
     },
 
     {"pdf": "Activity12_Name", "foundry":
@@ -1159,6 +1158,7 @@
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
         .map(i => i.system.source.value)[3] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[3] || ''
     },
 
     {"pdf": "Activity13_Name", "foundry":
@@ -1199,7 +1199,7 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[4] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[4] || ''
     },
 
     {"pdf": "Activity14_Name", "foundry":
@@ -1240,7 +1240,7 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[5] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[5] || ''
     },
 
     {"pdf": "Activity15_Name", "foundry":
@@ -1281,7 +1281,7 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[6] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[6] || ''
     },
 
     {"pdf": "Activity16_Name", "foundry":
@@ -1322,9 +1322,8 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[7] || ''
+        .map(i => i.system.publication?.title || i.system.source?.value)[7] || ''
     },
-
 
     /* ---------- PAGE 4 ----------*/
 
