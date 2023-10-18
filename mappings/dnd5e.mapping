@@ -2,7 +2,7 @@
 [
   /* Page #1 */
   { "pdf": "ClassLevel", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.system.levels}`).join(' / ') },
-  { "pdf": "Background", "foundry": @items.find((item)=>item.type==='background').name },
+  { "pdf": "Background", "foundry": @items.find((item)=>item.type==='background')?.name },
   { "pdf": "PlayerName", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
   { "pdf": "CharacterName", "foundry": @name },
   { "pdf": "Race", "foundry": @system.details.race },
