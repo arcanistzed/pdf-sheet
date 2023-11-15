@@ -2,11 +2,12 @@
     /*
     Pathfinder 2e Charactersheet Remastered mapping for Foundry VTT module 'Export Sheet to PDF' - 17/09/2023
     Author: [Bushvin](https://github.com/bushvin)
-    Version: 1.0.0
+    Version: 1.0.3
 
     Based off Pathfinder2e character sheet mapping
     Original PDF: https://drive.google.com/file/d/1GKtOprwITSUP1sXCLXjqKc-N9JvwmgGy/view
-    Minimum requirements: Foundry VTT Version 11 | PF2e system version: 5.5.1
+    Minimum requirements: Foundry VTT Version 11 | PF2e system version 5.5.1
+    Latest verified: Foundry VTT Version 11.315 | PF2e system version 5.8.3
 
     TODO:
       - find a way to link <ATTRIBUTE>_Partial
@@ -1157,7 +1158,6 @@
         .reverse()
         .sort((a,b) => (a.system.actionType.value < b.system.actionType.value ? -1 : (a.system.actionType.value > b.system.actionType.value ? 1 : 0)))
         .reverse()
-        .map(i => i.system.source.value)[3] || ''
         .map(i => i.system.publication?.title || i.system.source?.value)[3] || ''
     },
 
