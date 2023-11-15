@@ -56,22 +56,22 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
             'item').map(i => '+' + i.modifier || '')
     },
 
-    { "pdf": "Unarmored_T", "foundry": @system.martial.unarmored.rank === 1 || '' },
-    { "pdf": "Unarmored_E", "foundry": @system.martial.unarmored.rank === 2 || '' },
-    { "pdf": "Unarmored_M", "foundry": @system.martial.unarmored.rank === 3 || '' },
-    { "pdf": "Unarmored_L", "foundry": @system.martial.unarmored.rank === 4 || '' },
-    { "pdf": "Light_T", "foundry": @system.martial.light.rank === 1 || '' },
-    { "pdf": "Light_E", "foundry": @system.martial.light.rank === 2 || '' },
-    { "pdf": "Light_M", "foundry": @system.martial.light.rank === 3 || '' },
-    { "pdf": "Light_L", "foundry": @system.martial.light.rank === 4 || '' },
-    { "pdf": "Medium_T", "foundry": @system.martial.medium.rank === 1 || '' },
-    { "pdf": "Medium_E", "foundry": @system.martial.medium.rank === 2 || '' },
-    { "pdf": "Medium_M", "foundry": @system.martial.medium.rank === 3 || '' },
-    { "pdf": "Medium_L", "foundry": @system.martial.medium.rank === 4 || '' },
-    { "pdf": "Heavy_T", "foundry": @system.martial.heavy.rank === 1 || '' },
-    { "pdf": "Heavy_E", "foundry": @system.martial.heavy.rank === 2 || '' },
-    { "pdf": "Heavy_M", "foundry": @system.martial.heavy.rank === 3 || '' },
-    { "pdf": "Heavy_L", "foundry": @system.martial.heavy.rank === 4 || '' },
+    { "pdf": "Unarmored_T", "foundry": @system.proficiencies.defenses.unarmored.rank === 1 || '' },
+    { "pdf": "Unarmored_E", "foundry": @system.proficiencies.defenses.unarmored.rank === 2 || '' },
+    { "pdf": "Unarmored_M", "foundry": @system.proficiencies.defenses.unarmored.rank === 3 || '' },
+    { "pdf": "Unarmored_L", "foundry": @system.proficiencies.defenses.unarmored.rank === 4 || '' },
+    { "pdf": "Light_T", "foundry": @system.proficiencies.defenses.light.rank === 1 || '' },
+    { "pdf": "Light_E", "foundry": @system.proficiencies.defenses.light.rank === 2 || '' },
+    { "pdf": "Light_M", "foundry": @system.proficiencies.defenses.light.rank === 3 || '' },
+    { "pdf": "Light_L", "foundry": @system.proficiencies.defenses.light.rank === 4 || '' },
+    { "pdf": "Medium_T", "foundry": @system.proficiencies.defenses.medium.rank === 1 || '' },
+    { "pdf": "Medium_E", "foundry": @system.proficiencies.defenses.medium.rank === 2 || '' },
+    { "pdf": "Medium_M", "foundry": @system.proficiencies.defenses.medium.rank === 3 || '' },
+    { "pdf": "Medium_L", "foundry": @system.proficiencies.defenses.medium.rank === 4 || '' },
+    { "pdf": "Heavy_T", "foundry": @system.proficiencies.defenses.heavy.rank === 1 || '' },
+    { "pdf": "Heavy_E", "foundry": @system.proficiencies.defenses.heavy.rank === 2 || '' },
+    { "pdf": "Heavy_M", "foundry": @system.proficiencies.defenses.heavy.rank === 3 || '' },
+    { "pdf": "Heavy_L", "foundry": @system.proficiencies.defenses.heavy.rank === 4 || '' },
 
     { "pdf": "MaxHP", "foundry": @system.attributes.hp.max },
     { "pdf": "CurrentHP", "foundry": @system.attributes.hp.value },
@@ -335,20 +335,20 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
 
     /* WEAPON PROFICIENCIES */
 
-    { "pdf": "Simple_T", "foundry": @system.martial.simple.rank === 1 || '' },
-    { "pdf": "Simple_E", "foundry": @system.martial.simple.rank === 2 || '' },
-    { "pdf": "Simple_M", "foundry": @system.martial.simple.rank === 3 || '' },
-    { "pdf": "Simple_L", "foundry": @system.martial.simple.rank === 4 || '' },
+    { "pdf": "Simple_T", "foundry": @system.proficiencies.attacks.simple.rank === 1 || '' },
+    { "pdf": "Simple_E", "foundry": @system.proficiencies.attacks.simple.rank === 2 || '' },
+    { "pdf": "Simple_M", "foundry": @system.proficiencies.attacks.simple.rank === 3 || '' },
+    { "pdf": "Simple_L", "foundry": @system.proficiencies.attacks.simple.rank === 4 || '' },
 
-    { "pdf": "Martial_T", "foundry": @system.martial.martial.rank === 1 || '' },
-    { "pdf": "Martial_E", "foundry": @system.martial.martial.rank === 2 || '' },
-    { "pdf": "Martial_M", "foundry": @system.martial.martial.rank === 3 || '' },
-    { "pdf": "Martial_L", "foundry": @system.martial.martial.rank === 4 || '' },
+    { "pdf": "Martial_T", "foundry": @system.proficiencies.attacks.martial.rank === 1 || '' },
+    { "pdf": "Martial_E", "foundry": @system.proficiencies.attacks.martial.rank === 2 || '' },
+    { "pdf": "Martial_M", "foundry": @system.proficiencies.attacks.martial.rank === 3 || '' },
+    { "pdf": "Martial_L", "foundry": @system.proficiencies.attacks.martial.rank === 4 || '' },
 
-    { "pdf": "WeapProfOther1_T", "foundry": @system.martial.unarmed.rank === 1 || '' },
-    { "pdf": "WeapProfOther1_E", "foundry": @system.martial.unarmed.rank === 2 || '' },
-    { "pdf": "WeapProfOther1_M", "foundry": @system.martial.unarmed.rank === 3 || '' },
-    { "pdf": "WeapProfOther1_L", "foundry": @system.martial.unarmed.rank === 4 || '' },
+    { "pdf": "WeapProfOther1_T", "foundry": @system.proficiencies.attacks.unarmed.rank === 1 || '' },
+    { "pdf": "WeapProfOther1_E", "foundry": @system.proficiencies.attacks.unarmed.rank === 2 || '' },
+    { "pdf": "WeapProfOther1_M", "foundry": @system.proficiencies.attacks.unarmed.rank === 3 || '' },
+    { "pdf": "WeapProfOther1_L", "foundry": @system.proficiencies.attacks.unarmed.rank === 4 || '' },
 
     { "pdf": "OtherWeaponType1", "foundry": ' Unarmed' },
 
@@ -565,10 +565,10 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
     },
 
     {
-        "pdf": "BonusFeats", "foundry": 
+        "pdf": "BonusFeats", "foundry":
         '--- Bonus Feats ---\n' +
         @items.filter(i => i.type === 'feat' && (! i.system.location)).sort(
-            (a, b) => (a.system.level.value < b.system.level.value ? -1 : (a.system.level.value > b.system.level.value ? 1 : 0))).map(i => i.system.level.value + ': ' + i.name).join('\n') + '\n\n' 
+            (a, b) => (a.system.level.value < b.system.level.value ? -1 : (a.system.level.value > b.system.level.value ? 1 : 0))).map(i => i.system.level.value + ': ' + i.name).join('\n') + '\n\n'
 
     },
 
@@ -768,15 +768,15 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
         "pdf": "AncestryFullDescription", "foundry":
             ((@feats.filter(i => i.id === "ancestryfeature").map(i => i.id)[0] ? '  --- Ancestry --- \n' +
                 @feats.filter(i => i.id === "ancestryfeature").map(i => i.feats)[0].map(a => "  [0] " + a.feat?.name + ": " +
-                    ((h) => { const d = document.createElement("div"); 
-                              d.innerHTML = h; 
-                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                    ((h) => { const d = document.createElement("div");
+                              d.innerHTML = h;
+                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                             })(a.feat?.system.description.value)).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : '') +
                 (@feats.filter(i => i.id === "ancestry").map(i => i.id)[0] ? '\n\n  --- Ancestry Feats --- \n' +
                     @feats.filter(i => i.id === "ancestry").map(i => i.feats)[0].map(a => "  [" + a.id.replace('ancestry-', '') + "] " + a.feat?.name + ": " +
-                        ((h) => { const d = document.createElement("div"); 
-                                  d.innerHTML = h; 
-                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                        ((h) => { const d = document.createElement("div");
+                                  d.innerHTML = h;
+                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                                 })(a.feat?.description || " ")).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : ''))
     },
 
@@ -786,9 +786,9 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
         "pdf": "SkillFullDescription", "foundry":
             ((@feats.filter(i => i.id === "skill").map(i => i.id)[0] ? '\n\n  --- Skill Feats --- \n' +
                 @feats.filter(i => i.id === "skill").map(i => i.feats)[0].map(a => "  [" + a.id.replace('skill-', '') + "] " + a.feat?.name + ": " +
-                    ((h) => { const d = document.createElement("div"); 
-                              d.innerHTML = h; 
-                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                    ((h) => { const d = document.createElement("div");
+                              d.innerHTML = h;
+                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                             })(a.feat?.description || " ")).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : ''))
     },
 
@@ -798,15 +798,15 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
         "pdf": "ClassFullDescription", "foundry":
             ((@feats.filter(i => i.id === "classfeature").map(i => i.id)[0] ? '\n\n  --- Class --- \n' +
                 @feats.filter(i => i.id === "classfeature").map(i => i.feats)[0].map(a => '  [' + a.feat.system.level.value + '] ' + a.feat?.name + ": " +
-                    ((h) => { const d = document.createElement("div"); 
-                              d.innerHTML = h; 
-                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                    ((h) => { const d = document.createElement("div");
+                              d.innerHTML = h;
+                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                             })(a.feat?.description || " ")).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : '') +
                 (@feats.filter(i => i.id === "class").map(i => i.id)[0] ? '\n\n  --- Class Feats --- \n' +
                     @feats.filter(i => i.id === "class").map(i => i.feats)[0].map(a => "  [" + a.id.replace('class-', '') + "] " + a.feat?.name + ": " +
-                        ((h) => { const d = document.createElement("div"); 
-                                  d.innerHTML = h; 
-                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                        ((h) => { const d = document.createElement("div");
+                                  d.innerHTML = h;
+                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                                 })(a.feat?.description || " ")).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : ''))
     },
 
@@ -817,23 +817,23 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
             (
                 (@feats.filter(i => i.id === "general").map(i => i.id)[0] ? '\n\n  --- General Feats --- \n' +
                     @feats.filter(i => i.id === "general").map(i => i.feats)[0].map(a => "  [" + a.id.replace('general-', '') + "] " + a.feat?.name + ": " +
-                        ((h) => { const d = document.createElement("div"); 
-                                  d.innerHTML = h; 
-                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                        ((h) => { const d = document.createElement("div");
+                                  d.innerHTML = h;
+                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                                 })(a.feat?.description || " ")).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : ''
                 ) +
                 (@items.filter(i => i.type === 'feat' && i.system.location?.slice(0, 10) === 'archetype-').map(i => i.id)[0] ? '\n\n  --- Archetype Feats --- \n' +
                     @items.filter(i => i.type === 'feat' && i.system.location?.slice(0, 10) === 'archetype-').map(i => (i.system.location?.replace('archetype-', '') + ': ' || '') + i.name + ' (' + i.system.level.value + ') ' +
-                        ((h) => { const d = document.createElement("div"); 
-                                  d.innerHTML = h; 
-                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                        ((h) => { const d = document.createElement("div");
+                                  d.innerHTML = h;
+                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                                 })(i.system.description.value || " ")).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : ''
                 ) +
                 (@items.filter(i => i.type === 'feat' && (!i.system.location)).map(i => i.id)[0] ? '\n\n  --- Bonus Feats --- \n' +
                     @items.filter(i => i.type === 'feat' && (!i.system.location)).map(i => i.name + ' (' + i.system.level.value + ') ' +
-                        ((h) => { const d = document.createElement("div"); 
-                                  d.innerHTML = h; 
-                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                        ((h) => { const d = document.createElement("div");
+                                  d.innerHTML = h;
+                                  return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                                 })(i.system.description.value) || " ").join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') : ''
                 )
             )
@@ -854,9 +854,9 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
                         .map(b => ' [ ' + ((b.system.time.value === '1' || b.system.time.value === '2' || b.system.time.value === '3') ? b.system.time.value : '*' + b.system.time.value) + ' ]' +
                             (b.isCantrip ? ' C ' : ' L' + b.system.level.value) + ' (' + (b.system.components.material ? 'm' : '  ') + (b.system.components.somatic ? 's' : '  ') + (b.system.components.verbal ? 'v' : '  ') + ') ' +
                             b.name + ": " +
-                            ((h) => { const d = document.createElement("div"); 
-                                      d.innerHTML = h; 
-                                      return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                            ((h) => { const d = document.createElement("div");
+                                      d.innerHTML = h;
+                                      return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                                     })(b.system.description.value)).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') ?? '' + ' \n' ?? '').join('\n\n') ?? '')
     },
 
@@ -866,21 +866,21 @@ Fixed for Foundry VTT 11 | PF2e system version: 5.3.2
         "pdf": "ActionsFullDescription", "foundry":
             [' Action -----------------\n\n',
                 (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'action').map(i => ' [ ' + i.system.actions.value + ' ] ' + i.name + ': ' +
-                    ((h) => { const d = document.createElement("div"); 
-                              d.innerHTML = h; 
-                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                    ((h) => { const d = document.createElement("div");
+                              d.innerHTML = h;
+                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                             })(i.system.description.value)).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') || ''),
                 '\n Free Action -----------------\n',
                 (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'free').map(i => ' [F] ' + i.name + ': ' +
-                    ((h) => { const d = document.createElement("div"); 
-                              d.innerHTML = h; 
-                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                    ((h) => { const d = document.createElement("div");
+                              d.innerHTML = h;
+                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                             })(i.system.description.value)).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') || ''),
                 '\n Reaction -----------------\n',
                 (@items.filter(i => (i.type === 'feat' || i.type === 'action') && i.system.actionType.value === 'reaction').map(i => ' [R] ' + i.name + ': ' +
-                    ((h) => { const d = document.createElement("div"); 
-                              d.innerHTML = h; 
-                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || ""; 
+                    ((h) => { const d = document.createElement("div");
+                              d.innerHTML = h;
+                              return d.textContent.replaceAll(/.UUID\[.*?\]/gis, '') || d.innerText.replaceAll(/.UUID\[.*?\]/gis, '') || "";
                             })(i.system.description.value)).join('~~~').replaceAll('\n\n','\n').replaceAll('~~~','\n\n') || '')].join('\n')
     }
 
