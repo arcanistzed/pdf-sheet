@@ -566,7 +566,7 @@ function() {
         { "pdf": "cantrip_rank", "foundry": actordata.items.filter(i => i.type === 'spell' && i.isCantrip)[0] ? Math.round(actordata.system.details.level.value / 2) : '' },
 
         { "pdf": "list_cantrips", "foundry":
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && i.isCantrip)
+            actordata.items.filter(i => i.type === 'spell' && i.isCantrip && !i.isFocusSpell && !i.isRitual)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name).join('\n')
         },
@@ -575,9 +575,9 @@ function() {
         { "pdf": "focus_point_1", "foundry": actordata.system.resources.focus.max >= 1 || false },
         { "pdf": "focus_point_2", "foundry": actordata.system.resources.focus.max >= 2 || false },
         { "pdf": "focus_point_3", "foundry": actordata.system.resources.focus.max >= 3 || false },
-        { "pdf": "focus_spell_rank", "foundry": actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'focus')[0] ? Math.round(actordata.system.details.level.value / 2) : '' },
+        { "pdf": "focus_spell_rank", "foundry": actordata.items.filter(i => i.type === 'spell' && i.isFocusSpell && !i.isRitual)[0] ? Math.round(actordata.system.details.level.value / 2) : '' },
         { "pdf": "list_focus_spells", "foundry":
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'focus')
+            actordata.items.filter(i => i.type === 'spell' && i.isFocusSpell && !i.isRitual)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name).join('\n')
         },
@@ -646,23 +646,23 @@ function() {
 
         { "pdf": "list_spells1", "foundry":
             [].concat(
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 1).length >= 1 ? ['Level 1 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 1)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 1).length >= 1 ? ['Rank 1 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 1)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 2).length >= 1 ? ['', 'Level 2 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 2)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 2).length >= 1 ? ['', 'Rank 2 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 2)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 3).length >= 1 ? ['', 'Level 3 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 3)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 3).length >= 1 ? ['', 'Rank 3 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 3)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 4).length >= 1 ? ['', 'Level 4 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 4)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 4).length >= 1 ? ['', 'Rank 4 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 4)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
@@ -671,33 +671,33 @@ function() {
         },
         { "pdf": "list_spells2", "foundry":
             [].concat(
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 5).length >= 1 ? ['Level 5 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 5)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 5).length >= 1 ? ['Rank 5 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 5)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 6).length >= 1 ? ['', 'Level 6 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 6)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 6).length >= 1 ? ['', 'Rank 6 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 6)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 7).length >= 1 ? ['', 'Level 7 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 7)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 7).length >= 1 ? ['', 'Rank 7 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 7)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 8).length >= 1 ? ['', 'Level 8 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 8)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 8).length >= 1 ? ['', 'Rank 8 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 8)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
-                (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 9).length >= 1 ? ['', 'Level 9 Spells:'] : []),
-                actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 9)
+                (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 9).length >= 1 ? ['', 'Rank 9 Spells:'] : []),
+                actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 9)
                     .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                     .map(i => '- ' + i.name),
 
-            (actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 10).length >= 1 ? ['', 'Level 10 Spells:'] : []),
-            actordata.items.filter(i => i.type === 'spell' && i.system.category.value === 'spell' && !i.isCantrip && i.system.level.value === 10)
+            (actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 10).length >= 1 ? ['', 'Rank 10 Spells:'] : []),
+            actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip && i.system.level.value === 10)
                 .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
                 .map(i => '- ' + i.name),
 
