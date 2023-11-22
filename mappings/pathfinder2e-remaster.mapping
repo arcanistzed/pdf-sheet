@@ -16,7 +16,69 @@ function() {
     - improve attack statistics to include 2nd and 3rd attacks
     - Add Boosts to ancestry section
     */
+    const SemVer = class {
+        _parse_version(version) {
+            version = version.split(/\.(.*)/s);
+            let _major = parseInt(version[0]);
+            version = version[1].split(/\.(.*)/s);
+            let _minor = parseInt(version[0]);
+            version = version[1].split(/-(.*)/s);
+            let _bugfix = parseInt(version[0]);
+            let _release = version[1];
+            return [_major, _minor, _bugfix, _release];
+        };
 
+        eq(version0, version1) {
+            version0 = this._parse_version(version0);
+            version1 = this._parse_version(version1);
+            if (JSON.stringify(version0) == JSON.stringify(version1)) {
+                return true;
+            };
+            return false;
+        };
+
+        gt(version0, version1) {
+            version0 = this._parse_version(version0);
+            version1 = this._parse_version(version1);
+            if (version0[0] > version1[0]) {
+                return true;
+            } else if ( version0[0] == version1[0] ) {
+                if (version0[1] > version1[1]) {
+                    return true;
+                } else if (version0[1] == version1[1]) {
+                    if (version0[2] > version1[2]) {
+                        return true;
+                    };
+                };
+            };
+            return false;
+        };
+
+        gte(version0, version1) {
+            if (this.eq(version0, version1)) {
+                return true;
+            };
+            return this.gt(version0, version1);
+        };
+
+        lt(version0, version1) {
+            version0 = this._parse_version(version0);
+            version1 = this._parse_version(version1);
+            if (version0[0] < version1[0]) {
+                return true;
+            } else if ( version0[0] == version1[0] ) {
+                if (version0[1] < version1[1]) {
+                    return true;
+                } else if (version0[1] == version1[1]) {
+                    if (version0[2] < version1[2]) {
+                        return true;
+                    };
+                };
+            };
+            return false;
+
+        };
+    };
     const format_mod = function(mod) {
         if (typeof(mod) === "undefined") {
             return mod;
@@ -25,9 +87,26 @@ function() {
     };
 
     const foundryvtt_version = game.release.generation;
+    const semver = new SemVer();
+    if (foundryvtt_version < 11) {
+        ui.notifications.error(
+            "PDF Sheet | Pathfinder 2e remaster | This version of Foundry VTT is no longer supported with the pf2e remaster mapping."
+        );
+    };
     const pf2e_version = game.system.version;
-    const actordata = (game.release.generation > 10) ? actor : actor.data;
-    const spellcasting_traditions = ['arcane', 'occult', 'primal', 'divine'];
+    if (semver.lt(pf2e_version, "5.8.3")) {
+        ui.notifications.error(
+            "PDF Sheet | Pathfinder 2e remaster | This version of the pf2e system is unsupported. Consider upgrading to 5.8.3 or 5.9.x."
+        );
+        return [];
+    } else if (semver.eq(pf2e_version, "5.8.3")) {
+        ui.notifications.warn(
+            "PDF Sheet | Pathfinder 2e remaster | The pf2e system v5.8.3 is in Long Term Support until (TBD), but please consider upgrading 5.9.x."
+        );
+    };
+    const actordata = actor;
+    const spellcasting_traditions = ["arcane", "occult", "primal", "divine"];
+    const prepared_types = ["prepared", "spontaneous"];
     let ret = [
 
         /* Ancestry Section*/
