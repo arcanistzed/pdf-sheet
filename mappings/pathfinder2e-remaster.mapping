@@ -2,7 +2,7 @@ function() {
     /*
     Pathfinder 2e Charactersheet Remastered mapping for Foundry VTT module 'Export Sheet to PDF' - 17/09/2023
     Author: [Bushvin](https://github.com/bushvin)
-    Version: 2.0.0
+    Version: 2.0.1
 
     PDF: https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered.pdf
     Original PDF: https://drive.google.com/file/d/1GKtOprwITSUP1sXCLXjqKc-N9JvwmgGy/view
@@ -650,12 +650,7 @@ function() {
                 .map(i => i.statistic.attributeModifier.value)[0] || ""
         },
 
-        { "pdf": "spell_proficiency_modifier", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()[0]
-                .statistic.modifiers.filter(i => i.type === "proficiency")
-                .map(i => i.modifier)[0] || ""
-        },
+        /* Spellcasting modifier has a dedicated entry at the end */
 
         { "pdf": "attack_spell_trained", "foundry":
             actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
@@ -687,12 +682,7 @@ function() {
                 .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
                 .map(i => i.statistic.attributeModifier.value)[0] || ""
         },
-        { "pdf": "spell_dc_proficiency_modifier", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()[0]
-                .statistic.modifiers.filter(i => i.type === "proficiency")
-                .map(i => i.modifier)[0] || ""
-        },
+        /* Spell DC Proficiency modifier is at the end */
 
         { "pdf": "spell_dc_trained", "foundry":
             actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
@@ -893,6 +883,12 @@ function() {
         .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()[0] || null;
 
     if (spellcasting !== null) {
+        ret = ret.concat(
+            [
+                { "pdf": "spell_proficiency_modifier", "foundry": spellcasting.statistic.modifiers.filter(i => i.type === "proficiency").map(i => i.modifier)[0] || "" },
+                { "pdf": "spell_dc_proficiency_modifier", "foundry": spellcasting.statistic.modifiers.filter(i => i.type === "proficiency").map(i => i.modifier)[0] || "" },
+            ]
+        );
         for (let i = 1; i<=actorSpellRank; i++) {
             ret.push(
                 { "pdf": `spell${i}_slots`, "foundry": spellcasting.spells.entry.system.slots[`slot${i}`].max }
