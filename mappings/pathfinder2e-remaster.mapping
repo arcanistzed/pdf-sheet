@@ -650,73 +650,20 @@ function() {
                 .map(i => i.statistic.mod)[0]
             ) || ""
         },
+        /* Spellcasting rank, modifiers has a dedicated entry at the end */
 
-        { "pdf": "spell_attribute_modifier", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.statistic.attributeModifier.value)[0] || ""
-        },
-
-        /* Spellcasting modifier has a dedicated entry at the end */
-
-        { "pdf": "attack_spell_trained", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.system.proficiency.value)[0] >= 1 || false
-        },
-        { "pdf": "attack_spell_expert", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.system.proficiency.value)[0] >= 2 || false
-        },
-        { "pdf": "attack_spell_master", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-            .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-            .map(i => i.system.proficiency.value)[0] >= 3 || false
-        },
-        { "pdf": "attack_spell_legendary", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.system.proficiency.value)[0] >= 4 || false
-        },
         { "pdf": "spell_dc", "foundry":
             actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
                 .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.statistic.check.mod)[0] +10 || 0
+                .map(i => i.statistic.check.mod)[0] +10 || ""
         },
-        { "pdf": "spell_dc_attribute_modifier", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.statistic.attributeModifier.value)[0] || ""
-        },
-        /* Spell DC Proficiency modifier is at the end */
-
-        { "pdf": "spell_dc_trained", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.system.proficiency.value)[0] >= 1 || false
-        },
-        { "pdf": "spell_dc_expert", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.system.proficiency.value)[0] >= 2 || false
-        },
-        { "pdf": "spell_dc_master", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-            .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-            .map(i => i.system.proficiency.value)[0] >= 3 || false
-        },
-        { "pdf": "spell_dc_legendary", "foundry":
-            actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-                .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.system.proficiency.value)[0] >= 4 || false
-        },
+        /* Spell DC rank, modifiers is at the end */
 
         /* Cantrips Section ∞*/
         { "pdf": "cantrip_slots", "foundry":
             actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
                 .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()
-                .map(i => i.spells.entry.system.slots.slot0.max)[0] || "0"
+                .map(i => i.spells.entry.system.slots.slot0.max)[0] || ""
         },
         { "pdf": "cantrip_rank", "foundry": actordata.items.filter(i => i.type === 'spell' && i.isCantrip)[0] ? Math.round(actordata.system.details.level.value / 2) : '' },
 
@@ -870,54 +817,126 @@ function() {
         }
     );
 
-    /* Cantrips */
-    actordata.items.filter(i => i.type === 'spell' && i.isCantrip && !i.isFocusSpell && !i.isRitual)
-        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0))).forEach(
-            (cantrip, index) => {
-                ret = ret.concat(
-                    [
-                        {"pdf": `cantrip_entry${index}_name`, "foundry": cantrip.name },
-                        {"pdf": `cantrip_entry${index}_actions`, "foundry": format_actions(cantrip.system.time.value) },
-                        {"pdf": `cantrip_entry${index}_prep`, "foundry": "" },
-                    ]
+   /* Spells (regular) */
+    const actor_spell_rank = Math.ceil((actordata?.level ?? 0) / 2);
+    let spell_proficiency_modifier = [];
+    let spell_attribute_modifier = [];
+    let spell_slots = {};
+    let spell_proficiency = [];
+    let spellcasting = actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value));
+    let is_spellcaster = (spellcasting.length > 0);
+    if (is_spellcaster){
+        let spell_index = 0;
+        let cantrip_index = 0;
+        spellcasting.forEach(
+            (sce) => {
+                spell_proficiency_modifier.push(sce.statistic.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier)[0] || 0);
+                spell_attribute_modifier.push(sce.statistic.modifiers.filter(i => i.type === 'ability').map(i => i.modifier)[0] || 0);
+                spell_proficiency.push(sce.system?.proficiency?.value || 0);
+                Object.entries(sce.spells.entry.system.slots).forEach(
+                    ([rank, info]) => {
+                        if ( ! Object.keys(spell_slots).includes(rank) ) {
+                            spell_slots[rank] = [];
+                        };
+                        spell_slots[rank].push(info.max)
+                    }
                 );
+                if ( spellcasting.length > 1 ) {
+                    ret.push({ "pdf": `spell_entry${spell_index}_name`, "foundry": sce.name });
+                    ret.push({ "pdf": `cantrip_entry${cantrip_index}_name`, "foundry": sce.name });
+                    spell_index = spell_index +1;
+                    cantrip_index = cantrip_index +1;
+                };
+
+                /* cantrips */
+                actordata.items.filter( i => i.type === 'spell' && i.system.location.value === sce._id && i.isCantrip && !i.isFocusSpell && !i.isRitual )
+                    .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0))).forEach(
+                        (cantrip) => {
+                            let prepared_count = Object.values(sce.spells.entry.system.slots.slot0.prepared).filter(i => i.id === cantrip._id ).length || 0;
+                            ret = ret.concat(
+                                [
+                                    {"pdf": `cantrip_entry${cantrip_index}_name`, "foundry": cantrip.name },
+                                    {"pdf": `cantrip_entry${cantrip_index}_actions`, "foundry": format_actions(cantrip.system.time.value) },
+                                    {"pdf": `cantrip_entry${cantrip_index}_prep`, "foundry": "0".repeat(prepared_count) },
+                                ]
+                            );
+                            cantrip_index = cantrip_index +1;
+                        }
+                    );
+
+                /* spells ranks 1 => 10 */
+                for (let r=1; r<=actor_spell_rank; r++) {
+                    actordata.items.filter(
+                        i => i.type === 'spell'
+                        && (
+                             i.rank == r
+                             || (
+                                  sce.isPrepared
+                                  && (
+                                      (i.system.heightening?.type === "interval" && i.rank < r && (parseInt((r-i.rank)/i.system.heightening?.interval) == ((r-i.rank)/i.system.heightening?.interval)))
+                                      || (i.system.heightening?.type === "fixed" && i.rank < r)
+                                  )
+                                )
+                           )
+                        && i.system.location.value === sce._id
+                        && !i.isFocusSpell
+                        && !i.isRitual
+                        && !i.isCantrip
+                        ).sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0))).forEach(
+                            (spell) => {
+                                let prepared_count = Object.values(sce.spells.entry.system.slots[`slot${r}`].prepared).filter(i => i.id === spell._id ).length || 0;
+                                let spell_name = `${spell.name}`;
+                                if ( spell.system.heightening?.type === "fixed" && ! Object.keys(spell.system.heightening.levels).concat([spell.system.level.value]).map(i => parseInt(i)).includes(r) ) {
+                                    return;
+                                };
+                                if ( spell.system.heightening?.type === "fixed" && spell.system.level.value != r ) {
+                                    let h = r - spell.system.level.value;
+                                    spell_name = `${spell_name} (+${h})`;
+                                } else if (spell.system.heightening?.type === "interval" && spell.system.level.value != r) {
+                                    let h = (r - spell.system.level.value)/spell.system.heightening.interval;
+                                    spell_name = `${spell_name} (+${h})`;
+                                };
+                                ret = ret.concat(
+                                    [
+                                        {"pdf": `spell_entry${spell_index}_name`, "foundry": spell_name },
+                                        {"pdf": `spell_entry${spell_index}_actions`, "foundry": format_actions(spell.system.time.value) },
+                                        {"pdf": `spell_entry${spell_index}_rank`, "foundry": r },
+                                        {"pdf": `spell_entry${spell_index}_prep`, "foundry": "0".repeat(prepared_count) },
+                                    ]
+                                );
+                                spell_index = spell_index +1;
+                            }
+                    );
+                };
+                if ( spellcasting.length > 1 ) {
+                    spell_index = spell_index +1;
+                    cantrip_index = cantrip_index +1;
+                };
             }
         );
-
-    /* Spell Slots */
-    const actorSpellRank = Math.ceil((actordata?.level ?? 0) / 2);
-    const spellcasting = actordata.spellcasting.filter(i => spellcasting_traditions.includes(i.system?.tradition?.value) && prepared_types.includes(i.system?.prepared?.value))
-        .sort( (a,b) => (a.statistic.check.mod < b.statistic.check.mod ? -1 : (a.statistic.check.mod > b.statistic.check.mod ? 1 : 0)) ).reverse()[0] || null;
-
-    if (spellcasting !== null) {
+        /* Spell Slots */
+        Object.keys(spell_slots).forEach(
+            (key) => {
+                ret.push({ "pdf": `spell${key.substring(4)}_slots`, "foundry": spell_slots[key].join("|")});
+            }
+        );
         ret = ret.concat(
             [
-                { "pdf": "spell_proficiency_modifier", "foundry": spellcasting.statistic.modifiers.filter(i => i.type === "proficiency").map(i => i.modifier)[0] || "" },
-                { "pdf": "spell_dc_proficiency_modifier", "foundry": spellcasting.statistic.modifiers.filter(i => i.type === "proficiency").map(i => i.modifier)[0] || "" },
+                { "pdf": "spell_proficiency_modifier", "foundry": spell_proficiency_modifier[0] || "" },
+                { "pdf": "spell_attribute_modifier", "foundry": spell_attribute_modifier[0] || "" },
+                { "pdf": "spell_dc_proficiency_modifier", "foundry": spell_proficiency_modifier[0] || "" },
+                { "pdf": "spell_dc_attribute_modifier", "foundry": spell_attribute_modifier[0] || "" },
+                { "pdf": "attack_spell_trained", "foundry": spell_proficiency[0] >= 1 },
+                { "pdf": "attack_spell_expert", "foundry": spell_proficiency[0] >= 2 },
+                { "pdf": "attack_spell_master", "foundry": spell_proficiency[0] >= 3 },
+                { "pdf": "attack_spell_legendary", "foundry": spell_proficiency[0] >= 4 },
+                { "pdf": "spell_dc_trained", "foundry": spell_proficiency[0] >= 1 },
+                { "pdf": "spell_dc_expert", "foundry": spell_proficiency[0] >= 2 },
+                { "pdf": "spell_dc_master", "foundry": spell_proficiency[0] >= 3 },
+                { "pdf": "spell_dc_legendary", "foundry": spell_proficiency[0] >= 4 },
             ]
         );
-        for (let i = 1; i<=actorSpellRank; i++) {
-            ret.push(
-                { "pdf": `spell${i}_slots`, "foundry": spellcasting.spells.entry.system.slots[`slot${i}`].max }
-            );
-        };
     };
-
-    /* Spellist (regular) */
-    actordata.items.filter(i => i.type === 'spell' && !i.isFocusSpell && !i.isRitual && !i.isCantrip)
-        .sort((a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)))
-        .sort((a,b) => (a.system.level.value < b.system.level.value ? -1 : (a.system.level.value > b.system.level.value ? 1 : 0))).forEach(
-            (spell, index) => {
-                ret = ret.concat(
-                    [
-                        {"pdf": `spell_entry${index}_name`, "foundry": spell.name },
-                        {"pdf": `spell_entry${index}_actions`, "foundry": format_actions(spell.system.time.value) },
-                        {"pdf": `spell_entry${index}_rank`, "foundry": spell.rank || spell.level },
-                        {"pdf": `spell_entry${index}_prep`, "foundry": "" },
-                    ]
-                );
-            }
-        );
 
     /* Focus spells */
     actordata.items.filter(i => i.type === 'spell' && i.isFocusSpell && !i.isRitual)
