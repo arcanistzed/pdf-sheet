@@ -20,20 +20,20 @@ function() {
         - no new features (unless they are one on one)
 
     TODO:
-      - prepared spellcasters: show list of all spells, including "heightened" spells
+      - [ ] PDF:background_notes, PDF:class_notes
+      - [ ] improve attack statistics to include 2nd and 3rd attacks
+      - [ ] Add Boosts to ancestry section
+      - [ ] Other Attack types notes
+      - [ ] critical specializations
+      - [ ] Gems and Artwork
+      - [ ] edicts
+      - [ ] anathema
+      - [ ] include innate spells
+      - [x] Do not fill out spellcasting pages for non-spellcasting actors
+      - [x] indicate whether a spell is prepared for casters who need to prepare their spells.
+      - [x] prepared spellcasters: show list of all spells, including "heightened" spells
         with them being prepared or not
-      - order spells by source, level
-      - Do not fill out spellcasting pages for non-spellcasting actors
-      - PDF:background_notes, PDF:class_notes
-      - improve attack statistics to include 2nd and 3rd attacks
-      - Add Boosts to ancestry section
-      - Other Attack types notes
-      - critical specializations
-      - Gems and Artwork
-      - edicts
-      - anathema
-      - include innate spells
-      - indicate whether a spell is prepared for casters who need to prepare their spells.
+      - [x] order spells by source, level
     */
 
     const SemVer = class {
