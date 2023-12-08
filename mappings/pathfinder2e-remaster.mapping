@@ -1,8 +1,8 @@
 function() {
     /*
-    Pathfinder 2e Charactersheet Remastered mapping for Foundry VTT module 'Export Sheet to PDF' - 17/09/2023
+    Pathfinder 2e Charactersheet Remastered mapping for Foundry VTT module 'Export Sheet to PDF' - 08/12/2023
     Author: [Bushvin](https://github.com/bushvin)
-    Version: 2.1.0
+    Version: 2.2.0
 
     PDF: https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered.pdf
     extra spells PDF: https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered-extra-spells.pdf
@@ -23,13 +23,14 @@ function() {
     TODO:
       - [ ] PDF:background_notes, PDF:class_notes
       - [ ] improve attack statistics to include 2nd and 3rd attacks
-      - [ ] Add Boosts to ancestry section
       - [ ] Other Attack types notes
       - [ ] critical specializations
-      - [ ] Gems and Artwork
-      - [ ] edicts
-      - [ ] anathema
       - [ ] include innate spells
+      - [x] Add Boosts to ancestry section
+      - [x] Gems and Artwork
+      - [x] formulas
+      - [x] edicts
+      - [x] anathema
       - [x] Do not fill out spellcasting pages for non-spellcasting actors
       - [x] indicate whether a spell is prepared for casters who need to prepare their spells.
       - [x] prepared spellcasters: show list of all spells, including "heightened" spells
@@ -267,6 +268,21 @@ function() {
             return value;
     };
 
+    const sort_attribute_boosts = function(attributes) {
+        if ( ! Array.isArray(attributes) ) {
+            return "";
+        }
+        let a = [];
+        ["str", "dex", "con", "int", "wis", "cha"].forEach(
+            (atr) => {
+                if (attributes.includes(atr)) {
+                    a.push(atr);
+                }
+            }
+        );
+        return a.join(", ");
+    };
+
     const foundryvtt_version = game.release.generation;
     const semver = new SemVer();
     if (foundryvtt_version < 11) {
@@ -497,21 +513,25 @@ function() {
         { "pdf": "3_general_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'general-3').map(i => i.name)[0] || '' },
         { "pdf": "4_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-4').map(i => i.name)[0] || '' },
         { "pdf": "5_ancestry_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-5').map(i => i.name)[0] || '' },
+        { "pdf": "5_boosts", "foundry": sort_attribute_boosts(actordata.system.build.attributes.boosts[5]) },
         { "pdf": "6_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-6').map(i => i.name)[0] || '' },
         { "pdf": "7_general_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'general-7').map(i => i.name)[0] || '' },
         { "pdf": "8_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-8').map(i => i.name)[0] || '' },
         { "pdf": "9_ancestry_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-9').map(i => i.name)[0] || '' },
         { "pdf": "10_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-10').map(i => i.name)[0] || '' },
+        { "pdf": "10_boosts", "foundry": sort_attribute_boosts(actordata.system.build.attributes.boosts[10]) },
         { "pdf": "11_general_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'general-11').map(i => i.name)[0] || '' },
         { "pdf": "12_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-12').map(i => i.name)[0] || '' },
         { "pdf": "13_ancestry_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-13').map(i => i.name)[0] || '' },
         { "pdf": "14_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-14').map(i => i.name)[0] || '' },
         { "pdf": "15_general_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'general-15').map(i => i.name)[0] || '' },
+        { "pdf": "15_boosts", "foundry": sort_attribute_boosts(actordata.system.build.attributes.boosts[15]) },
         { "pdf": "16_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-16').map(i => i.name)[0] || '' },
         { "pdf": "17_ancestry_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'ancestry-17').map(i => i.name)[0] || '' },
         { "pdf": "18_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-18').map(i => i.name)[0] || '' },
         { "pdf": "19_general_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'general-19').map(i => i.name)[0] || '' },
         { "pdf": "20_skill_feat", "foundry": actordata.items.filter(i => i.type === 'feat' && i.system.location === 'skill-20').map(i => i.name)[0] || '' },
+        { "pdf": "20_boosts", "foundry": sort_attribute_boosts(actordata.system.build.attributes.boosts[20]) },
 
         /* Class Abilities Section */
         { "pdf": "1_class_feats_features", "foundry":
@@ -587,7 +607,7 @@ function() {
         { "pdf": "gold", "foundry": actordata.inventory.coins.gp || 0 },
         { "pdf": "platinum", "foundry": actordata.inventory.coins.pp || 0 },
 
-        /* FIXME: Gems and Artwork */
+        /* Gems and Artwork have their own section at the end */
 
         /* Origin and Appearance Section */
         { "pdf": "ethnicity", "foundry": actordata.system.details.ethnicity.value || '' },
@@ -601,11 +621,9 @@ function() {
 
         /* Personality Section */
         { "pdf": "attitude", "foundry": actordata.system.details.biography.attitude || '' },
-        { "pdf": "deity_philosophy", "foundry": actordata.deity?.name ?? "" },
-        /* FIXME: Add edicts */
-        { "pdf": "edicts", "foundry": "" },
-        /* FIXME: Add anathema */
-        { "pdf": "anathema", "foundry": "" },
+        { "pdf": "deity_philosophy", "foundry": actordata.deity?.name || "" },
+        { "pdf": "edicts", "foundry": actordata.system.details.biography.edicts || "" },
+        { "pdf": "anathema", "foundry": actordata.system.details.biography.anathema || "" },
         { "pdf": "likes", "foundry": actordata.system.details.biography.likes || '' },
         { "pdf": "dislikes", "foundry": actordata.system.details.biography.dislikes || '' },
         { "pdf": "catchphrases", "foundry": actordata.system.details.biography.catchphrases || '' },
@@ -1007,6 +1025,46 @@ function() {
             }
         );
 
+    /* gems and artwork */
+    actordata.inventory.filter(i => i.system.usage.type === 'carried' && i.type === 'treasure')
+        .sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) ).forEach(
+            (item, index) => {
+                let price = [];
+                ["pp", "gp", "sp", "cp"].forEach(
+                    (t) => {
+                        if (item.system.price.value[t] > 0) {
+                            price.push(`${item.system.price.value[t]} ${t}`);
+                        }
+                    }
+                );
+                ret = ret.concat(
+                    [
+                        {"pdf": `gems_artwork${index}_name`, "foundry": ((item.system.quantity > 1) ? item.system.quantity + ' ' : '') + item.name + (item.isMagical ? ' ‡ ' : '') },
+                        {"pdf": `gems_artwork${index}_price`, "foundry": price.join(", ") },
+                        {"pdf": `gems_artwork${index}_bulk`, "foundry": item.system.bulk.value },
+                    ]
+                );
+            }
+        );
 
+    /* Formulas */
+    let formulas = [];
+    actordata.system.crafting.formulas.map( a => a.uuid).forEach(
+        (uuid) => {
+            let formula = fromUuidSync(uuid);
+            formulas.push(formula);
+        }
+    );
+    formulas.sort( (a,b) => (a.name < b.name ? -1 : (a.name > b.name ? 1 : 0)) ).reverse()
+        .sort( (a,b) => (a.system.level < b.system.level ? -1 : (a.system.level > b.system.level ? 1 : 0)) ).reverse().forEach(
+            (item,index) => {
+                ret = ret.concat(
+                    [
+                        {"pdf": `item_formula${index}_name`, "foundry": item.name },
+                        {"pdf": `item_formula${index}_rank`, "foundry": item.system.level.value },
+                    ]
+                );
+            }
+        );
     return ret;
 }()
