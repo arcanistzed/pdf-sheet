@@ -1321,15 +1321,15 @@
     /* Weapons *********************/
     {
         "pdf": "Weapon_Regular0",
-        "foundry": @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length == 0 ? "" : @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? ''
     },
     {
         "pdf": "Weapon_Hard0",
-        "foundry": (@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 2)
+        "foundry": (@items.filter(item => item.type === 'weapon').length == 0 ? "" : @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 2)
     },
     {
         "pdf": "Weapon_Extreme0",
-        "foundry": (@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 5)
+        "foundry": (@items.filter(item => item.type === 'weapon').length == 0 ? "" : @items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value ?? '') === '' ? '' : Math.floor(@items.find(item => (item.name === 'Fighting (Brawl)' || item.flags?.CoC7?.cocidFlag?.id === 'i.skill.fighting-brawl') && item.type === 'skill')?.value / 5)
     },
     {
         "pdf": "Weapon_Name1",
@@ -1337,107 +1337,107 @@
     },
     {
         "pdf": "Weapon_Regular1",
-        "foundry": @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.skill.main ?? ''))?.skill?.value ?? ''
     },
     {
         "pdf": "Weapon_Hard1",
-        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value / 2)
+        "foundry": (@items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value / 2)
     },
     {
         "pdf": "Weapon_Extreme1",
-        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value / 5)
+        "foundry": (@items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.skill.main)).skill?.value / 5)
     },
     {
         "pdf": "Weapon_Damage1",
-        "foundry": ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
+        "foundry": ((@items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
     },
     {
         "pdf": "Weapon_Attacks1",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.usesPerRound?.normal ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0]?.system.usesPerRound?.normal ?? ''
     },
     {
         "pdf": "Weapon_Range1",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.range?.normal?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.range?.normal?.value ?? ''
     },
     {
         "pdf": "Weapon_Ammo1",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.bullets ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.bullets ?? ''
     },
     {
         "pdf": "Weapon_Malf1",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.malfunction ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 1 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[0].system.malfunction ?? ''
     },
     {
         "pdf": "Weapon_Name2",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.name ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.name ?? ''
     },
     {
         "pdf": "Weapon_Regular2",
-        "foundry": @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? ''
     },
     {
         "pdf": "Weapon_Hard2",
-        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value / 2)
+        "foundry": (@items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value / 2)
     },
     {
         "pdf": "Weapon_Extreme2",
-        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value / 5)
+        "foundry": (@items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.skill.main)).skill?.value / 5)
     },
     {
         "pdf": "Weapon_Damage2",
-        "foundry": ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
+        "foundry": ((@items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
     },
     {
         "pdf": "Weapon_Attacks2",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.usesPerRound?.normal ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1]?.system.usesPerRound?.normal ?? ''
     },
     {
         "pdf": "Weapon_Range2",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.range?.normal?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.range?.normal?.value ?? ''
     },
     {
         "pdf": "Weapon_Ammo2",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.bullets ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.bullets ?? ''
     },
     {
         "pdf": "Weapon_Malf2",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.malfunction ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 2 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[1].system.malfunction ?? ''
     },
     {
         "pdf": "Weapon_Name3",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.name ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.name ?? ''
     },
     {
         "pdf": "Weapon_Regular3",
-        "foundry": @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? ''
     },
     {
         "pdf": "Weapon_Hard3",
-        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value / 2)
+        "foundry": (@items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value / 2)
     },
     {
         "pdf": "Weapon_Extreme3",
-        "foundry": (@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value / 5)
+        "foundry": (@items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value ?? '') === '' ? '' : Math.floor(@items.filter(item => item.type === 'skill').reduce((c, d) => { if (d.name === c.name || d.id === c.id) { c.skill = d; } return c }, duplicate(@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.skill.main)).skill?.value / 5)
     },
     {
         "pdf": "Weapon_Damage3",
-        "foundry": ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
+        "foundry": ((@items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.range?.normal?.damage ?? '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.properties?.addb ?? false) ? '+DB' : '') + ' ' + ((@items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.properties?.ahdb ?? false) ? '+DB/2' : '')).trim()
     },
     {
         "pdf": "Weapon_Attacks3",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.usesPerRound?.normal ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2]?.system.usesPerRound?.normal ?? ''
     },
     {
         "pdf": "Weapon_Range3",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.range?.normal?.value ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.range?.normal?.value ?? ''
     },
     {
         "pdf": "Weapon_Ammo3",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.bullets ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.bullets ?? ''
     },
     {
         "pdf": "Weapon_Malf3",
-        "foundry": @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.malfunction ?? ''
+        "foundry": @items.filter(item => item.type === 'weapon').length <= 3 ? "" : @items.filter(item => item.type === 'weapon' && !['Brawl', 'Punch'].includes(item.name) && !item.flags?.CoC7?.cocidFlag?.id.match(/^i\.weapon\.(punch|brawl)$/))[2].system.malfunction ?? ''
     },
 
     /* Cash and Assets *********************/
