@@ -319,7 +319,7 @@ class Pdfconfig extends FormApplication {
 	}
 
 	/** Create a form with inputs for each PDF field and fill them in with Actor data */
-	createForm(buffer) {
+	async createForm(buffer) {
 		const inputForm = document.getElementById("fieldList");
 
 		// Empty input form
@@ -331,7 +331,12 @@ class Pdfconfig extends FormApplication {
 		// Get PDF fields
 		const pdfFields = pdfform(minipdf).list_fields(buffer);
 		// Get Actor data
-		const actor = this.actor;
+		let actor = this.actor;
+
+		if(typeof this.actor.sheet.getData === "function"){
+			const sheetData = await this.actor.sheet.getData();
+			actor = {...this.actor, sheetData};			
+		}
 
 		// Begin grouping logs
 		console.group("PDF Sheet");
@@ -339,6 +344,8 @@ class Pdfconfig extends FormApplication {
 		console.log("Actor Data:", actor);
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
+
+		
 
 		// Get mapping from settings
 		let mapping = ""
@@ -365,6 +372,7 @@ class Pdfconfig extends FormApplication {
 			// Return as evaluated JavaScript with the actor as an argument
 			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
 		} catch (err) {
+
 			// End console group
 			console.groupEnd();
 			// Close the application
