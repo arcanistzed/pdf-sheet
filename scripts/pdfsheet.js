@@ -249,7 +249,7 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	// added pc for cypher system
 	// TODO: have to refactor this with something generic
 	if (!["character", "PC", "Player", "npc", "pc"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
-
+console.log(buttons);
 	buttons.unshift({
 		label: "Export to PDF",
 		class: "export-pdf",
@@ -275,6 +275,11 @@ class Pdfconfig extends FormApplication {
 
 	/** The module's ID */
 	static ID = "pdf-sheet";
+
+	close() {
+		delete this.actor.sheetData;
+		return super.close();
+	}
 
 	/** @override */
 	static get defaultOptions() {
@@ -331,11 +336,11 @@ class Pdfconfig extends FormApplication {
 		// Get PDF fields
 		const pdfFields = pdfform(minipdf).list_fields(buffer);
 		// Get Actor data
-		let actor = this.actor;
+		const actor = this.actor;
 
 		if(typeof this.actor.sheet.getData === "function"){
 			const sheetData = await this.actor.sheet.getData();
-			actor = {...this.actor, sheetData};			
+			actor.sheetData = sheetData;			
 		}
 
 		// Begin grouping logs
@@ -348,7 +353,7 @@ class Pdfconfig extends FormApplication {
 		
 
 		// Get mapping from settings
-		let mapping = ""
+		let mapping = "";
 		
 		if (["character", "PC", "Player", "pc"].includes(actor.type ?? actor.data.type)) {
 			console.log("got mapping for PC")
@@ -372,7 +377,7 @@ class Pdfconfig extends FormApplication {
 			// Return as evaluated JavaScript with the actor as an argument
 			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
 		} catch (err) {
-
+			delete this.actor.sheetData;
 			// End console group
 			console.groupEnd();
 			// Close the application
@@ -507,6 +512,7 @@ class Pdfconfig extends FormApplication {
 		const filled_pdf = pdfform(minipdf).transform(buffer, fields);
 
 		const blob = new Blob([filled_pdf], { type: "application/pdf" });
+		
 		saveAs(blob, `${this.actor.name ?? "character"}.pdf`);
 	}
 
@@ -517,5 +523,6 @@ class Pdfconfig extends FormApplication {
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-export").style.display = "block";
+		delete this.actor.sheetData;
 	}
 }
