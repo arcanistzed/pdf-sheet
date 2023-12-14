@@ -1085,7 +1085,6 @@ function() {
         );
 
     /* Formulas */
-    /*
     let formulas = [];
     actordata.system.crafting.formulas.map( a => a.uuid).forEach(
         (uuid) => {
@@ -1104,6 +1103,5 @@ function() {
                 );
             }
         );
-    */
     return ret;
 }()
