@@ -21,6 +21,9 @@ function() {
         - no new features (unless they are one on one)
 
     TODO:
+      - [ ] include applied runes (to equipment)
+      - [ ] moar equipment
+      - [ ] moar attacks
       - [ ] PDF:background_notes, PDF:class_notes
       - [ ] improve attack statistics to include 2nd and 3rd attacks
       - [ ] Other Attack types notes
@@ -745,46 +748,80 @@ function() {
 
     /* Strikes */
     /* Melee strikes range from 0-2 */
-    let attack_descriptions = [ 'PF2E.Strike.Melee.Description', 'PF2E.Strike.Unarmed.Description'];
-    actordata.system.actions.filter(i => attack_descriptions.includes(i.description)).sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).forEach(
+    actordata.system.actions.filter(i => i.type === "strike" && (i.domains.includes("melee-attack-roll") || i.altUsages.filter(f => f.domains.includes('melee-attack-roll')).length > 0))
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).forEach(
         (attack, index) => {
-            let damage = `${attack.item.system.damage.dice}${attack.item.system.damage.die}`;
-            let modifier = parseInt(attack.modifiers.filter(i => i.type === "ability").map(i => i.modifier)[0]) || 0;
-            if (modifier != 0) {
-                damage = damage + format_mod(modifier);
+
+            if ( attack.domains.includes("melee-attack-roll") ) {
+                cur_attack = attack;
+            } else if ( attack.altUsages.filter(i => i.domains.includes('melee-attack-roll')).length > 0 ) {
+                cur_attack = attack.altUsages.filter(i => i.domains.includes('melee-attack-roll'))[0];
+            };
+            let label = cur_attack.label || "";
+            let total_modifier = parseInt(cur_attack.totalModifier) || 0;
+            let attribute_modifier = parseInt(cur_attack.modifiers.filter(i => i.type === "ability").map(i => i.modifier)[0]) || 0;
+            let proficiency_modifier = parseInt(cur_attack.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier)[0]) || 0;
+            let item_modifier = parseInt(cur_attack.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier)[0]) || 0;
+            let damage = `${cur_attack.item.system.damage.dice}${cur_attack.item.system.damage.die}` || "";
+            let bludgeoning_damage = cur_attack.item.system.damage.damageType === "bludgeoning" || false;
+            let piercing_damage = cur_attack.item.system.damage.damageType === "piercing" || false;
+            let slashing_damage = cur_attack.item.system.damage.damageType === "slashing" || cur_attack.item.system.traits.value.includes('versatile-s') || false;
+            let traits_notes = cur_attack.item.system.traits.value || [];
+
+            if (attribute_modifier != 0) {
+                damage = damage + format_mod(attribute_modifier);
             };
             ret = ret.concat(
                     [
-                        { "pdf": `melee${index+1}_name`, "foundry": attack.label},
-                        { "pdf": `melee${index+1}_attack`, "foundry": format_mod(attack.totalModifier)},
-                        { "pdf": `melee${index+1}_attribute_modifier`, "foundry": attack.modifiers.filter(i => i.type === 'ability' && i.enabled).map(i => i.modifier)[0] || 0 },
-                        { "pdf": `melee${index+1}_proficiency_modifier`, "foundry": attack.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier)[0] || 0},
-                        { "pdf": `melee${index+1}_item_modifier`, "foundry": attack.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier)[0] || 0},
+                        { "pdf": `melee${index+1}_name`, "foundry": label},
+                        { "pdf": `melee${index+1}_attack`, "foundry": format_mod(total_modifier)},
+                        { "pdf": `melee${index+1}_attribute_modifier`, "foundry": attribute_modifier },
+                        { "pdf": `melee${index+1}_proficiency_modifier`, "foundry": proficiency_modifier},
+                        { "pdf": `melee${index+1}_item_modifier`, "foundry": item_modifier},
                         { "pdf": `melee${index+1}_damage`, "foundry": damage },
-                        { "pdf": `melee${index+1}_bludgeoning_damage`, "foundry": attack.item.system.damage.damageType === "bludgeoning" || false },
-                        { "pdf": `melee${index+1}_piercing_damage`, "foundry": attack.item.system.damage.damageType === "piercing" || false },
-                        { "pdf": `melee${index+1}_slashing_damage`, "foundry": attack.item.system.damage.damageType === "slashing" || attack.item.system.traits.value.includes('versatile-s') || false },
-                        { "pdf": `melee${index+1}_traits_notes`, "foundry": format_traits(attack.item.system.traits.value) },
+                        { "pdf": `melee${index+1}_bludgeoning_damage`, "foundry": bludgeoning_damage },
+                        { "pdf": `melee${index+1}_piercing_damage`, "foundry": piercing_damage },
+                        { "pdf": `melee${index+1}_slashing_damage`, "foundry": slashing_damage },
+                        { "pdf": `melee${index+1}_traits_notes`, "foundry": format_traits(traits_notes) },
                     ]
                 );
         }
     );
 
     /* Ranged strikes range from 0-1 */
-    actordata.system.actions.filter(i => i.description === "PF2E.Strike.Ranged.Description" ).sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).forEach(
+    actordata.system.actions.filter(i => i.type === "strike" && (i.domains.includes("ranged-attack-roll") || i.altUsages.filter(f => f.domains.includes('ranged-attack-roll')).length > 0))
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).forEach(
         (attack, index) => {
-            ret = ret.concat(
+            if ( attack.domains.includes("ranged-attack-roll") ) {
+                cur_attack = attack;
+            } else if ( attack.altUsages.filter(i => i.domains.includes('ranged-attack-roll')).length > 0 ) {
+                cur_attack = attack.altUsages.filter(i => i.domains.includes('ranged-attack-roll'))[0];
+            };
+            let label = cur_attack.label;
+            let total_modifier = parseInt(cur_attack.totalModifier);
+            let attribute_modifier = parseInt(cur_attack.modifiers.filter(i => i.type === "ability").map(i => i.modifier)[0]) || 0;
+            let proficiency_modifier = parseInt(cur_attack.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier)[0]) || 0;
+            let item_modifier = parseInt(cur_attack.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier)[0]) || 0;
+            let damage = `${cur_attack.item.system.damage.dice}${cur_attack.item.system.damage.die}` || '-';
+            let bludgeoning_damage = cur_attack.item.system.damage.damageType === "bludgeoning" || false;
+            let piercing_damage = cur_attack.item.system.damage.damageType === "piercing" || false;
+            let slashing_damage = cur_attack.item.system.damage.damageType === "slashing" || cur_attack.item.system.traits.value.includes('versatile-s') || false;
+            let traits_notes = cur_attack.item.system.traits.value.concat([`range-${cur_attack.item.system.range}`]);
+
+            if (attribute_modifier != 0) {
+                damage = damage + format_mod(attribute_modifier);
+            };            ret = ret.concat(
                 [
-                    { "pdf": `ranged${index+1}_name`, "foundry": attack.label},
-                    { "pdf": `ranged${index+1}_attack`, "foundry": format_mod(attack.totalModifier)},
-                    { "pdf": `ranged${index+1}_attribute_modifier`, "foundry": attack.modifiers.filter(i => i.type === 'ability' && i.enabled).map(i => i.modifier)[0] || 0 },
-                    { "pdf": `ranged${index+1}_proficiency_modifier`, "foundry": attack.modifiers.filter(i => i.type === 'proficiency').map(i => i.modifier)[0] || 0},
-                    { "pdf": `ranged${index+1}_item_modifier`, "foundry": attack.modifiers.filter(i => i.type === 'item' && i.enabled).map(i => i.modifier)[0] || 0},
-                    { "pdf": `ranged${index+1}_damage`, "foundry": `${attack.item.system.damage.dice}${attack.item.system.damage.die}` || "-" },
-                    { "pdf": `ranged${index+1}_bludgeoning_damage`, "foundry": attack.item.system.damage.damageType === "bludgeoning" || false },
-                    { "pdf": `ranged${index+1}_piercing_damage`, "foundry": attack.item.system.damage.damageType === "piercing" || false },
-                    { "pdf": `ranged${index+1}_slashing_damage`, "foundry": attack.item.system.damage.damageType === "slashing" || attack.item.system.traits.value.includes('versatile-s') || false },
-                    { "pdf": `ranged${index+1}_traits_notes`, "foundry": format_traits(attack.item.system.traits.value.concat([`range-${attack.item.system.range}`])) },
+                    { "pdf": `ranged${index+1}_name`, "foundry": label},
+                    { "pdf": `ranged${index+1}_attack`, "foundry": format_mod(total_modifier)},
+                    { "pdf": `ranged${index+1}_attribute_modifier`, "foundry": attribute_modifier },
+                    { "pdf": `ranged${index+1}_proficiency_modifier`, "foundry": proficiency_modifier },
+                    { "pdf": `ranged${index+1}_item_modifier`, "foundry": item_modifier},
+                    { "pdf": `ranged${index+1}_damage`, "foundry": damage },
+                    { "pdf": `ranged${index+1}_bludgeoning_damage`, "foundry": bludgeoning_damage },
+                    { "pdf": `ranged${index+1}_piercing_damage`, "foundry": piercing_damage },
+                    { "pdf": `ranged${index+1}_slashing_damage`, "foundry": slashing_damage },
+                    { "pdf": `ranged${index+1}_traits_notes`, "foundry": format_traits(traits_notes) },
                 ]
             );
         }
