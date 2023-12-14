@@ -249,7 +249,6 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	// added pc for cypher system
 	// TODO: have to refactor this with something generic
 	if (!["character", "PC", "Player", "npc", "pc"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
-console.log(buttons);
 	buttons.unshift({
 		label: "Export to PDF",
 		class: "export-pdf",
