@@ -235,6 +235,32 @@ function() {
         return frequency;
     };
 
+    const format_runes = function(runes) {
+        let runelist = [];
+
+        if ( (runes.potency || 0) > 0 ) {
+            runelist.push(`Potency +${runes.potency}`);
+        }
+        if ( (runes.striking || 0) > 2 ) {
+            runelist.push(`Major Striking`);
+        } else if ( (runes.striking || 0) > 1 ) {
+            runelist.push(`Greater Striking`);
+        } else if ( (runes.striking || 0) > 0 ) {
+            runelist.push(`Striking`);
+        }
+        (runes.property || []).forEach(
+            (r) => {
+                runelist.push(`${ucfirst(r)} Rune`);
+            }
+        );
+        if (runelist.length > 0) {
+            return ", " + runelist.join(", ");
+        } else {
+            return "";
+        }
+
+    };
+
     const abbreviate_source = function(value) {
         /* return the abbreviation of the given source */
         switch (value) {
@@ -749,7 +775,9 @@ function() {
     /* Strikes */
     /* Melee strikes range from 0-2 */
     actordata.system.actions.filter(i => i.type === "strike" && (i.domains.includes("melee-attack-roll") || i.altUsages.filter(f => f.domains.includes('melee-attack-roll')).length > 0))
-        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).forEach(
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).reverse()
+        .sort((a,b) => (a.ready > b.ready ? 1 : (a.ready < b.ready ? -1 : 0))).reverse()
+        .forEach(
         (attack, index) => {
 
             if ( attack.domains.includes("melee-attack-roll") ) {
@@ -766,7 +794,7 @@ function() {
             let bludgeoning_damage = cur_attack.item.system.damage.damageType === "bludgeoning" || false;
             let piercing_damage = cur_attack.item.system.damage.damageType === "piercing" || false;
             let slashing_damage = cur_attack.item.system.damage.damageType === "slashing" || cur_attack.item.system.traits.value.includes('versatile-s') || false;
-            let traits_notes = cur_attack.item.system.traits.value || [];
+            let traits_notes = format_traits(cur_attack.item.system.traits.value) + format_runes(cur_attack.item.system.runes) || [];
 
             if (attribute_modifier != 0) {
                 damage = damage + format_mod(attribute_modifier);
@@ -782,7 +810,7 @@ function() {
                         { "pdf": `melee${index+1}_bludgeoning_damage`, "foundry": bludgeoning_damage },
                         { "pdf": `melee${index+1}_piercing_damage`, "foundry": piercing_damage },
                         { "pdf": `melee${index+1}_slashing_damage`, "foundry": slashing_damage },
-                        { "pdf": `melee${index+1}_traits_notes`, "foundry": format_traits(traits_notes) },
+                        { "pdf": `melee${index+1}_traits_notes`, "foundry": traits_notes },
                     ]
                 );
         }
@@ -790,7 +818,9 @@ function() {
 
     /* Ranged strikes range from 0-1 */
     actordata.system.actions.filter(i => i.type === "strike" && (i.domains.includes("ranged-attack-roll") || i.altUsages.filter(f => f.domains.includes('ranged-attack-roll')).length > 0))
-        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).forEach(
+        .sort((a,b) => (a.ready > b.ready ? 1 : (a.ready < b.ready ? -1 : 0))).reverse()
+        .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).reverse()
+        .forEach(
         (attack, index) => {
             if ( attack.domains.includes("ranged-attack-roll") ) {
                 cur_attack = attack;
@@ -806,7 +836,7 @@ function() {
             let bludgeoning_damage = cur_attack.item.system.damage.damageType === "bludgeoning" || false;
             let piercing_damage = cur_attack.item.system.damage.damageType === "piercing" || false;
             let slashing_damage = cur_attack.item.system.damage.damageType === "slashing" || cur_attack.item.system.traits.value.includes('versatile-s') || false;
-            let traits_notes = cur_attack.item.system.traits.value.concat([`range-${cur_attack.item.system.range}`]);
+            let traits_notes = format_traits(cur_attack.item.system.traits.value.concat([`range-${cur_attack.item.system.range}`])) + format_runes(cur_attack.item.system.runes);
 
             if (attribute_modifier != 0) {
                 damage = damage + format_mod(attribute_modifier);
@@ -821,7 +851,7 @@ function() {
                     { "pdf": `ranged${index+1}_bludgeoning_damage`, "foundry": bludgeoning_damage },
                     { "pdf": `ranged${index+1}_piercing_damage`, "foundry": piercing_damage },
                     { "pdf": `ranged${index+1}_slashing_damage`, "foundry": slashing_damage },
-                    { "pdf": `ranged${index+1}_traits_notes`, "foundry": format_traits(traits_notes) },
+                    { "pdf": `ranged${index+1}_traits_notes`, "foundry": traits_notes },
                 ]
             );
         }
