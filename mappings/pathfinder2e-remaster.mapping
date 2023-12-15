@@ -2,7 +2,7 @@ function() {
     /*
     Pathfinder 2e Charactersheet Remastered mapping for Foundry VTT module 'Export Sheet to PDF' - 08/12/2023
     Author: [Bushvin](https://github.com/bushvin)
-    Version: 2.2.0
+    Version: 2.3.0
 
     PDF: https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered.pdf
     extra spells PDF: https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered-extra-spells.pdf
@@ -29,6 +29,11 @@ function() {
       - [ ] Other Attack types notes
       - [ ] critical specializations
       - [ ] include innate spells
+      - [x] improved defense notes
+      - [x] improved immunities section
+      - [x] improved skill notes
+      - [x] improved weapon traits
+      - [x] improved strikes (shows all weapons now, first those readied)
       - [x] Add Boosts to ancestry section
       - [x] Gems and Artwork
       - [x] formulas
@@ -437,11 +442,7 @@ function() {
         { "pdf": "will_master", "foundry": actordata.saves.will.rank >= 3 || '' },
         { "pdf": "will_legendary", "foundry": actordata.saves.will.rank >= 4 || '' },
 
-        { "pdf": "defense_notes", "foundry":
-                'FOR: ' + actordata.saves.fortitude.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier) + ' \n' +
-                'REF: ' + actordata.saves.reflex.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier) + ' \n' +
-                'WILL: ' + actordata.saves.will.modifiers.filter(i => i.type === 'item' || i.type === 'untyped').map(i => ' ' + (i.slug ? i.slug : i.label) + ' ' + (i.modifier < 0 ? '' : '+') + i.modifier)
-        },
+        /* Defense Notes at the end */
 
         /* Hit Points Section*/
         { "pdf": "hp_max", "foundry": actordata.hitPoints.max },
@@ -453,12 +454,12 @@ function() {
         { "pdf": "dying_3", "foundry": actordata.system.attributes.dying.value >= 3 || false },
         { "pdf": "dying_4", "foundry": actordata.system.attributes.dying.value >= 4 || false },
         { "pdf": "wounded", "foundry": actordata.system.attributes.wounded.value + '/' + actordata.system.attributes.wounded.max },
-        { "pdf": "resistances_immunities", "foundry": actordata.system.attributes.resistances.map(i => i.type + ' ' + i.value).concat(actordata.system.attributes.immunities.map(i => i.type)).sort().join(", ") },
+        { "pdf": "resistances_immunities", "foundry": "                                            " + actordata.system.attributes.resistances.map(i => i.type + ' ' + i.value).concat(actordata.system.attributes.immunities.map(i => i.type)).sort().join(", ") },
         { "pdf": "conditions", "foundry": actordata.conditions.map(i => i.name).join(", ") },
 
         /* Skills Section */
         /* Dedicated for loop at the end*/
-        { "pdf": "skill_notes", "foundry": "" },
+        /* skill_notes at the end */
 
         /* Lore Skills */
         /* Dedicated for loop at the end*/
@@ -733,6 +734,43 @@ function() {
         /* Rituals list has a dedicated section at the end*/
     ];
 
+    /* Defense Notes */
+    let defense_notes = [];
+    let modifiers_types = ["ability","proficiency","item"];
+    let fortitude_bonus = actordata.saves.fortitude.modifiers.filter(i => !modifiers_types.includes(i.type));
+    let reflex_bonus = actordata.saves.reflex.modifiers.filter(i => !modifiers_types.includes(i.type));
+    let will_bonus = actordata.saves.reflex.modifiers.filter(i => !modifiers_types.includes(i.type));
+    let all_bonus_slugs = fortitude_bonus.concat(reflex_bonus).concat(will_bonus).map(i=>i.slug).filter((v,i,a) => a.indexOf(v) === i);
+    all_bonus_slugs = all_bonus_slugs.filter(i => fortitude_bonus.map(i => i.slug).includes(i) && reflex_bonus.map(i => i.slug).includes(i) && will_bonus.map(i => i.slug).includes(i));
+    let all_bonus = fortitude_bonus.filter(i => all_bonus_slugs.includes(i.slug));
+    fortitude_bonus = fortitude_bonus.filter(i => !all_bonus_slugs.includes(i.slug));
+    reflex_bonus = reflex_bonus.filter(i => !all_bonus_slugs.includes(i.slug));
+    will_bonus = will_bonus.filter(i => !all_bonus_slugs.includes(i.slug));
+    all_bonus.forEach(
+        (b) => {
+            defense_notes.push(`${b.label} ${format_mod(b.modifier)} (saves)`);
+        }
+    );
+    fortitude_bonus.forEach(
+        (b) => {
+            defense_notes.push(`${b.label} ${format_mod(b.modifier)} (fort)`);
+        }
+    );
+    reflex_bonus.forEach(
+        (b) => {
+            defense_notes.push(`${b.label} ${format_mod(b.modifier)} (ref)`);
+        }
+    );
+    will_bonus.forEach(
+        (b) => {
+            defense_notes.push(`${b.label} ${format_mod(b.modifier)} (will)`);
+        }
+    );
+
+    ret.push(
+        { "pdf": "defense_notes", "foundry": "                         " + defense_notes.join(", ") }
+    );
+
     /* Skills */
     Object.values(actordata.skills).filter(i => !i.lore).forEach(
         (skill) => {
@@ -772,6 +810,12 @@ function() {
         }
     );
 
+    /* Skill Notes */
+    /* Skills with assurance */
+    let skill_notes = [];
+    skill_notes.push("Assurance: " + actordata.items.filter(i=>i.slug==="assurance").map(i=>i.rules.filter(f=>f.prompt==="PF2E.SpecificRule.Prompt.Skill").map(m=>m.selection)).flat(1).map(i=>ucfirst(i)).join(", "));
+    ret.push({ "pdf": "skill_notes", "foundry": skill_notes.join("\n") });
+
     /* Strikes */
     /* Melee strikes range from 0-2 */
     actordata.system.actions.filter(i => i.type === "strike" && (i.domains.includes("melee-attack-roll") || i.altUsages.filter(f => f.domains.includes('melee-attack-roll')).length > 0))
@@ -810,7 +854,7 @@ function() {
                         { "pdf": `melee${index+1}_bludgeoning_damage`, "foundry": bludgeoning_damage },
                         { "pdf": `melee${index+1}_piercing_damage`, "foundry": piercing_damage },
                         { "pdf": `melee${index+1}_slashing_damage`, "foundry": slashing_damage },
-                        { "pdf": `melee${index+1}_traits_notes`, "foundry": traits_notes },
+                        { "pdf": `melee${index+1}_traits_notes`, "foundry": `                          ${traits_notes}` },
                     ]
                 );
         }
@@ -851,7 +895,7 @@ function() {
                     { "pdf": `ranged${index+1}_bludgeoning_damage`, "foundry": bludgeoning_damage },
                     { "pdf": `ranged${index+1}_piercing_damage`, "foundry": piercing_damage },
                     { "pdf": `ranged${index+1}_slashing_damage`, "foundry": slashing_damage },
-                    { "pdf": `ranged${index+1}_traits_notes`, "foundry": traits_notes },
+                    { "pdf": `ranged${index+1}_traits_notes`, "foundry": `                          ${traits_notes}` },
                 ]
             );
         }
