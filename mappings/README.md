@@ -13,6 +13,7 @@ This directory contains mappings created by the community. Feel free to contribu
 * [D&D 5e - German](./dnd5e-charakterbogen_ataendler_v2.8.2.mapping) by `@manolito#9369` - [PDF](https://www.dnddeutsch.de/wp-content/uploads/2022/07/charakterbogen_ataendler_v2.8.2.pdf)
 * [Pathfinder 2e](./pathfinder2e.mapping) by `@Kurko#1535` - [PDF](https://drive.google.com/uc?export=download&id=1dP95d_1UgenS9olPasXra8iItBZFCXMo)
 * [Pathfinder 2e (extended)](./pathfinder2e-extended-descriptions.mapping) by `dyoung418#0658` - [PDF](https://drive.google.com/uc?export=download&id=18kg1iXG4NUajc3t4tTUrc4taD2F4tM1j)
+* [Pathfinder 2e Remaster](./mappings/pathfinder2e-remaster.mapping) by [bushvin](https://github.com/bushvin) - [PDF](https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered.pdf) [Extra Spellsheet PDF](https://github.com/arcanistzed/pdf-sheet/blob/main/pdf/pf2e-remastered-extra-spells.pdf)
 * [Dungeon Crawl Classics](./0LevelFillableSheet.mapping) by `@OrganicByte#6682` - [PDF](https://goodman-games.com/wp-content/uploads/2021/04/0level_fillable.pdf)
 *  [SWADE - Savage Worlds Adventure Edition](./SWADE-SavageWorldsAdventureEdition.mapping) by `@Samcho#8710` - [PDF](https://peginc.com/store/savage-worlds-character-sheet-pdf-swade/)
 *  [Starfinder](./sfrpg.mapping) by `@Beff#1513` - [PDF](https://cdn.discordapp.com/attachments/877667041119731734/1076448094897573928/Autofillable_CharacterSheet.pdf)
