@@ -249,7 +249,6 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 	// added pc for cypher system
 	// TODO: have to refactor this with something generic
 	if (!["character", "PC", "Player", "npc", "pc"].includes(sheet.actor.type ?? sheet.actor.data.type)) return;
-
 	buttons.unshift({
 		label: "Export to PDF",
 		class: "export-pdf",
@@ -275,6 +274,11 @@ class Pdfconfig extends FormApplication {
 
 	/** The module's ID */
 	static ID = "pdf-sheet";
+
+	close() {
+		delete this.actor.sheetData;
+		return super.close();
+	}
 
 	/** @override */
 	static get defaultOptions() {
@@ -319,7 +323,7 @@ class Pdfconfig extends FormApplication {
 	}
 
 	/** Create a form with inputs for each PDF field and fill them in with Actor data */
-	createForm(buffer) {
+	async createForm(buffer) {
 		const inputForm = document.getElementById("fieldList");
 
 		// Empty input form
@@ -333,6 +337,11 @@ class Pdfconfig extends FormApplication {
 		// Get Actor data
 		const actor = this.actor;
 
+		if(typeof this.actor.sheet.getData === "function"){
+			const sheetData = await this.actor.sheet.getData();
+			actor.sheetData = sheetData;			
+		}
+
 		// Begin grouping logs
 		console.group("PDF Sheet");
 		// Log Actor Data
@@ -340,8 +349,10 @@ class Pdfconfig extends FormApplication {
 		// Log all PDF fields
 		console.log("PDF fields:", pdfFields);
 
+		
+
 		// Get mapping from settings
-		let mapping = ""
+		let mapping = "";
 		
 		if (["character", "PC", "Player", "pc"].includes(actor.type ?? actor.data.type)) {
 			console.log("got mapping for PC")
@@ -365,6 +376,7 @@ class Pdfconfig extends FormApplication {
 			// Return as evaluated JavaScript with the actor as an argument
 			mapping = Function(`"use strict"; return function(actor) { return ${mapping} };`)()(actor);
 		} catch (err) {
+			delete this.actor.sheetData;
 			// End console group
 			console.groupEnd();
 			// Close the application
@@ -499,6 +511,7 @@ class Pdfconfig extends FormApplication {
 		const filled_pdf = pdfform(minipdf).transform(buffer, fields);
 
 		const blob = new Blob([filled_pdf], { type: "application/pdf" });
+		
 		saveAs(blob, `${this.actor.name ?? "character"}.pdf`);
 	}
 
@@ -509,5 +522,6 @@ class Pdfconfig extends FormApplication {
 
 		document.getElementById("pdf-header").setAttribute("style", "display: none");
 		document.getElementById("pdf-export").style.display = "block";
+		delete this.actor.sheetData;
 	}
 }
