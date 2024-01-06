@@ -823,7 +823,7 @@ function() {
         .sort((a,b) => (a.ready > b.ready ? 1 : (a.ready < b.ready ? -1 : 0))).reverse()
         .forEach(
         (attack, index) => {
-
+            let cur_attack = {};
             if ( attack.domains.includes("melee-attack-roll") ) {
                 cur_attack = attack;
             } else if ( attack.altUsages.filter(i => i.domains.includes('melee-attack-roll')).length > 0 ) {
@@ -866,6 +866,7 @@ function() {
         .sort( (a,b) => (a.label < b.label ? -1 : (a.label > b.label ? 1 : 0)) ).reverse()
         .forEach(
         (attack, index) => {
+            let cur_attack = {};
             if ( attack.domains.includes("ranged-attack-roll") ) {
                 cur_attack = attack;
             } else if ( attack.altUsages.filter(i => i.domains.includes('ranged-attack-roll')).length > 0 ) {
