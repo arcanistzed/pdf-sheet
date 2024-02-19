@@ -75,30 +75,30 @@
   { "pdf": "History", "foundry": @system.skills.his.total },
   { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
   { "pdf": "Wpn1 AtkBonus", "foundry": (function() {
-    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0];
-    theWeapon?.prepareFinalAttributes();
-    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0];
+      theWeapon?.prepareFinalAttributes();
+      return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
     })()
   },
   { "pdf": "Wpn1 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[0]?.labels.derivedDamage;
-      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType].label}`).join('\n');
     })()
   },
   { "pdf": "Insight", "foundry": @system.skills.ins.total },
   { "pdf": "Intimidation", "foundry": @system.skills.itm.total },
   { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
   { "pdf": "Wpn2 AtkBonus", "foundry": (function() {
-    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1];
-    theWeapon?.prepareFinalAttributes();
-    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1];
+      theWeapon?.prepareFinalAttributes();
+      return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
     })()
   },
   { "pdf": "Wpn Name 3", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
   { "pdf": "Wpn3 AtkBonus", "foundry": (function() {
-    const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2];
-    theWeapon?.prepareFinalAttributes();
-    return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
+      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2];
+      theWeapon?.prepareFinalAttributes();
+      return theWeapon?.labels?.toHit?.replace(/^\+ $/,"0") || ""
     })()
   },
   { "pdf": "Check Box 11", "foundry": @system.abilities.str.proficient },
@@ -110,7 +110,7 @@
   { "pdf": "INTmod", "foundry": @system.abilities.int.mod },
   { "pdf": "Wpn2 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[1]?.labels.derivedDamage;
-      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType].label}`).join('\n');
     })()
   },
   { "pdf": "Investigation", "foundry": @system.skills.inv.total },
@@ -148,7 +148,7 @@
   { "pdf": "HPTemp", "foundry": @system.attributes.hp.temp },
   { "pdf": "Wpn3 Damage", "foundry": (function() {
       const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[2]?.labels.derivedDamage;
-      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType]}`).join('\n');
+      return !dda ? "" : dda.map(dd => `${dd.formula || ""} ${game.dnd5e.config.damageTypes[dd.damageType].label}`).join('\n');
     })()
   },
   { "pdf": "SleightofHand", "foundry": @system.skills.slt.total },
@@ -157,24 +157,32 @@
   { "pdf": "AttacksSpellcasting", "foundry": "" },
   { "pdf": "Passive", "foundry": @system.skills.prc.passive },
   { "pdf": "CP", "foundry": @system.currency.cp || "" },
-  { "pdf": "ProficienciesLang", "foundry": (function() {
+  {
+    "pdf": "ProficienciesLang", "foundry": (function () {
+      console.log('Here!');
       let s = "";
-      let a = @system.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name).first();
+      let a = Array.from(@system.traits.weaponProf.value.map(x => game.dnd5e.config.weaponProficiencies[x] || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.weaponIds[x])?.name)).join(', ');
       let b = @system.traits.weaponProf.custom.split(";").filter(x => String(x) && x?.length);
-
-      if (a?.length > 0) { s = `${s}Weapons: ${a} ${b.join(', ')}\n`; }
-      a = @system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name).first();
+      if (a?.length > 0) {
+        s = `${s}Weapons: ${a} ${b.join(', ')}\n`;
+      }
+      a = Array.from(@system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x] || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)).join(', ');
       b = @system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length);
-      if (a?.length > 0) { s = `${s}Armor: ${a} ${b.join(', ')}\n`; }
-      a = Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
-        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).join(",");
-        console.log(a);
-      if (a?.length > 0) { s = `${s}Tools: ${a} \n`; }
-      a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
+      if (a?.length > 0) {
+        s = `${s}Armor: ${a} ${b.join(', ')}\n`;
+      }
+      a = Array.from(Object.keys(@system.tools).map(t => {
+        let x = @system.tools[t];
+        game.dnd5e.config.toolProficiencies[x] || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name
+      })).join(', ');
+      if (a?.length > 0) {
+        s = `${s}Tools: ${a}\n`;
+      }
+      a = Array.from(@system.traits.languages.value.map(x => game.dnd5e.config.languages[x] || game.dnd5e.config.languages.standard.children[x] || game.dnd5e.config.languages.exotic.children[x])).join(', ');
       b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
-      if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
+      if (a?.length > 0) {
+        s = `${s}Languages: ${a} ${b.join(', ')}\n`;
+      }
       return s;
     })()
   },
@@ -193,12 +201,12 @@
   /* Page #2 */
 
   { "pdf": "CharacterName 2", "foundry": @name || "" },
-  { "pdf": "Age", "foundry": @flags["tidy5e-sheet"]?.age || "" },
-  { "pdf": "Height", "foundry": @flags["tidy5e-sheet"]?.height || "" },
-  { "pdf": "Weight", "foundry": @flags["tidy5e-sheet"]?.weight || "" },
-  { "pdf": "Eyes", "foundry": @flags["tidy5e-sheet"]?.eyes || "" },
-  { "pdf": "Skin", "foundry": @flags["tidy5e-sheet"]?.skin || "" },
-  { "pdf": "Hair", "foundry": @flags["tidy5e-sheet"]?.hair || "" },
+  { "pdf": "Age", "foundry": @system.details.age || "" },
+  { "pdf": "Height", "foundry": @system.details.height || "" },
+  { "pdf": "Weight", "foundry": @system.details.weight || "" },
+  { "pdf": "Eyes", "foundry": @system.details.eyes || "" },
+  { "pdf": "Skin", "foundry": @system.details.skin || "" },
+  { "pdf": "Hair", "foundry": @system.details.hair || "" },
   { "pdf": "Faction Symbol Image", "foundry": "" }, /* Images are not supported */
   { "pdf": "Allies", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
   { "pdf": "FactionName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
@@ -236,27 +244,27 @@
   { "pdf": "SlotsTotal 27", "foundry": @system.spells.spell9.max || "" },
   { "pdf": "SlotsRemaining 27", "foundry": @system.spells.spell9.value || "" },
   /* Cantrips */
-  { "pdf": "Spells 1014", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1016", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1017", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1018", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1019", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1020", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1021", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1022", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
+  { "pdf": "Spells 1014", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1016", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1017", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1018", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1019", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1020", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1021", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1022", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
   /* 1st Level Spells */
-  { "pdf": "Spells 1015", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1023", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1024", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1025", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1026", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1027", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1028", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1029", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1030", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
-  { "pdf": "Spells 1031", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
-  { "pdf": "Spells 1032", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
-  { "pdf": "Spells 1033", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
+  { "pdf": "Spells 1015", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1023", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1024", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1025", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1026", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1027", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1028", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1029", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1030", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
+  { "pdf": "Spells 1031", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[9] || "" },
+  { "pdf": "Spells 1032", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[10] || "" },
+  { "pdf": "Spells 1033", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[11] || "" },
 
   { "pdf": "Check Box 251", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 309", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[1]?.system.preparation.prepared || "" },
@@ -271,19 +279,19 @@
   { "pdf": "Check Box 3018", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[10]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 3019", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1)[11]?.system.preparation.prepared || "" },
   /* 2nd Level Spells */
-  { "pdf": "Spells 1046", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1034", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1035", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1036", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1037", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1038", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1039", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1040", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1041", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
-  { "pdf": "Spells 1042", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
-  { "pdf": "Spells 1043", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
-  { "pdf": "Spells 1044", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
-  { "pdf": "Spells 1045", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[12] || "" },
+  { "pdf": "Spells 1046", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1034", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1035", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1036", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1037", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1038", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1039", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1040", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1041", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
+  { "pdf": "Spells 1042", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[9] || "" },
+  { "pdf": "Spells 1043", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[10] || "" },
+  { "pdf": "Spells 1044", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[11] || "" },
+  { "pdf": "Spells 1045", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[12] || "" },
 
   { "pdf": "Check Box 313", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 310", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.system.preparation.prepared || "" },
@@ -299,19 +307,19 @@
   { "pdf": "Check Box 3029", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[11]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 3030", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2)[12]?.system.preparation.prepared || "" },
   /* 3rd Level Spells */
-  { "pdf": "Spells 1048", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1047", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1049", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1050", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1051", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1052", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1053", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1054", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1055", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
-  { "pdf": "Spells 1056", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
-  { "pdf": "Spells 1057", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
-  { "pdf": "Spells 1058", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
-  { "pdf": "Spells 1059", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[12] || "" },
+  { "pdf": "Spells 1048", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1047", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1049", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1050", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1051", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1052", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1053", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1054", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1055", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
+  { "pdf": "Spells 1056", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[9] || "" },
+  { "pdf": "Spells 1057", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[10] || "" },
+  { "pdf": "Spells 1058", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[11] || "" },
+  { "pdf": "Spells 1059", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[12] || "" },
 
   { "pdf": "Check Box 315", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 314", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.system.preparation.prepared || "" },
@@ -328,19 +336,19 @@
   { "pdf": "Check Box 3041", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3)[12]?.system.preparation.prepared || "" },
 
   /* 4th Level Spells */
-  { "pdf": "Spells 1061", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1060", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1062", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1063", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1064", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1065", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1066", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1067", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1068", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
-  { "pdf": "Spells 1069", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[9] || "" },
-  { "pdf": "Spells 1070", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[10] || "" },
-  { "pdf": "Spells 1071", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[11] || "" },
-  { "pdf": "Spells 1072", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[12] || "" },
+  { "pdf": "Spells 1061", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1060", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1062", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1063", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1064", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1065", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1066", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1067", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1068", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
+  { "pdf": "Spells 1069", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[9] || "" },
+  { "pdf": "Spells 1070", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[10] || "" },
+  { "pdf": "Spells 1071", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[11] || "" },
+  { "pdf": "Spells 1072", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[12] || "" },
 
   { "pdf": "Check Box 317", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 316", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.system.preparation.prepared || "" },
@@ -357,15 +365,15 @@
   { "pdf": "Check Box 3052", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4)[12]?.system.preparation.prepared || "" },
 
   /* 5th Level Spells */
-  { "pdf": "Spells 1074", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1073", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1075", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1076", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1077", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1078", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1079", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1080", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1081", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Spells 1074", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1073", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1075", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1076", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1077", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1078", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1079", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1080", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1081", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
 
   { "pdf": "Check Box 319", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 318", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[1]?.system.preparation.prepared || "" },
@@ -378,15 +386,15 @@
   { "pdf": "Check Box 3059", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.system.preparation.prepared || "" },
 
   /* 6th Level Spells */
-  { "pdf": "Spells 1083", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1082", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1084", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1085", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1086", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1087", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1088", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1089", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1090", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Spells 1083", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1082", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1084", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1085", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1086", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1087", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1088", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1089", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1090", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
 
   { "pdf": "Check Box 321", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 320", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.system.preparation.prepared || "" },
@@ -399,15 +407,15 @@
   { "pdf": "Check Box 3066", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.system.preparation.prepared || "" },
 
   /* 7th Level Spells */
-  { "pdf": "Spells 1092", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 1091", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 1093", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 1094", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 1095", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 1096", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 1097", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
-  { "pdf": "Spells 1098", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[7] || "" },
-  { "pdf": "Spells 1099", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[8] || "" },
+  { "pdf": "Spells 1092", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 1091", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 1093", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 1094", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 1095", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 1096", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 1097", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
+  { "pdf": "Spells 1098", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[7] || "" },
+  { "pdf": "Spells 1099", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[8] || "" },
 
   { "pdf": "Check Box 323", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 322", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.system.preparation.prepared || "" },
@@ -420,13 +428,13 @@
   { "pdf": "Check Box 3073", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.system.preparation.prepared || "" },
 
   /* 8th Level Spells */
-  { "pdf": "Spells 10101", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 10100", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 10102", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 10103", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 10104", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 10105", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 10106", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Spells 10101", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 10100", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 10102", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 10103", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 10104", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 10105", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 10106", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
 
   { "pdf": "Check Box 325", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 324", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[1]?.system.preparation.prepared || "" },
@@ -437,13 +445,13 @@
   { "pdf": "Check Box 3078", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8)[6]?.system.preparation.prepared || "" },
 
   /* 9th Level Spells */
-  { "pdf": "Spells 10108", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[0] || "" },
-  { "pdf": "Spells 10107", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[1] || "" },
-  { "pdf": "Spells 10109", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[2] || "" },
-  { "pdf": "Spells 101010", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[3] || "" },
-  { "pdf": "Spells 101011", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[4] || "" },
-  { "pdf": "Spells 101012", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[5] || "" },
-  { "pdf": "Spells 101013", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + (x.system.components.vocal?"V":"") + (x.system.components.somatic?"S":"") + (x.system.components.material?"M":"") + (x.system.components.ritual?"R":"") + (x.system.components.concentration?"C":"")).sort()[6] || "" },
+  { "pdf": "Spells 10108", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[0] || "" },
+  { "pdf": "Spells 10107", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[1] || "" },
+  { "pdf": "Spells 10109", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[2] || "" },
+  { "pdf": "Spells 101010", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[3] || "" },
+  { "pdf": "Spells 101011", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[4] || "" },
+  { "pdf": "Spells 101012", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[5] || "" },
+  { "pdf": "Spells 101013", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(spell => spell.name + ' - ' + Array.from(spell.system.properties.map(property => property[0])).join('').toUpperCase()).sort()[6] || "" },
 
   { "pdf": "Check Box 327", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[0]?.system.preparation.prepared || "" },
   { "pdf": "Check Box 326", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9)[1]?.system.preparation.prepared || "" },
