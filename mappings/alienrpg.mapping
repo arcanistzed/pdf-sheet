@@ -119,8 +119,8 @@
     {"pdf": "Copy of Text91 (56)", "foundry": 2 <= @system.general.xp.value},
 
     /* Armour */
-    {"pdf": "armour_type", "foundry": @collections?.items?.find(i => i.type === "armor" && i.system.header.active)?.name},
-    {"pdf": "armour", "foundry": @collections?.items?.find(i => i.type === "armor" && i.system.header.active)?.totalAc},
+    {"pdf": "armour_type", "foundry": @collections?.items?.find(i => i.type === "armor" && i.system.header.active)?.name || ""},
+    {"pdf": "armour", "foundry": @collections?.items?.find(i => i.type === "armor" && i.system.header.active)?.totalAc || ""},
 
     /* Weapons */
     {"pdf": "weapon_1", "foundry": @collections?.items?.filter(i => i.type === "weapon").sort((a, b) => {let x = a.system.header.active === true ? 0 : a.system.header.active === false ? 1 : 2;let y = b.system.header.active === true ? 0 : b.system.header.active === false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;})[0]?.name || ""},
