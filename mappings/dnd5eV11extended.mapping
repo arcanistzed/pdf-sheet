@@ -172,7 +172,20 @@
         || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name).join(",");
         console.log(a);
       if (a?.length > 0) { s = `${s}Tools: ${a} \n`; }
-      a = @system.traits.languages.value.map(x => game.dnd5e.config.languages[x]).first();
+      function findValRecursively(m, x)
+{
+  for(let k in m)
+  {
+    if(k == x)
+      return m[k];
+    if(m[k] instanceof Object){
+      let res = findValRecursively(m[k].children, x);
+      if (res) 
+      return res;
+    }
+  }
+}
+a =  @ system.traits.languages.value.map(x => findValRecursively(game.dnd5e.config.languages,x)).first();
       b = @system.traits.languages.custom.split(";").filter(x => String(x) && x?.length);
       if (a?.length > 0) { s = `${s}Languages: ${a} ${b.join(', ')}\n`; }
       return s;
