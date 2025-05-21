@@ -103,7 +103,7 @@
   },
   {
     "pdf": "ST Strength",
-    "foundry": @system.abilities.str.save
+    "foundry": @system.abilities.str.save.value
   },
   {
     "pdf": "DEX",
@@ -183,23 +183,23 @@
   },
   {
     "pdf": "ST Dexterity",
-    "foundry": @system.abilities.dex.save
+    "foundry": @system.abilities.dex.save.value
   },
   {
     "pdf": "ST Constitution",
-    "foundry": @system.abilities.con.save
+    "foundry": @system.abilities.con.save.value
   },
   {
     "pdf": "ST Intelligence",
-    "foundry": @system.abilities.int.save
+    "foundry": @system.abilities.int.save.value
   },
   {
     "pdf": "ST Wisdom",
-    "foundry": @system.abilities.wis.save
+    "foundry": @system.abilities.wis.save.value
   },
   {
     "pdf": "ST Charisma",
-    "foundry": @system.abilities.cha.save
+    "foundry": @system.abilities.cha.save.value
   },
   {
     "pdf": "Acrobatics",
@@ -223,17 +223,16 @@
   },
   {
     "pdf": "Wpn Name",
-    "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[
+    "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack)[
       0
     ]?.name || ""
   },
   {
     "pdf": "Wpn1 AtkBonus",
     "foundry": (function() {
-      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[
+      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack)[
         0
       ];
-      theWeapon?.prepareFinalAttributes();
       return theWeapon?.labels?.toHit?.replace(/^\+ $/,
       "0") || ""
     })()
@@ -241,12 +240,10 @@
   {
     "pdf": "Wpn1 Damage",
     "foundry": (function() {
-      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack))?.[
         0
-      ]?.labels.derivedDamage;
-      return !dda ? "": dda.map(dd => `${dd.formula || ""
-      } ${game.dnd5e.config.damageTypes[dd.damageType
-        ].label
+      ]?.labels.damages;
+      return !dda ? "": dda.map(dd => `${dd.label || ""
       }`).join('\n');
     })()
   },
@@ -260,34 +257,32 @@
   },
   {
     "pdf": "Wpn Name 2",
-    "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[
+    "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack)[
       1
     ]?.name || ""
   },
   {
     "pdf": "Wpn2 AtkBonus",
     "foundry": (function() {
-      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[
+      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack)[
         1
       ];
-      theWeapon?.prepareFinalAttributes();
       return theWeapon?.labels?.toHit?.replace(/^\+ $/,
       "0") || ""
     })()
   },
   {
     "pdf": "Wpn Name 3",
-    "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[
+    "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack)[
       2
     ]?.name || ""
   },
   {
     "pdf": "Wpn3 AtkBonus",
     "foundry": (function() {
-      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[
+      const theWeapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack)[
         2
       ];
-      theWeapon?.prepareFinalAttributes();
       return theWeapon?.labels?.toHit?.replace(/^\+ $/,
       "0") || ""
     })()
@@ -323,12 +318,10 @@
   {
     "pdf": "Wpn2 Damage",
     "foundry": (function() {
-      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack))?.[
         1
-      ]?.labels.derivedDamage;
-      return !dda ? "": dda.map(dd => `${dd.formula || ""
-      } ${game.dnd5e.config.damageTypes[dd.damageType
-        ].label
+      ]?.labels.damages;
+      return !dda ? "": dda.map(dd => `${dd.label || ""
       }`).join('\n');
     })()
   },
@@ -467,12 +460,10 @@
   {
     "pdf": "Wpn3 Damage",
     "foundry": (function() {
-      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack && i.hasDamage))?.[
+      const dda = Array.from(actor.itemTypes.weapon.filter(i => i.system.equipped && i.hasAttack))?.[
         2
-      ]?.labels.derivedDamage;
-      return !dda ? "": dda.map(dd => `${dd.formula || ""
-      } ${game.dnd5e.config.damageTypes[dd.damageType
-        ].label
+      ]?.labels.damages;
+      return !dda ? "": dda.map(dd => `${dd.label || ""
       }`).join('\n');
     })()
   },
