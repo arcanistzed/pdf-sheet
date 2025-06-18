@@ -23,10 +23,10 @@
     "version": "This is auto replaced",
     "compatibility": {
         "minimum": "0.7.9",
-        "verified": "11"
+        "verified": "12"
     },
     "minimumCoreVersion": "0.7.9",
-    "compatibleCoreVersion": "11",
+    "compatibleCoreVersion": "12",
     "scripts": [
         "scripts/pdfsheet.js",
         "scripts/libraries/pdfform.js/minipdf.js",
