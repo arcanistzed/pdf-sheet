@@ -41,7 +41,7 @@ jobs:
 
     # Autopublish to the Foundry Admin panel
     - name: FoundryVTT AutoPublish
-      uses: Varriount/fvtt-autopublish@v2.0.1
+      uses: Varriount/fvtt-autopublish@v2.0.2
       with:
         username: ${{ secrets.FOUNDRY_ADMIN_USER }}
         password: ${{ secrets.FOUNDRY_ADMIN_PW }}
