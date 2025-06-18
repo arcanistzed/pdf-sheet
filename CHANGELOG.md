@@ -14,13 +14,16 @@
 [Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.10...0.24.11)
 
 * ci: update autopublish version
-* ci: add `node_modules` to `.gitignore`
 
 ## [0.24.10](https://github.com/arcanistzed/pdf-sheet/tree/0.24.10) (2025-06-18)
 
 [Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.9...0.24.10)
 
 * ci: add `node_modules` to `.gitignore`
+* fix(pf2e mapping): avoids cur_attack undefined (#121)
+* fix(dnd5e mapping): deprecation warnings; showing more weapon proficiencies (#122)
+* feat: new mapping for Alien RPG (#126)
+* feat: german mapping for foundry v12 and dnd5e 4.x.x (#133)
 
 ## [0.24.9](https://github.com/arcanistzed/pdf-sheet/tree/0.24.9) (2023-12-17)
 
