@@ -1,6 +1,6 @@
 name: Release Creation
 
-on: 
+on:
   release:
     types: [published]
 
@@ -39,12 +39,34 @@ jobs:
         tag: ${{ github.event.release.tag_name }}
         body: ${{ github.event.release.body }}
 
-    # Autopublish to the Foundry Admin panel
-    - name: FoundryVTT AutoPublish
-      uses: Varriount/fvtt-autopublish@v2.0.2
-      with:
-        username: ${{ secrets.FOUNDRY_ADMIN_USER }}
-        password: ${{ secrets.FOUNDRY_ADMIN_PW }}
-        module-id: ${{ secrets.FOUNDRY_ADMIN_ID }}
-        manifest-url: https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.json
-        manifest-file: ./module.json
+    # Extract metadata from module.json
+    - name: Extract module metadata
+      id: extract_metadata
+      run: |
+        echo "MODULE_ID=$(jq -r .id module.json)" >> $GITHUB_ENV
+        echo "MIN_COMPAT=$(jq -r .compatibility.minimum module.json)" >> $GITHUB_ENV
+        echo "VERIFIED_COMPAT=$(jq -r .compatibility.verified module.json)" >> $GITHUB_ENV
+        MAX_COMPAT=$(jq -r '.compatibility.maximum // ""' module.json)
+        echo "MAX_COMPAT=$MAX_COMPAT" >> $GITHUB_ENV
+
+    # Publish to FoundryVTT using the API
+    - name: Publish to FoundryVTT
+      env:
+        API_TOKEN: ${{ secrets.FOUNDRY_API_TOKEN }}
+      run: |
+        curl -X POST https://api.foundryvtt.com/_api/packages/release_version \
+          -H "Content-Type: application/json" \
+          -H "Authorization: $API_TOKEN" \
+          -d '{
+            "id": "'"$MODULE_ID"'",
+            "release": {
+              "version": "${{ github.event.release.tag_name }}",
+              "manifest": "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/module.json",
+              "notes": "https://github.com/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }}",
+              "compatibility": {
+                "minimum": "'"$MIN_COMPAT"'",
+                "verified": "'"$VERIFIED_COMPAT"'",
+                "maximum": "'"$MAX_COMPAT"'"
+              }
+            }
+          }'
