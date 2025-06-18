@@ -1,5 +1,63 @@
 # Changelog
 
+## [0.24.12](https://github.com/arcanistzed/pdf-sheet/tree/0.24.12) (2025-06-18)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.11...0.24.12)
+
+* chore: update `module.json`
+* chore: update `package-lock.json`
+* ci: update Foundry auto-publish workflow
+* docs: update CHANGELOG
+
+## [0.24.11](https://github.com/arcanistzed/pdf-sheet/tree/0.24.11) (2025-06-18)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.10...0.24.11)
+
+* ci: update autopublish version
+* ci: add `node_modules` to `.gitignore`
+
+## [0.24.10](https://github.com/arcanistzed/pdf-sheet/tree/0.24.10) (2025-06-18)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.9...0.24.10)
+
+* ci: add `node_modules` to `.gitignore`
+
+## [0.24.9](https://github.com/arcanistzed/pdf-sheet/tree/0.24.9) (2023-12-17)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.8...0.24.9)
+
+**Fixes:**
+
+* fix: autopublish with new API (#119)
+
+## [0.24.8](https://github.com/arcanistzed/pdf-sheet/tree/0.24.8) (2023-12-16)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.7...0.24.8)
+
+* Bushvin/pf2e remaster (#118)
+
+## [0.24.6](https://github.com/arcanistzed/pdf-sheet/tree/0.24.6) (2023-11-15)
+
+**Fixes:**
+
+* fix: cleanup missed `i.system.source` (#114)
+
+## [0.24.5](https://github.com/arcanistzed/pdf-sheet/tree/0.24.5) (2023-10-18)
+
+* ci: revert auto changelog (#111)
+
+## [0.24.4](https://github.com/arcanistzed/pdf-sheet/tree/0.24.4) (2023-10-18)
+
+* fix: actor schema updated (#109)
+
+## [0.24.3](https://github.com/arcanistzed/pdf-sheet/tree/0.24.3) (2023-10-13)
+
+* CI: update main.yml (#107)
+
+## [0.24.2](https://github.com/arcanistzed/pdf-sheet/tree/0.24.2) (2023-10-13)
+
+* CI: automated changelog (#105)
+
 ## [0.24.1](https://github.com/arcanistzed/pdf-sheet/tree/0.24.1) (2023-09-24)
 
 [Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.0...0.24.1)
@@ -63,11 +121,11 @@ Fix for The Forge
 
 ## 0.22.1 - 15 Nov 2022
 
-Pathfinder 2e mapping: update for system version 4.2.2 (thanks to @BlauKreuz) 
+Pathfinder 2e mapping: update for system version 4.2.2 (thanks to @BlauKreuz)
 
 ## 0.22.0 - 1 Oct 2022
 
-Pathfinder 2e mapping: update for system version 4.1.3 (thanks to @BlauKreuz) 
+Pathfinder 2e mapping: update for system version 4.1.3 (thanks to @BlauKreuz)
 
 ## 0.21.0 - 30 Aug 2022
 
@@ -85,7 +143,7 @@ Update to Call of Cthulhu 7th Edition mapping (thanks to @Dick-K)
 
 ### Fixed
 
-Pathfinder 2e mapping: correct Current Bulk value for system version 3.12.1.9 (thanks to @BlauKreuz) 
+Pathfinder 2e mapping: correct Current Bulk value for system version 3.12.1.9 (thanks to @BlauKreuz)
 
 ## 0.20.0 - 15 Jun 2022
 
