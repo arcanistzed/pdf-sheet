@@ -1,0 +1,331 @@
+/* PDF: https://media.wizards.com/2016/dnd/downloads/5E_CharacterSheet_Fillable.pdf */
+[
+  /* Functions */
+  { "pdf": "_helper_functions", "foundry": game.pdfsheet = {
+
+        htmlToText: function(html) {
+          return !html ? '' : html.replaceAll("\n", "")
+                     .replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n")
+                     .replaceAll(/<h2[>\s]([^<]*)<\/h2>/gms, "## $1\n")
+                     .replaceAll(/<h3[>\s]([^<]*)<\/h3>/gms, "### $1\n")
+                     .replaceAll(/<p[^>]*>/gms, "")
+                     .replaceAll(/<\/p>/gms, "\n")
+                     .replaceAll(/<li[^>]*>/gms, "• ")
+                     .replaceAll(/<\/li>/gms, "\n")
+                     .replaceAll(/<[^>]*>/gms, "")
+                     .replaceAll(/\u00a0/g, "");
+        },
+
+        getPrimaryClassObj: function() {
+          const allClasses = @items.filter(i => i.type === 'class').map(i => i);
+          if (allClasses.length > 1) {
+            const primary = allClasses.filter(i => i.flags?.srd5e?.isPrimaryClass);
+            if (primary.length >= 1) {
+              return primary[0];
+            }
+          }
+          return allClasses[0];
+        },
+
+        getLocalizedClassAndSubclass: function(classItem) {
+          const sc = classItem.system.subclass;
+          return sc ? game.i18n.localize(classItem.name) + "/" + game.i18n.localize(sc) : game.i18n.localize(classItem.name);
+        },
+
+        getLocalizedClassAndSubclassAndLevel: function(classItem) {
+          return `${game.pdfsheet.getLocalizedClassAndSubclass(classItem)} ${classItem.system.levels}`;
+        },
+    }},
+
+  /* Page #1 */
+  { "pdf": "ClassLevel", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name} ${i.system.levels}`).join(' / ') },
+  { "pdf": "Background", "foundry": @items.find((item)=>item.type==='background')?.name },
+  { "pdf": "PlayerName", "foundry": Object.entries(@ownership).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
+  { "pdf": "CharacterName", "foundry": @name },
+  { "pdf": "Race", "foundry": @system.details.race },
+  { "pdf": "Alignment", "foundry": @system.details.alignment },
+  { "pdf": "Inspiration", "foundry": @system.attributes.inspiration ? "x" : "" },
+  { "pdf": "ProfBonus", "foundry": @system.attributes.prof },
+  { "pdf": "AC", "foundry": @system.attributes.ac.value },
+  { "pdf": "Initiative", "foundry": @system.attributes.init.total },
+  { "pdf": "Speed", "foundry": Object.entries(@system.attributes.movement).filter(val => val[1]).map(val => val[0] === "hover" ? Object.entries(@system.attributes.movement)[6][0] : "" + val[0] !== "units" && val[0] !== "hover" ? val.join(": ") + Object.entries(@system.attributes.movement)[5][1] : "").filter(String).join(", ") },
+  { "pdf": "PersonalityTraits", "foundry": @system.details.trait },
+  { "pdf": "Ideals", "foundry": @system.details.ideal },
+  { "pdf": "Bonds", "foundry": @system.details.bond },
+  { "pdf": "Flaws", "foundry": @system.details.flaw },
+
+  { "pdf": "STR", "foundry": @system.abilities.str.value },
+  { "pdf": "STRmod", "foundry": @system.abilities.str.mod },
+  { "pdf": "DEX", "foundry": @system.abilities.dex.value },
+  { "pdf": "DEXmod", "foundry": @system.abilities.dex.mod },
+  { "pdf": "CON", "foundry": @system.abilities.con.value },
+  { "pdf": "HDTotal", "foundry": @system.attributes.hd },
+  { "pdf": "Check Box 12", "foundry": @system.attributes.death.success },
+  { "pdf": "Check Box 13", "foundry": @system.attributes.death.success },
+  { "pdf": "Check Box 14", "foundry": @system.attributes.death.success },
+  { "pdf": "CONmod", "foundry": @system.abilities.con.mod },
+  { "pdf": "Check Box 15", "foundry": @system.attributes.death.failure },
+  { "pdf": "Check Box 16", "foundry": @system.attributes.death.failure },
+  { "pdf": "Check Box 17", "foundry": @system.attributes.death.failure },
+  { "pdf": "INT", "foundry": @system.abilities.int.value },
+  { "pdf": "ST Strength", "foundry": @system.abilities.str.save },
+  { "pdf": "ST Dexterity", "foundry": @system.abilities.dex.save },
+  { "pdf": "ST Constitution", "foundry": @system.abilities.con.save },
+  { "pdf": "ST Intelligence", "foundry": @system.abilities.int.save },
+  { "pdf": "ST Wisdom", "foundry": @system.abilities.wis.save },
+  { "pdf": "ST Charisma", "foundry": @system.abilities.cha.save },
+  { "pdf": "Acrobatics", "foundry": @system.skills.acr.total },
+  { "pdf": "Animal", "foundry": @system.skills.ani.total },
+  { "pdf": "Athletics", "foundry": @system.skills.ath.total },
+  { "pdf": "Deception", "foundry": @system.skills.dec.total },
+  { "pdf": "History", "foundry": @system.skills.his.total },
+  { "pdf": "Insight", "foundry": @system.skills.ins.total },
+  { "pdf": "Intimidation", "foundry": @system.skills.itm.total },
+  { "pdf": "Check Box 11", "foundry": @system.abilities.str.proficient },
+  { "pdf": "Check Box 18", "foundry": @system.abilities.dex.proficient },
+  { "pdf": "Check Box 19", "foundry": @system.abilities.con.proficient },
+  { "pdf": "Check Box 20", "foundry": @system.abilities.int.proficient },
+  { "pdf": "Check Box 21", "foundry": @system.abilities.wis.proficient },
+  { "pdf": "Check Box 22", "foundry": @system.abilities.cha.proficient },
+  { "pdf": "INTmod", "foundry": @system.abilities.int.mod },
+  { "pdf": "Investigation", "foundry": @system.skills.inv.total },
+  { "pdf": "WIS", "foundry": @system.abilities.wis.value },
+  { "pdf": "Arcana", "foundry": @system.skills.arc.total },
+  { "pdf": "Perception", "foundry": @system.skills.prc.total },
+  { "pdf": "WISmod", "foundry": @system.abilities.wis.mod },
+  { "pdf": "CHA", "foundry": @system.abilities.cha.value },
+  { "pdf": "Nature", "foundry": @system.skills.nat.total },
+  { "pdf": "Performance", "foundry": @system.skills.prf.total },
+  { "pdf": "Medicine", "foundry": @system.skills.med.total },
+  { "pdf": "Religion", "foundry": @system.skills.rel.total },
+  { "pdf": "Stealth", "foundry": @system.skills.ste.total },
+  { "pdf": "Check Box 23", "foundry": @system.skills.acr.value },
+  { "pdf": "Check Box 24", "foundry": @system.skills.ani.value },
+  { "pdf": "Check Box 25", "foundry": @system.skills.arc.value },
+  { "pdf": "Check Box 26", "foundry": @system.skills.ath.value },
+  { "pdf": "Check Box 27", "foundry": @system.skills.dec.value },
+  { "pdf": "Check Box 28", "foundry": @system.skills.his.value },
+  { "pdf": "Check Box 29", "foundry": @system.skills.ins.value },
+  { "pdf": "Check Box 30", "foundry": @system.skills.itm.value },
+  { "pdf": "Check Box 31", "foundry": @system.skills.inv.value },
+  { "pdf": "Check Box 32", "foundry": @system.skills.med.value },
+  { "pdf": "Check Box 33", "foundry": @system.skills.nat.value },
+  { "pdf": "Check Box 34", "foundry": @system.skills.prc.value },
+  { "pdf": "Check Box 35", "foundry": @system.skills.prf.value },
+  { "pdf": "Check Box 36", "foundry": @system.skills.per.value },
+  { "pdf": "Check Box 37", "foundry": @system.skills.rel.value },
+  { "pdf": "Check Box 38", "foundry": @system.skills.slt.value },
+  { "pdf": "Check Box 39", "foundry": @system.skills.ste.value },
+  { "pdf": "Check Box 40", "foundry": @system.skills.sur.value },
+  { "pdf": "Persuasion", "foundry": @system.skills.per.total },
+  { "pdf": "HPMax", "foundry": @system.attributes.hp.max },
+  { "pdf": "SleightofHand", "foundry": @system.skills.slt.total },
+  { "pdf": "CHamod", "foundry": @system.abilities.cha.mod },
+  { "pdf": "Survival", "foundry": @system.skills.sur.total },
+  { "pdf": "AttacksSpellcasting", "foundry": "" },
+  { "pdf": "Passive", "foundry": @system.skills.prc.passive },
+  
+  { "pdf": "Wpn Name", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.name || "" },
+  { "pdf": "Wpn1 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn Name 2", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.name || "" },
+  { "pdf": "Wpn2 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn Name 3", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.name || "" },
+  { "pdf": "Wpn3 AtkBonus", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.labels.toHit.replace(/^\+ $/,"0") || "" },
+
+  { "pdf": "Wpn1 Damage", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[0]?.labels.damages[0].label.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn2 Damage", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[1]?.labels.damages[0].label.replace(/^\+ $/,"0") || "" },
+  { "pdf": "Wpn3 Damage", "foundry": @items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[2]?.labels.damages[0].label.replace(/^\+ $/,"0") || "" },
+  
+  { "pdf": "ProficienciesLang", "foundry": (function() {
+      let s = "";
+	  let a = Array.from(@system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").concat(@system.traits.weaponProf.custom.split(";")).join(", ");
+	  let c = "";
+	  if (a?.length > 0) {c = ",";}
+	  if (@system.traits.weaponProf.value.has("mar")) {a = `Martial Weapons${c} ${a}`;}
+	  if (a?.length > 0) {c = ",";}
+	  if (@system.traits.weaponProf.value.has("sim")) {a = `Simple Weapons${c} ${a}`;}
+      if (a?.length > 0) { s = `${s}Weapons: ${a}\n`; }
+      a = Array.from(@system.traits.armorProf.value.map(x => game.dnd5e.config.armorProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.armorIds[x])?.name)).concat(@system.traits.armorProf.custom.split(";").filter(x => String(x) && x?.length)).join(', ');
+      if (a?.length > 0) { s = `${s}Armor: ${a}\n`; }
+      a = Object.keys(@system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
+        || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name);
+	  a = String(a).replace(/,/g,", ");
+      if (a?.length > 0) { s = `${s}Tools: ${a}\n`; }
+	  a = Array.from(@system.traits.languages.value).concat(@system.traits.languages.custom.split(";").filter(x => String(x) && x?.length)).join(', ');
+	  if (a?.length > 0) { s = `${s}Languages: ${a}\n`; }
+      return s;
+    })()
+  },
+
+  /* { "pdf": "CP", "foundry": @system.currency.cp || "" },
+  { "pdf": "SP", "foundry": @system.currency.sp || "" },
+  { "pdf": "EP", "foundry": @system.currency.ep || "" },
+  { "pdf": "GP", "foundry": @system.currency.gp || "" },
+  { "pdf": "PP", "foundry": @system.currency.pp || "" }, */
+  { "pdf": "Equipment", "foundry": @items.filter(i => ['weapon', 'equipment', 'tool'].includes(i.type)).map(i => (i.system.quantity <= 1) ? i.name : `${i.name} (${i.system.quantity})`).join(', ') },
+  { "pdf": "Features and Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i.name).join('\n') },
+
+
+  /* Page #2 */
+  { "pdf": "CharacterName 2", "foundry": @name || "" },
+  { "pdf": "Age", "foundry": @system.details.age || "" },
+  { "pdf": "Height", "foundry": @system.details.height || "" },
+  { "pdf": "Weight", "foundry": @system.details.weight || "" },
+  { "pdf": "Eyes", "foundry": @system.details.eyes || "" },
+  { "pdf": "Skin", "foundry": @system.details.skin || "" },
+  { "pdf": "Hair", "foundry": @system.details.hair || "" },
+
+  { "pdf": "Backstory", "foundry": game.pdfsheet.htmlToText(@system.details.biography?.value)?.trim() || "" },
+  { "pdf": "Feat+Traits", "foundry": @items.filter(i => ['feat', 'trait'].includes(i.type)).slice(16).map(i => `${i.name}`).join('\n') },
+  { "pdf": "Treasure", "foundry": @items.filter(i => ['backpack', 'consumable', 'loot'].includes(i.type)).map(i => (i.system.quantity <= 1) ? i.name : `${i.name} (${i.system.quantity})`).join(', ') },
+
+
+  /* Page #3 */
+  { "pdf": "Spellcasting Class 2", "foundry": @items.filter(i => i.type === 'class').map(i => `${i.name}`).join(' / ') }, /* Doesn't work with multiple classes properly */
+  { "pdf": "SpellcastingAbility 2", "foundry": @system.attributes.spellcasting.capitalize() || "" },
+  { "pdf": "SpellSaveDC  2", "foundry": @system.attributes.spelldc || "" },
+  { "pdf": "SpellAtkBonus 2", "foundry": "+" + String(@system.attributes.spelldc - 8) }, /* Doesn't account for negative values */
+  
+  /* Spellslots Max + counts */
+  { "pdf": "SlotsTotal 19", "foundry": @system.spells.spell1.max || "" },
+  /* { "pdf": "SlotsRemaining 19", "foundry": @system.spells.spell1.value || "" }, */
+  { "pdf": "SlotsTotal 20", "foundry": @system.spells.spell2.max || "" },
+  /* { "pdf": "SlotsRemaining 20", "foundry": @system.spells.spell2.value || "" }, */
+  { "pdf": "SlotsTotal 21", "foundry": @system.spells.spell3.max || "" },
+  /* { "pdf": "SlotsRemaining 21", "foundry": @system.spells.spell3.value || "" }, */
+  { "pdf": "SlotsTotal 22", "foundry": @system.spells.spell4.max || "" },
+  /* { "pdf": "SlotsRemaining 22", "foundry": @system.spells.spell4.value || "" }, */
+  { "pdf": "SlotsTotal 23", "foundry": @system.spells.spell5.max || "" },
+  /* { "pdf": "SlotsRemaining 23", "foundry": @system.spells.spell5.value || "" }, */
+  { "pdf": "SlotsTotal 24", "foundry": @system.spells.spell6.max || "" },
+  /* { "pdf": "SlotsRemaining 24", "foundry": @system.spells.spell6.value || "" }, */
+  { "pdf": "SlotsTotal 25", "foundry": @system.spells.spell7.max || "" },
+  /* { "pdf": "SlotsRemaining 25", "foundry": @system.spells.spell7.value || "" }, */
+  { "pdf": "SlotsTotal 26", "foundry": @system.spells.spell8.max || "" },
+  /* { "pdf": "SlotsRemaining 26", "foundry": @system.spells.spell8.value || "" }, */
+  { "pdf": "SlotsTotal 27", "foundry": @system.spells.spell9.max || "" },
+  /* { "pdf": "SlotsRemaining 27", "foundry": @system.spells.spell9.value || "" }, */
+  
+  /* Cantrips */
+  { "pdf": "Spells 1014", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1016", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1017", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1018", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1019", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1020", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1021", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1022", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 0).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  
+  /* 1st Level Spells */
+  { "pdf": "Spells 1015", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1023", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1024", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1025", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1026", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1027", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1028", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1029", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1030", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+  { "pdf": "Spells 1031", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[9] || "" },
+  { "pdf": "Spells 1032", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[10] || "" },
+  { "pdf": "Spells 1033", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 1).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[11] || "" },
+
+  /* 2nd Level Spells */
+  { "pdf": "Spells 1046", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1034", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1035", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1036", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1037", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1038", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1039", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1040", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1041", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+  { "pdf": "Spells 1042", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[9] || "" },
+  { "pdf": "Spells 1043", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[10] || "" },
+  { "pdf": "Spells 1044", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[11] || "" },
+  { "pdf": "Spells 1045", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 2).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[12] || "" },
+  
+  /* 3rd Level Spells */
+  { "pdf": "Spells 1048", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1047", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1049", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1050", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1051", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1052", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1053", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1054", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1055", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+  { "pdf": "Spells 1056", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[9] || "" },
+  { "pdf": "Spells 1057", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[10] || "" },
+  { "pdf": "Spells 1058", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[11] || "" },
+  { "pdf": "Spells 1059", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 3).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[12] || "" },
+
+  /* 4th Level Spells */
+  { "pdf": "Spells 1061", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1060", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1062", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1063", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1064", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1065", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1066", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1067", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1068", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+  { "pdf": "Spells 1069", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[9] || "" },
+  { "pdf": "Spells 1070", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[10] || "" },
+  { "pdf": "Spells 1071", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[11] || "" },
+  { "pdf": "Spells 1071", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 4).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[12] || "" },
+
+  /* 5th Level Spells */
+  { "pdf": "Spells 1074", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1073", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1075", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1076", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1077", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1078", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1079", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1080", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1081", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 5).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+
+  /* 6th Level Spells */
+  { "pdf": "Spells 1083", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1082", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1084", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1085", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1086", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1087", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1088", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1089", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1090", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 6).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+
+  /* 7th Level Spells */
+  { "pdf": "Spells 1092", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 1091", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 1093", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 1094", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 1095", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 1096", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 1097", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+  { "pdf": "Spells 1098", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[7] || "" },
+  { "pdf": "Spells 1099", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 7).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[8] || "" },
+
+  /* 8th Level Spells */
+  { "pdf": "Spells 10101", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 10100", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 10102", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 10103", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 10104", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 10105", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 10106", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 8).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+
+  /* 9th Level Spells */
+  { "pdf": "Spells 10108", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[0] || "" },
+  { "pdf": "Spells 10107", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[1] || "" },
+  { "pdf": "Spells 10109", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[2] || "" },
+  { "pdf": "Spells 101010", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[3] || "" },
+  { "pdf": "Spells 101011", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[4] || "" },
+  { "pdf": "Spells 101012", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[5] || "" },
+  { "pdf": "Spells 101013", "foundry": @items.filter(i => i.type === 'spell' && i.system.level === 9).map(x => x.name + " - " + [((x.system.properties).has("vocal")?"V":"" || ""), ((x.system.properties).has("somatic")?"S":"" || ""), ((x.system.properties).has("material")?"M":"" || ""), ((x.system.properties).has("concentration")?"C":"" || ""), ((x.system.properties).has("ritual")?"R":"" || "")].join("")).sort()[6] || "" },
+
+  { "pdf": "", "foundry": "" }
+]
