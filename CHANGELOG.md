@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.24.14](https://github.com/arcanistzed/pdf-sheet/tree/0.24.14) (2025-06-21)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.13...0.24.14)
+
+* feat(dnd5e mapping): update for v12 and an extended version ([#135](https://github.com/arcanistzed/pdf-sheet/pull/135))
+
 ## [0.24.13](https://github.com/arcanistzed/pdf-sheet/tree/0.24.13) (2025-06-18)
 
 [Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.12...0.24.13)
