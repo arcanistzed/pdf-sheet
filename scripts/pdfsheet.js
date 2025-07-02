@@ -32,6 +32,22 @@ Hooks.on("init", () => {
 			},
 		});
 	}
+
+	window.translate = function(sourceText, sourceLang, targetLang){
+		$.ajaxSetup({
+			async: false
+		});
+		var retString = "";
+		if(sourceText) {
+			console.log(sourceText);
+			var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl="+ sourceLang + "&tl=" + targetLang + "&dt=t&q=" + encodeURI(sourceText);
+			$.getJSON(url, function(data) {
+				retString = data[0][0][0];
+			});
+			console.log(retString);
+		}
+		return retString;
+	}
 });
 
 // Inject editor into the settings menu
