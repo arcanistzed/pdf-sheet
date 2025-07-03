@@ -191,7 +191,7 @@
         let row = object.system.level + " - " + object.name;
         spell_text += row + "\n";
       });
-        
+
       return spell_text;
     })()
   },

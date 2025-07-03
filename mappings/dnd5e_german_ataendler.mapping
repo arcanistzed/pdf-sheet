@@ -1,8 +1,8 @@
-/* 
+/*
  * Made by @sgt.green
  * Working and tested with Foundry V12.331 and DnD5e 4.1.2
- * PDF: https://www.dnddeutsch.de/wp-content/uploads/2022/03/charakterbogen_ataendler_v2.8.1.pdf 
- * Work in progress, most of it works. 
+ * PDF: https://www.dnddeutsch.de/wp-content/uploads/2022/03/charakterbogen_ataendler_v2.8.1.pdf
+ * Work in progress, most of it works.
  * For any ideas, suggestions or bugs please contact me via Dicord @sgt.green
  */
 
@@ -10,7 +10,7 @@
   /* Page #1 */
 
       { "pdf": "_helper_functions", "foundry": game.pdfsheet = {
-  
+
           abilityModToAttrOption: function(modifier) {
             switch(modifier) {
               case 'str': return 'Stä';
@@ -23,8 +23,8 @@
             console.warn('bad ability modifier', modifier);
             return '';
           },
-  
-  
+
+
           htmlToText: function(html) {
             return !html ? '' : html.replaceAll("\n", "")
                        .replaceAll(/<h1[>\s]([^<]*)<\/h1>/gms, "# $1\n")
@@ -37,7 +37,7 @@
                        .replaceAll(/<[^>]*>/gms, "")
                        .replaceAll(/\u00a0/g, "");
           },
-  
+
           splitIntoTwoParts: function(text, firstPartMinLength, ratio) {
             if (!text) return '';
             const len = text.length;
@@ -64,7 +64,7 @@
             }
             return [text.substring(0, splitIdx), p2];
           },
-  
+
           getPrimaryClassObj: function() {
             const allClasses = actor.items.filter(i => i.type === 'class').map(i => i);
             if (allClasses.length > 1) {
@@ -75,16 +75,16 @@
             }
             return allClasses[0];
           },
-  
+
           getLocalizedClassAndSubclass: function(classItem) {
             const sc = classItem.system.subclass;
             return sc ? game.i18n.localize(classItem.name) + "/" + game.i18n.localize(sc) : game.i18n.localize(classItem.name);
           },
-  
+
           getLocalizedClassAndSubclassAndLevel: function(classItem) {
             return `${game.pdfsheet.getLocalizedClassAndSubclass(classItem)} ${classItem.system.levels}`;
           },
-  
+
           getFeatsAndTraits: function() {
             let featsAndTraits = '';
             actor.items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i).forEach(i => {
@@ -100,135 +100,135 @@
             });
             return featsAndTraits;
           },
-  
+
       }},
-  
+
       { "pdf": "Charaktername_page1", "foundry": @name },
       { "pdf": "Charaktername_page2", "foundry": @name },
-      
+
       { "pdf": "KlasseUndStufe", "foundry": game.pdfsheet.getLocalizedClassAndSubclassAndLevel(game.pdfsheet.getPrimaryClassObj()) },
       { "pdf": "Spielername", "foundry": Object.entries(@permission).filter(entry => entry[1] === 3).map(entry => entry[0]).map(id => !game.users.get(id)?.isGM ? game.users.get(id)?.name : null).filter(x => x).join(", ") },
       { "pdf": "Hintergrund", "foundry": actor.system.details.background },
       { "pdf": "Volk", "foundry": actor.system.details.race },
       { "pdf": "Erfahrungspunkte", "foundry": actor.system.details.xp.value },
-  
+
       { "pdf": "Inspiration", "foundry": actor.system.attributes.inspiration ? "x" : "" },
       { "pdf": "Übungsbonus", "foundry": actor.system.attributes.prof },
-  
+
       { "pdf": "Str", "foundry": actor.system.abilities.str.value },
       { "pdf": "StrMod", "foundry": actor.system.abilities.str.mod },
       { "pdf": "StrProf", "foundry": actor.system.abilities.str.proficient },
       { "pdf": "StrRW", "foundry": actor.system.abilities.str.save },
-  
+
       { "pdf": "Ges", "foundry": actor.system.abilities.dex.value },
       { "pdf": "GesMod", "foundry": actor.system.abilities.dex.mod },
       { "pdf": "GesProf", "foundry": actor.system.abilities.dex.proficient },
       { "pdf": "GesRW", "foundry": actor.system.abilities.dex.save },
-  
+
       { "pdf": "Kon", "foundry": actor.system.abilities.con.value },
       { "pdf": "KonMod", "foundry": actor.system.abilities.con.mod },
       { "pdf": "KonProf", "foundry": actor.system.abilities.con.proficient },
       { "pdf": "KonRW", "foundry": actor.system.abilities.con.save },
-  
+
       { "pdf": "Int", "foundry": actor.system.abilities.int.value },
       { "pdf": "IntMod", "foundry": actor.system.abilities.int.mod },
       { "pdf": "IntProf", "foundry": actor.system.abilities.int.proficient },
       { "pdf": "IntRW", "foundry": actor.system.abilities.int.save },
-  
+
       { "pdf": "Wei", "foundry": actor.system.abilities.wis.value },
       { "pdf": "WeiMod", "foundry": actor.system.abilities.wis.mod },
       { "pdf": "WeiProf", "foundry": actor.system.abilities.wis.proficient },
       { "pdf": "WeiRW", "foundry": actor.system.abilities.wis.save },
-  
+
       { "pdf": "Cha", "foundry": actor.system.abilities.cha.value },
       { "pdf": "ChaMod", "foundry": actor.system.abilities.cha.mod },
       { "pdf": "ChaProf", "foundry": actor.system.abilities.cha.proficient },
       { "pdf": "ChaRW", "foundry": actor.system.abilities.cha.save },
-  
+
       { "pdf": "Rüstungsklasse", "foundry": actor.system.attributes.ac.value },
       { "pdf": "Initiative", "foundry": actor.system.attributes.init.total },
       { "pdf": "Bewegungsrate", "foundry": Object.entries(actor.system.attributes.movement).filter(val => val[1]).map(val => val[0] === "hover" ? Object.entries(actor.system.attributes.movement)[6][0] : "" + val[0] !== "units" && val[0] !== "hover" ? val.join(": ") + Object.entries(actor.system.attributes.movement)[5][1] : "").filter(String).join(", ") },
-  
+
       { "pdf": "AkrobatikProf", "foundry": actor.system.skills.acr.value >= 1},
       { "pdf": "AkrobatikExp", "foundry": actor.system.skills.acr.value >= 2},
       { "pdf": "AkrobatikGes", "foundry": actor.system.skills.acr.total },
-  
+
       { "pdf": "ArkaneKundeProf", "foundry": actor.system.skills.arc.value >= 1},
       { "pdf": "ArkaneKundeExp", "foundry": actor.system.skills.arc.value >= 2},
       { "pdf": "ArkaneKundeInt", "foundry": actor.system.skills.arc.total },
-  
+
       { "pdf": "AthletikProf", "foundry": actor.system.skills.ath.value >= 1},
       { "pdf": "AthletikExp", "foundry": actor.system.skills.ath.value >= 2},
       { "pdf": "AthletikStr", "foundry": actor.system.skills.ath.total },
-  
+
       { "pdf": "AuftretenProf", "foundry": actor.system.skills.prf.value >= 1},
       { "pdf": "AuftretenExp", "foundry": actor.system.skills.prf.value >= 2},
       { "pdf": "AuftretenCha", "foundry": actor.system.skills.prf.total },
-  
+
       { "pdf": "EinschüchternProf", "foundry": actor.system.skills.itm.value >= 1},
       { "pdf": "EinschüchternExp", "foundry": actor.system.skills.itm.value >= 2},
       { "pdf": "EinschüchternCha", "foundry": actor.system.skills.itm.total },
-  
+
       { "pdf": "FingerfertigkeitProf", "foundry": actor.system.skills.slt.value },
       { "pdf": "FingerfertigkeitGes", "foundry": actor.system.skills.slt.total },
-  
+
       { "pdf": "GeschichteProf", "foundry": actor.system.skills.his.value },
       { "pdf": "GeschichteInt", "foundry": actor.system.skills.his.total },
-  
+
       { "pdf": "HeilkundeProf", "foundry": actor.system.skills.med.value },
       { "pdf": "HeilkundeWei", "foundry": actor.system.skills.med.total },
-  
+
       { "pdf": "HeimlichkeitProf", "foundry": actor.system.skills.ste.value },
       { "pdf": "HeimlichkeitGes", "foundry": actor.system.skills.ste.total },
-  
+
       { "pdf": "MitTierenUmgehenProf", "foundry": actor.system.skills.ani.value },
       { "pdf": "MitTierenUmgehenWei", "foundry": actor.system.skills.ani.total },
-  
+
       { "pdf": "MotivErkennenProf", "foundry": actor.system.skills.ins.value },
       { "pdf": "MotivErkennenWei", "foundry": actor.system.skills.ins.total },
-  
+
       { "pdf": "NachforschungenProf", "foundry": actor.system.skills.inv.value },
       { "pdf": "NachforschungenInt", "foundry": actor.system.skills.inv.total },
-  
+
       { "pdf": "NaturkundeProf", "foundry": actor.system.skills.nat.value },
       { "pdf": "NaturkundeInt", "foundry": actor.system.skills.nat.total },
-  
+
       { "pdf": "ReligionProf", "foundry": actor.system.skills.rel.value },
       { "pdf": "ReligionInt", "foundry": actor.system.skills.rel.total },
-  
+
       { "pdf": "TäuschenProf", "foundry": actor.system.skills.dec.value },
       { "pdf": "TäuschenCha", "foundry": actor.system.skills.dec.total },
-  
+
       { "pdf": "ÜberlebenskunstProf", "foundry": actor.system.skills.sur.value },
       { "pdf": "ÜberlebenskunstWei", "foundry": actor.system.skills.sur.total },
-  
+
       { "pdf": "ÜberzeugenProf", "foundry": actor.system.skills.per.value },
       { "pdf": "ÜberzeugenCha", "foundry": actor.system.skills.per.total },
-  
+
       { "pdf": "WahrnehmungProf", "foundry": actor.system.skills.prc.value },
       { "pdf": "WahrnehmungWei", "foundry": actor.system.skills.prc.total },
-  
+
       { "pdf": "TrefferpunkteMaximum", "foundry": actor.system.attributes.hp.max },
       { "pdf": "AktTrefferpunkte", "foundry": actor.system.attributes.hp.value },
       { "pdf": "TempTrefferpunkte", "foundry": actor.system.attributes.hp.temp },
-  
+
       { "pdf": "GesamtTW", "foundry": actor.system.attributes.hd },
       { "pdf": "Trefferwürfel", "foundry": actor.system.attributes.hd },
-  
+
       { "pdf": "RWErfolg1", "foundry": actor.system.attributes.death.success >= 1 },
       { "pdf": "RWErfolg2", "foundry": actor.system.attributes.death.success >= 2 },
       { "pdf": "RWErfolg3", "foundry": actor.system.attributes.death.success >= 3 },
-  
+
       { "pdf": "RWFehlschlag1", "foundry": actor.system.attributes.death.failure >= 1 },
       { "pdf": "RWFehlschlag2", "foundry": actor.system.attributes.death.failure >= 2 },
       { "pdf": "RWFehlschlag3", "foundry": actor.system.attributes.death.failure >= 3 },
-  
+
       { "pdf": "Persönlichkeitsmerkmale", "foundry": actor.system.details.trait },
       { "pdf": "Ideale", "foundry": actor.system.details.ideal },
       { "pdf": "Bindungen", "foundry": actor.system.details.bond },
       { "pdf": "Makel", "foundry": actor.system.details.flaw },
 
-    
+
       ...Array.from({ length: 5 }).map((_, i) => {
         const weapon = actor.items.filter(i => i.type === 'weapon' && i.system.equipped && i.hasAttack && i.hasDamage)[i];
         if (!weapon) {
@@ -258,7 +258,7 @@
         const damageFormula = labels.formula + ' ' + weapon.labels.toHit;
         const damageType = game.i18n.localize(labels.damageType);
         const description = weapon.system.description?.value?.replace(/<\/?[^>]+(>|$)/g, "") || ""; /* Clean description */
-        
+
         return [
           { "pdf": `Angriff${i + 1}`, "foundry": weapon.name || "" },
           { "pdf": `ÜB${i + 1}`, "foundry": proficient },
@@ -271,27 +271,27 @@
         ];
       }).flat(),
 
-      
+
 
       { "pdf": "PassiveWeisheit", "foundry": actor.system.skills.prc.passive },
-  
+
       { "pdf": "LeichteRüstungProf", "foundry": actor.system.traits.armorProf.value.has("lgt") },
       { "pdf": "MittlereRüstungProf", "foundry": actor.system.traits.armorProf.value.has("med") },
       { "pdf": "SchwereRüstungProf", "foundry": actor.system.traits.armorProf.value.has("hvy") },
       { "pdf": "SchildeProf", "foundry": actor.system.traits.armorProf.value.has("shl") },
-  
+
       { "pdf": "EinfachWaffenProf", "foundry": actor.system.traits.weaponProf.value.has("sim") },
       { "pdf": "KriegswaffenProf", "foundry": actor.system.traits.weaponProf.value.has("mar") },
       { "pdf": "SonstigeWaffenProf", "foundry": Array.from(actor.system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").length > 0 || actor.system.traits.weaponProf.custom !== ""},
       { "pdf": "SonstigeWaffen", "foundry": Array.from(actor.system.traits.weaponProf.value).filter(w => w !== "sim" && w !== "mar").concat(actor.system.traits.weaponProf.custom.split(";")).join(", ")},
-  
+
       { "pdf": "Sprache1", "foundry": Array.from(actor.system.traits.languages.value)[0] ? game.i18n.localize(`DND5E.Languages${Array.from(a.system.traits.languages.value)[0].capitalize()}`)  : "" },
       { "pdf": "Sprache2", "foundry": Array.from(actor.system.traits.languages.value)[1] ? game.i18n.localize(`DND5E.Languages${Array.from(a.system.traits.languages.value)[1].capitalize()}`) : "" },
       { "pdf": "Sprache3", "foundry": Array.from(actor.system.traits.languages.value)[2] ? game.i18n.localize(`DND5E.Languages${Array.from(a.system.traits.languages.value)[2].capitalize()}`)  : "" },
       { "pdf": "Sprache4", "foundry": Array.from(actor.system.traits.languages.value)[3] ? game.i18n.localize(`DND5E.Languages${Array.from(a.system.traits.languages.value)[3].capitalize()}`)  : "" },
       { "pdf": "Sprache5", "foundry": Array.from(actor.system.traits.languages.value)[4] ? game.i18n.localize(`DND5E.Languages${Array.from(a.system.traits.languages.value)[4].capitalize()}`)  : "" },
       { "pdf": "Sprache6", "foundry": Array.from(actor.system.traits.languages.value)[5] ? game.i18n.localize(`DND5E.Languages${Array.from(a.system.traits.languages.value)[5].capitalize()}`)  : "" },
-  
+
       { "pdf": "WerkzeugUndAndere1", "foundry": Object.keys(actor.system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
           || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[0] || ""},
       { "pdf": "WerkzeugUndAndere2", "foundry": Object.keys(actor.system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
@@ -304,19 +304,19 @@
           || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[4] || ""},
       { "pdf": "WerkzeugUndAndere6", "foundry": Object.keys(actor.system.tools).map(x => game.dnd5e.config.toolProficiencies[x]
           || game.packs.get("dnd5e.items").index.get(game.dnd5e.config.toolIds[x])?.name)[5] || ""},
-  
+
       { "pdf": "Klassenmerkmale1", "foundry": actor.items.filter(i => ['feat', 'trait'].includes(i.type)).map(i => i.name + " (" + i.system.source.label + '[' + i.system.source.rules +']' + ")").join('\n') },
-  
+
   /* Page #2 */
-  
+
       { "pdf": "Klassenmerkmale1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.getFeatsAndTraits(), 600, 0.25)[0] || "" },
       { "pdf": "Klassenmerkmale2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.getFeatsAndTraits(), 600, 0.25)[1] || "" },
-  
+
       { "pdf": "HochsprungOhneAnlauf", "foundry": Math.round(((actor.system.abilities.str.mod + 3)*0.3)/2*10)/10 },
       { "pdf": "HochsprungMitAnlauf", "foundry": Math.round(((actor.system.abilities.str.mod + 3)*0.3)*10)/10 },
       { "pdf": "WeitsprungOhneAnlauf", "foundry": Math.round(((actor.system.abilities.str.value + 3)*0.3)/2*10)/10 },
       { "pdf": "WeitsprungMitAnlauf", "foundry": Math.round(((actor.system.abilities.str.value + 3)*0.3)*10)/10 },
-  
+
       { "pdf": "Inventar1",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[0] || ""},
       { "pdf": "Inventar2",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[1] || ""},
       { "pdf": "Inventar3",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[2] || ""},
@@ -355,11 +355,11 @@
       { "pdf": "Inventar36", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[35] || ""},
       { "pdf": "Inventar37", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[36] || ""},
       { "pdf": "Inventar38", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.name)[37] || ""},
-      
+
       { "pdf": "Inventar39", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.name)[0] || ""},
       { "pdf": "Inventar40", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.name)[1] || ""},
       { "pdf": "Inventar41", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.name)[2] || ""},
-  
+
       { "pdf": "InventarAnz1",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[0] || ""},
       { "pdf": "InventarAnz2",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[1] || ""},
       { "pdf": "InventarAnz3",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[2] || ""},
@@ -398,11 +398,11 @@
       { "pdf": "InventarAnz36", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[35] || ""},
       { "pdf": "InventarAnz37", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[36] || ""},
       { "pdf": "InventarAnz38", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.quantity)[37] || ""},
-  
+
       { "pdf": "InventarAnz39", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.quantity)[0] || ""},
       { "pdf": "InventarAnz40", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.quantity)[1] || ""},
       { "pdf": "InventarAnz41", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.quantity)[2] || ""},
-  
+
       { "pdf": "InventarGew1",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[0]?.value  || ""},
       { "pdf": "InventarGew2",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[1]?.value  || ""},
       { "pdf": "InventarGew3",  "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[2]?.value  || ""},
@@ -441,19 +441,19 @@
       { "pdf": "InventarGew36", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[35]?.value  || ""},
       { "pdf": "InventarGew37", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[36]?.value  || ""},
       { "pdf": "InventarGew38", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && !i.system.attunement).map(i => i.system.weight)[37]?.value  || ""},
-  
+
       { "pdf": "InventarGew39", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.weight)[0]?.value  || ""},
       { "pdf": "InventarGew40", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.weight)[1]?.value  || ""},
       { "pdf": "InventarGew41", "foundry": actor.items.filter(i => ['equipment','consumable','loot','weapon'].includes(i.type) && i.system.attunement).map(i => i.system.weight)[2]?.value  || ""},
-  
+
       { "pdf": "KM", "foundry": actor.system.currency.cp || ""},
       { "pdf": "SM", "foundry": actor.system.currency.sp || ""},
       { "pdf": "EM", "foundry": actor.system.currency.ep || ""},
       { "pdf": "GM", "foundry": actor.system.currency.gp || ""},
       { "pdf": "PM", "foundry": actor.system.currency.pp || ""},
-      
+
   /* Page #3 */
-  
+
       { "pdf": "Alter", "foundry": actor.system.details.age || "" },
       { "pdf": "Körpergrösse", "foundry": actor.system.details.height || "" },
       { "pdf": "SizeCat", "foundry": actor.system.traits.size === "tiny" ? 1 : actor.system.traits.size === "sm" ? 2 : actor.system.traits.size === "med" ? 3 : actor.system.traits.size === "lg" ? 5 : actor.system.traits.size === "huge" ? 6 : actor.system.traits.size === "grg" ? 7 : 0 },
@@ -464,13 +464,13 @@
       { "pdf": "Gesinnung", "foundry": actor.system.details.alignment || ""},
       { "pdf": "Geschlecht", "foundry": actor.system.details.gender || ""},
       { "pdf": "Aussehen", "foundry": actor.system.details.appearance || ""},
-  
+
       { "pdf": "Hintergrundgeschichte1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(actor.system.details.biography?.value)?.trim(),400,0.5)[0] || "" },
       { "pdf": "Hintergrundgeschichte2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(actor.system.details.biography?.value)?.trim(),400,0.5)[1] || "" },
-  
+
       { "pdf": "Werdegang1", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(actor.system.details.description?.value)?.trim(),400,0.5)[0] || "" },
       { "pdf": "Werdegang2", "foundry": game.pdfsheet.splitIntoTwoParts(game.pdfsheet.htmlToText(actor.system.details.description?.value)?.trim(),400,0.5)[1] || "" },
-  
+
       { "pdf": "AttacksSpellcasting", "foundry": "" },
       { "pdf": "Equipment", "foundry": actor.items.filter(i => !['feat', 'class', 'weapon', 'loot'].includes(i.type)).map(i => `${i.name} (${i.system.quantity})`).join(', ') },
       { "pdf": "Features and Traits", "foundry": actor.items.filter(i => ['feat', 'trait'].includes(i.type)).slice(0, 16).map(i => `${i.name} - ${i.system.source}`).join('\n') },
@@ -478,32 +478,32 @@
       { "pdf": "VerbOrg1", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
       { "pdf": "VerbOrgName", "foundry": "" }, /* There is no field for this on the Foundry character sheet */
       { "pdf": "Treasure", "foundry": actor.items.filter(i => ['loot'].includes(i.type)).map(i => `${i.name} (${i.system.quantity})`).join(', ') },
-  
+
   /* Page #4 */
-  
+
       { "pdf": "Zauberklasse", "foundry": actor.items.filter(i => i.type === 'class').map(i => `${i.name}`).join(' / ') }, /* Doesn't work with multiple classes properly */
       { "pdf": "AttributZauberwirken", "foundry": actor.system.attributes.spellcasting.capitalize() || "" },
       { "pdf": "ZauberRettungswurfSG", "foundry": actor.system.attributes.spelldc || "" },
       { "pdf": "ZauberAngriffsbonus", "foundry": "+" + String(actor.system.attributes.spelldc - 8) }, /* Doesn't account for negative values */
-  
+
     /* Spellslots Max + counts*/
       { "pdf": "ZauberplätzeGesamt1", "foundry": actor.system.spells.spell1.max || "" },
       { "pdf": "ZauberplätzeVerbraucht1", "foundry": actor.system.spells.spell1.max - actor.system.spells.spell1.value || "" },
-      { "pdf": "ZauberplätzeGesamt2", "foundry": actor.system.spells.spell2.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt2", "foundry": actor.system.spells.spell2.max || "" },
       { "pdf": "ZauberplätzeVerbraucht2", "foundry": actor.system.spells.spell2.max - actor.system.spells.spell2.value || "" },
-      { "pdf": "ZauberplätzeGesamt3", "foundry": actor.system.spells.spell3.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt3", "foundry": actor.system.spells.spell3.max || "" },
       { "pdf": "ZauberplätzeVerbraucht3", "foundry": actor.system.spells.spell3.max - actor.system.spells.spell3.value || "" },
-      { "pdf": "ZauberplätzeGesamt4", "foundry": actor.system.spells.spell4.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt4", "foundry": actor.system.spells.spell4.max || "" },
       { "pdf": "ZauberplätzeVerbraucht4", "foundry": actor.system.spells.spell4.max - actor.system.spells.spell4.value || "" },
-      { "pdf": "ZauberplätzeGesamt5", "foundry": actor.system.spells.spell5.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt5", "foundry": actor.system.spells.spell5.max || "" },
       { "pdf": "ZauberplätzeVerbraucht5", "foundry": actor.system.spells.spell5.max - actor.system.spells.spell5.value || "" },
-      { "pdf": "ZauberplätzeGesamt6", "foundry": actor.system.spells.spell6.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt6", "foundry": actor.system.spells.spell6.max || "" },
       { "pdf": "ZauberplätzeVerbraucht6", "foundry": actor.system.spells.spell6.max - actor.system.spells.spell6.value || "" },
-      { "pdf": "ZauberplätzeGesamt7", "foundry": actor.system.spells.spell7.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt7", "foundry": actor.system.spells.spell7.max || "" },
       { "pdf": "ZauberplätzeVerbraucht7", "foundry": actor.system.spells.spell7.max - actor.system.spells.spell7.value || "" },
-      { "pdf": "ZauberplätzeGesamt8", "foundry": actor.system.spells.spell8.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt8", "foundry": actor.system.spells.spell8.max || "" },
       { "pdf": "ZauberplätzeVerbraucht8", "foundry": actor.system.spells.spell8.max - actor.system.spells.spell8.value || "" },
-      { "pdf": "ZauberplätzeGesamt9", "foundry": actor.system.spells.spell9.max || "" }, 
+      { "pdf": "ZauberplätzeGesamt9", "foundry": actor.system.spells.spell9.max || "" },
       { "pdf": "ZauberplätzeVerbraucht9", "foundry": actor.system.spells.spell9.max - actor.system.spells.spell9.value || "" },
     /* Cantrips */
       { "pdf": "Zaubertrick1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 0)[0]?.name || "" },
@@ -542,83 +542,83 @@
       { "pdf": "ZauberActive1_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 1)[11]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive1_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 1)[12]?.system.preparation.prepared || "" },
     /* 2nd Level Spells */
-      { "pdf": "Zauber2_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.name || "" }, 
-      { "pdf": "Zauber2_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.name || "" }, 
-      { "pdf": "Zauber2_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.name || "" }, 
-      { "pdf": "Zauber2_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.name || "" }, 
-      { "pdf": "Zauber2_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.name || "" }, 
-      { "pdf": "Zauber2_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.name || "" }, 
-      { "pdf": "Zauber2_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.name || "" }, 
-      { "pdf": "Zauber2_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.name || "" }, 
-      { "pdf": "Zauber2_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.name || "" }, 
-      { "pdf": "Zauber2_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.name || "" }, 
+      { "pdf": "Zauber2_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.name || "" },
+      { "pdf": "Zauber2_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.name || "" },
+      { "pdf": "Zauber2_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.name || "" },
+      { "pdf": "Zauber2_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.name || "" },
+      { "pdf": "Zauber2_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.name || "" },
+      { "pdf": "Zauber2_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.name || "" },
+      { "pdf": "Zauber2_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.name || "" },
+      { "pdf": "Zauber2_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.name || "" },
+      { "pdf": "Zauber2_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.name || "" },
+      { "pdf": "Zauber2_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.name || "" },
       { "pdf": "Zauber2_11", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[10]?.name || "" },
       { "pdf": "Zauber2_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[11]?.name || "" },
       { "pdf": "Zauber2_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[12]?.name || "" },
-      { "pdf": "ZauberActive2_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive2_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.system.preparation.prepared || "" }, 
+      { "pdf": "ZauberActive2_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[0]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[1]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[2]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[3]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[4]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[5]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[6]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[7]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[8]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive2_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[9]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive2_11", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[10]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive2_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[11]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive2_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 2)[12]?.system.preparation.prepared || "" },
     /* 3rd Level Spells */
-      { "pdf": "Zauber3_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.name || "" }, 
-      { "pdf": "Zauber3_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.name || "" }, 
-      { "pdf": "Zauber3_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.name || "" }, 
-      { "pdf": "Zauber3_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.name || "" }, 
-      { "pdf": "Zauber3_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.name || "" }, 
-      { "pdf": "Zauber3_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.name || "" }, 
-      { "pdf": "Zauber3_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.name || "" }, 
-      { "pdf": "Zauber3_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.name || "" }, 
-      { "pdf": "Zauber3_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.name || "" }, 
-      { "pdf": "Zauber3_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.name || "" }, 
+      { "pdf": "Zauber3_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.name || "" },
+      { "pdf": "Zauber3_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.name || "" },
+      { "pdf": "Zauber3_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.name || "" },
+      { "pdf": "Zauber3_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.name || "" },
+      { "pdf": "Zauber3_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.name || "" },
+      { "pdf": "Zauber3_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.name || "" },
+      { "pdf": "Zauber3_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.name || "" },
+      { "pdf": "Zauber3_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.name || "" },
+      { "pdf": "Zauber3_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.name || "" },
+      { "pdf": "Zauber3_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.name || "" },
       { "pdf": "Zauber3_11", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[10]?.name || "" },
       { "pdf": "Zauber3_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[11]?.name || "" },
       { "pdf": "Zauber3_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[12]?.name || "" },
-      { "pdf": "ZauberActive3_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive3_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.system.preparation.prepared || "" }, 
+      { "pdf": "ZauberActive3_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[0]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[1]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[2]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[3]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[4]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[5]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[6]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[7]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[8]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive3_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[9]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive3_11", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[10]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive3_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[11]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive3_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 3)[12]?.system.preparation.prepared || "" },
     /* 4th Level Spells */
-      { "pdf": "Zauber4_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.name || "" }, 
-      { "pdf": "Zauber4_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.name || "" }, 
-      { "pdf": "Zauber4_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.name || "" }, 
-      { "pdf": "Zauber4_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.name || "" }, 
-      { "pdf": "Zauber4_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.name || "" }, 
-      { "pdf": "Zauber4_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.name || "" }, 
-      { "pdf": "Zauber4_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.name || "" }, 
-      { "pdf": "Zauber4_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.name || "" }, 
-      { "pdf": "Zauber4_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.name || "" }, 
-      { "pdf": "Zauber4_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.name || "" }, 
+      { "pdf": "Zauber4_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.name || "" },
+      { "pdf": "Zauber4_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.name || "" },
+      { "pdf": "Zauber4_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.name || "" },
+      { "pdf": "Zauber4_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.name || "" },
+      { "pdf": "Zauber4_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.name || "" },
+      { "pdf": "Zauber4_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.name || "" },
+      { "pdf": "Zauber4_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.name || "" },
+      { "pdf": "Zauber4_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.name || "" },
+      { "pdf": "Zauber4_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.name || "" },
+      { "pdf": "Zauber4_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.name || "" },
       { "pdf": "Zauber4_11", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[10]?.name || "" },
       { "pdf": "Zauber4_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[11]?.name || "" },
       { "pdf": "Zauber4_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[12]?.name || "" },
-      { "pdf": "ZauberActive4_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.system.preparation.prepared || "" }, 
-      { "pdf": "ZauberActive4_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.system.preparation.prepared || "" }, 
+      { "pdf": "ZauberActive4_1",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[0]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_2",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[1]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_3",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[2]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_4",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[3]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_5",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[4]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_6",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[5]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_7",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[6]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_8",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[7]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_9",  "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[8]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive4_10", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[9]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive4_11", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[10]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive4_12", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[11]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive4_13", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 4)[12]?.system.preparation.prepared || "" },
@@ -632,15 +632,15 @@
       { "pdf": "Zauber5_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[6]?.name || "" },
       { "pdf": "Zauber5_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[7]?.name || "" },
       { "pdf": "Zauber5_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.name || "" },
-      { "pdf": "ZauberActive5_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[0]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[1]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_3", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[2]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_4", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[3]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[4]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[5]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[6]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[7]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive5_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.system.preparation.prepared || "" },   
+      { "pdf": "ZauberActive5_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[0]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[1]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_3", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[2]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_4", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[3]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[4]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[5]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[6]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[7]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive5_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 5)[8]?.system.preparation.prepared || "" },
     /* 6th Level Spells */
       { "pdf": "Zauber6_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.name || "" },
       { "pdf": "Zauber6_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.name || "" },
@@ -651,15 +651,15 @@
       { "pdf": "Zauber6_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[6]?.name || "" },
       { "pdf": "Zauber6_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[7]?.name || "" },
       { "pdf": "Zauber6_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.name || "" },
-      { "pdf": "ZauberActive6_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_3", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[2]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_4", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[3]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[4]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[5]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[6]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[7]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive6_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.system.preparation.prepared || "" },   
+      { "pdf": "ZauberActive6_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[0]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[1]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_3", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[2]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_4", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[3]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[4]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[5]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[6]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[7]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive6_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 6)[8]?.system.preparation.prepared || "" },
     /* 7th Level Spells */
       { "pdf": "Zauber7_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.name || "" },
       { "pdf": "Zauber7_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.name || "" },
@@ -670,15 +670,15 @@
       { "pdf": "Zauber7_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[6]?.name || "" },
       { "pdf": "Zauber7_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[7]?.name || "" },
       { "pdf": "Zauber7_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.name || "" },
-      { "pdf": "ZauberActive7_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_3", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[2]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_4", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[3]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[4]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[5]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[6]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[7]?.system.preparation.prepared || "" },   
-      { "pdf": "ZauberActive7_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.system.preparation.prepared || "" },   
+      { "pdf": "ZauberActive7_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[0]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[1]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_3", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[2]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_4", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[3]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[4]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[5]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[6]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_8", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[7]?.system.preparation.prepared || "" },
+      { "pdf": "ZauberActive7_9", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 7)[8]?.system.preparation.prepared || "" },
     /* 8th Level Spells */
       { "pdf": "Zauber8_1", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 8)[0]?.name || "" },
       { "pdf": "Zauber8_2", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 8)[1]?.name || "" },
@@ -709,6 +709,6 @@
       { "pdf": "ZauberActive9_5", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 9)[4]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive9_6", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 9)[5]?.system.preparation.prepared || "" },
       { "pdf": "ZauberActive9_7", "foundry": actor.items.filter(i => i.type === 'spell' && i.system.level === 9)[6]?.system.preparation.prepared || "" },
-  
+
       { "pdf": "", "foundry": "" }
   ]

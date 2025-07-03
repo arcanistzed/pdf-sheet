@@ -7,16 +7,16 @@
 /*                                                                               */
 /* Known deficiencies: Language, Lucky roll, Attack, Missle Damamge              */
 /*                                                                               */
-[ 
+[
   {"pdf": "Character Name", "foundry": @name },
   {"pdf": "Occupation",     "foundry": @data.details.occupation.value },
-  {"pdf": "Class",          "foundry": @data.details.sheetClass }, 
+  {"pdf": "Class",          "foundry": @data.details.sheetClass },
   {"pdf": "Level",          "foundry": @data.details.level.value },
   {"pdf": "Title",          "foundry": ((@data.details.title.length===undefined ) ? @data.details.title.value : '')},
-  {"pdf": "Alignment",      "foundry": game.i18n.localize(CONFIG.DCC.alignments[@data.details.alignment]) }, 
+  {"pdf": "Alignment",      "foundry": game.i18n.localize(CONFIG.DCC.alignments[@data.details.alignment]) },
   {"pdf": "XP",             "foundry": @data.details.xp.value },
   {"pdf": "Crit Die",       "foundry": @data.details.attackBonus },
-   
+
   {"pdf": "Strength",       "foundry": @data.abilities.str.value },
   {"pdf": "str mod",        "foundry": @data.abilities.str.mod },
   {"pdf": "Agi",            "foundry": @data.abilities.agl.value },
@@ -29,7 +29,7 @@
   {"pdf": "Luck Mod",       "foundry": @data.abilities.lck.mod },
   {"pdf": "Int",            "foundry": @data.abilities.int.value },
   {"pdf": "Int mod",        "foundry": @data.abilities.int.mod },
-  
+
   {"pdf": "Ref save",       "foundry": @data.saves.ref.value },
   {"pdf": "Fort save",      "foundry": @data.saves.frt.value },
   {"pdf": "will save",      "foundry": @data.saves.wil.value },
@@ -39,14 +39,14 @@
   {"pdf": "Init",           "foundry": @data.attributes.init.value },
   {"pdf": "Speed",          "foundry": @data.attributes.speed.value },
   {"pdf": "Crit Table",     "foundry": @data.attributes.critical.table },
-  
-  {"pdf": "Action Dice",    "foundry": @data.config.actionDice }, 
-  {"pdf": "Melee",          "foundry": @data.abilities.str.mod }, 
-  {"pdf": "Melee dam",      "foundry": @data.abilities.str.mod }, 
-  {"pdf": "missile attack", "foundry": @data.abilities.agl.mod }, 
-  {"pdf": "Languages",      "foundry": ((@data.details.languages.length===undefined ) ? @data.details.languages.value : '')}, 
- 
-  
+
+  {"pdf": "Action Dice",    "foundry": @data.config.actionDice },
+  {"pdf": "Melee",          "foundry": @data.abilities.str.mod },
+  {"pdf": "Melee dam",      "foundry": @data.abilities.str.mod },
+  {"pdf": "missile attack", "foundry": @data.abilities.agl.mod },
+  {"pdf": "Languages",      "foundry": ((@data.details.languages.length===undefined ) ? @data.details.languages.value : '')},
+
+
 
   {"pdf": "Weapons",        "foundry": @items.filter(i => i.type === 'weapon').map(i => `${i.name} ${i.data.data.toHit} ${i.data.data.melee ? 'Melee' : 'Missile'} (${i.data.data.damage})`).join('\n') },
 

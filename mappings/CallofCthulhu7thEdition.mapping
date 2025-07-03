@@ -8,7 +8,7 @@
     Investigative Society (https://github.com/Miskatonic-Investigative-Society/CoC7-FoundryVTT)
     implements an extensible skills and specialisation model, as encouraged by Chaosium's Call of
     Cthulhu 7th Edition rules.
-    
+
     The skills model, combined with the many era variants of CoC, hinders the feasibilty of a one-size-fits-all
     mapping for CoC. However, this mapping should support all pdf sheet variants as laid out on the Chaosium site
     under the "Updated Investigator Sheets" heading on this page:
@@ -18,7 +18,7 @@
     Using this mapping, some entries on the resulting pdf may be blank. This is an unavoidable consequence
     of the flexible skills model and number of era variants. It means that the mapping has no entry that references
     that skill.
-    
+
     Warning: Do not attempt to use the sheets from the Chaosium page under the "Legacy Investigator Sheets"
     heading, they are not compatible with the Export to PDF module.
 

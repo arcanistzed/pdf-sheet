@@ -1,10 +1,10 @@
 [
-    { "pdf": "Name","foundry": @name},  
+    { "pdf": "Name","foundry": @name},
     { "pdf": "Descriptor", "foundry": @system.basic.descriptor.replace(/ \{[^)]*\}/, "") },
     { "pdf": "Type", "foundry": @system.basic.type.replace(/ \{[^)]*\}/, "") },
     { "pdf": "Focus", "foundry": @system.basic.focus.replace(/ \{[^)]*\}/, "") },
-    { "pdf": "Type_Focus_or_Other", "foundry": @system.basic.additionalSentence.replace(/ \{[^)]*\}/, "") },	
-    { "pdf": "Dominion", "foundry": @system.basic.additionalSentence.replace(/ \{[^)]*\}/, "") },	
+    { "pdf": "Type_Focus_or_Other", "foundry": @system.basic.additionalSentence.replace(/ \{[^)]*\}/, "") },
+    { "pdf": "Dominion", "foundry": @system.basic.additionalSentence.replace(/ \{[^)]*\}/, "") },
     { "pdf": "Tier", "foundry": @system.basic.tier },
     { "pdf": "Effort", "foundry": @system.basic.effort },
     { "pdf": "Increase_Capabilities", "foundry": @system.basic.advancement?.stats ?? ''},
@@ -12,15 +12,15 @@
     { "pdf": "Move_Toward_Perfection", "foundry": @system.basic.advancement?.edge   ?? ''},
     { "pdf": "Skill_Training", "foundry": @system.basic.advancement?.skill   ?? ''},
     { "pdf": "Other", "foundry": @system.basic.advancement?.other  ?? ''},
-	
+
 
     { "pdf": "Cyphers_Limit", "foundry": @system.equipment.cypherLimit },
     { "pdf": "XP", "foundry": @system.basic.xp },
-	
+
     { "pdf": "Might_Pool", "foundry": @system.pools.might.max },
     { "pdf": "Might", "foundry": @system.pools.might.value },
     { "pdf": "Might_Edge", "foundry": @system.pools.might.edge },
-    
+
     { "pdf": "Speed_Pool", "foundry": @system.pools.speed.max },
     { "pdf": "Speed", "foundry": @system.pools.speed.value },
     { "pdf": "Speed_Edge", "foundry": @system.pools.speed.edge },
@@ -28,30 +28,30 @@
     { "pdf": "Intellect_Pool", "foundry": @system.pools.intellect.max },
     { "pdf": "Intellect", "foundry": @system.pools.intellect.value },
     { "pdf": "Intellect_Edge", "foundry": @system.pools.intellect.edge },
-    
+
     { "pdf": "Recovery_Roll", "foundry": @system.combat.recoveries.roll.replaceAll('1d6', '').trim().replaceAll('+', '') },
     { "pdf": "1_ACTION", "foundry": @system.combat.recoveries.oneAction },
     { "pdf": "10_Min", "foundry": @system.combat.recoveries.tenMinutes },
     { "pdf": "1_Hour", "foundry": @system.combat.recoveries.oneHour },
     { "pdf": "10_Hours", "foundry": @system.combat.recoveries.tenHours },
-	
+
     { "pdf": "Impaired", "foundry": @system.combat.damageTrack.state === 'Impaired'  ?? ''},
     { "pdf": "Debilitated", "foundry": @system.combat.damageTrack.state === 'Debilitated'  ?? ''},
 
-    { "pdf": "Armor", "foundry": @system.combat.armor.ratingTotal },	
-		
+    { "pdf": "Armor", "foundry": @system.combat.armor.ratingTotal },
+
     { "pdf": "Notes","foundry": @system.notes?.replaceAll("</p>", "\n").replaceAll(/<br \/>/g, "\n").replaceAll(/<[^>]*>/g, "").trim() ?? ''},
-	
+
     { "pdf": "Background","foundry": @system.description?.replaceAll("</p>", "\n").replaceAll(/<br \/>/g, "\n").replaceAll(/<[^>]*>/g, "").trim() ?? ''},
 
     {
     "pdf": "Cyphers",
     "foundry": @items.filter(item => item.type === "cypher").map(item => `${item.name}`).join("\n") ?? ''
-    },	
+    },
     {
         "pdf": "Special_Abilities",
 	"foundry": new Array(@items.filter(item => item.type === "ability").sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).map(item => `${item.name}`).join("\n"),@items.filter(item => item.type === "power-shift").sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).map(item => `Power Shift (${item.system?.basic?.shifts ?? 1}): ${item.name}`).join("\n")).join('\n\n')
-    },	
+    },
     {
         "pdf": "Equipment",
 	"foundry": @items.filter(item => item.type === "equipment").map(item => `${item.name}`).join("\n") ?? ''
@@ -71,7 +71,7 @@
     { "pdf": "Skills_12", "foundry": @items.filter(item => item.type === "skill")[11]?.name ?? ''},
     { "pdf": "Skills_13", "foundry": @items.filter(item => item.type === "skill")[12]?.name ?? ''},
     { "pdf": "Skills_14", "foundry": @items.filter(item => item.type === "skill")[13]?.name ?? ''},
-	
+
     { "pdf": "Skills_P_1", "foundry": @items.filter(item => item.type === "skill")[0]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
     { "pdf": "Skills_P_2", "foundry": @items.filter(item => item.type === "skill")[1]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
     { "pdf": "Skills_P_3", "foundry": @items.filter(item => item.type === "skill")[2]?.system?.settings?.rollButton?.pool?.substring(0, 1) ?? '' },
@@ -170,5 +170,5 @@
     { "pdf": "Attacks_Dam_6", "foundry": @items.filter(item => item.type === "attack")[5]?.system?.basic?.damage ?? ''},
 
     { "pdf": "Attacks_Mod_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.system?.basic?.steps ?? ''},
-    { "pdf": "Attacks_Dam_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.system?.basic?.damage ?? ''},		
+    { "pdf": "Attacks_Dam_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.system?.basic?.damage ?? ''},
 ]

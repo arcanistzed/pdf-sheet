@@ -1,14 +1,14 @@
 [
-    { "pdf": "Name","foundry": @name},  
+    { "pdf": "Name","foundry": @name},
     { "pdf": "Descriptor", "foundry": @data.basic.descriptor.replace(/{\w*}/, "") },
     { "pdf": "Type", "foundry": @data.basic.type.replace(/{\w*}/, "") },
     { "pdf": "Focus", "foundry": @data.basic.focus.replace(/{\w*}/, "") },
-    { "pdf": "Type_Focus_or_Other", "foundry": @data.basic.additionalSentence.replace(/{\w*}/, "") },	
+    { "pdf": "Type_Focus_or_Other", "foundry": @data.basic.additionalSentence.replace(/{\w*}/, "") },
     { "pdf": "Tier", "foundry": @data.basic.tier },
     { "pdf": "Effort", "foundry": @data.basic.effort },
     { "pdf": "Cyphers_Limit", "foundry": @data.basic.cypherLimit },
     { "pdf": "XP", "foundry": @data.basic.xp },
-	
+
     { "pdf": "Might", "foundry": @data.pools.might.max },
     { "pdf": "Speed", "foundry": @data.pools.speed.max },
     { "pdf": "Intellect", "foundry": @data.pools.intellect.max },
@@ -18,13 +18,13 @@
     { "pdf": "Speed_Edge", "foundry": @data.pools.speedEdge },
     { "pdf": "Intellect_Pool", "foundry": @data.pools.intellect.value },
     { "pdf": "Intellect_Edge", "foundry": @data.pools.intellectEdge },
-	
+
     { "pdf": "Recovery_Roll", "foundry": @data.recoveries.recoveryRoll.replaceAll('1d6', '').trim().replaceAll('+', '') },
     { "pdf": "1_ACTION", "foundry": @data.recoveries.oneAction },
     { "pdf": "10_Min", "foundry": @data.recoveries.tenMinutes },
     { "pdf": "1_Hour", "foundry": @data.recoveries.oneHour },
     { "pdf": "10_Hours", "foundry": @data.recoveries.tenHours },
-	
+
     { "pdf": "Impaired", "foundry": @data.damage.damageTrack === 'Impaired'  ?? ''},
     { "pdf": "Debilitated", "foundry": @data.damage.damageTrack === 'Debilitated'  ?? ''},
 
@@ -33,22 +33,22 @@
     { "pdf": "Extra_Effort", "foundry": @data.advancement?.advEffort   ?? ''},
     { "pdf": "Skill_Training", "foundry": @data.advancement?.advSkill   ?? ''},
     { "pdf": "Other", "foundry": @data.advancement?.advOther  ?? ''},
-	
-    { "pdf": "Armor", "foundry": @data.armor.armorValueTotal },	
-		
+
+    { "pdf": "Armor", "foundry": @data.armor.armorValueTotal },
+
     { "pdf": "Notes","foundry": @data.basic.notes?.replaceAll("</p>", "\n").replaceAll(/<br \/>/g, "\n").replaceAll(/<[^>]*>/g, "").trim() ?? ''},
-	
+
     { "pdf": "Background","foundry": @data.basic.description?.replaceAll("</p>", "\n").replaceAll(/<br \/>/g, "\n").replaceAll(/<[^>]*>/g, "").trim() ?? ''},
-		
+
 
     {
         "pdf": "Cyphers",
         "foundry": @items.filter(item => item.type === "cypher").map(item => `${item.name}`).join("\n") ?? ''
-    },	
+    },
     {
         "pdf": "Special_Abilities",
 	"foundry": @items.filter(item => item.type === "ability").map(item => `${item.name}`).join("\n") ?? ''
-    },	
+    },
     {
         "pdf": "Equipment",
 	"foundry": @items.filter(item => item.type === "equipment").map(item => `${item.name}`).join("\n") ?? ''
@@ -68,7 +68,7 @@
     { "pdf": "Skills_12", "foundry": @items.filter(item => item.type === "skill")[11]?.name ?? ''},
     { "pdf": "Skills_13", "foundry": @items.filter(item => item.type === "skill")[12]?.name ?? ''},
     { "pdf": "Skills_14", "foundry": @items.filter(item => item.type === "skill")[13]?.name ?? ''},
-	
+
     { "pdf": "Skills_P_1", "foundry": @items.filter(item => item.type === "skill")[0]?.data?.data?.rollButton?.pool?.substring(0, 1) ?? '' },
     { "pdf": "Skills_P_2", "foundry": @items.filter(item => item.type === "skill")[1]?.data?.data?.rollButton?.pool?.substring(0, 1) ?? '' },
     { "pdf": "Skills_P_3", "foundry": @items.filter(item => item.type === "skill")[2]?.data?.data?.rollButton?.pool?.substring(0, 1) ?? '' },
@@ -167,5 +167,5 @@
     { "pdf": "Attacks_Dam_6", "foundry": @items.filter(item => item.type === "attack")[5]?.data?.data?.damage ?? ''},
 
     { "pdf": "Attacks_Mod_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.data?.data?.attackType?.substring(0, 1).toUpperCase() ?? ''},
-    { "pdf": "Attacks_Dam_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.data?.data?.damage ?? ''},		
+    { "pdf": "Attacks_Dam_7", "foundry": @items.filter(item => item.type === "attack" || item.type === "armor")[6]?.data?.data?.damage ?? ''},
 ]

@@ -1,5 +1,5 @@
 /* PDF: https://game-mother.com/pdf/ALIEN_Character-Sheet_2_0.pdf */
-[   
+[
   /* General Info */
     {"pdf": "character_name", "foundry": @name },
     {"pdf": "career", "foundry": Array.from(document.getElementsByName("system.general.career.value")[0]?.options)?.filter(o => o.selected)[0]?.innerText || ""},
@@ -103,12 +103,12 @@
     {"pdf": "Copy of Text223 (5)", "foundry": @collections?.items?.filter(i => i.type == "critical-injury").map(i => i.name).sort()[4] || ""},
     {"pdf": "Copy of Text223 (6)", "foundry": @collections?.items?.filter(i => i.type == "critical-injury").map(i => i.name).sort()[5] || ""},
 
-    /* Story Points Bar */    
+    /* Story Points Bar */
     {"pdf": "Copy of Text91 (57)", "foundry": 1 <= @system.general.sp.value},
     {"pdf": "Copy of Text91 (58)", "foundry": 2 <= @system.general.sp.value},
     {"pdf": "Copy of Text91 (59)", "foundry": 3 <= @system.general.sp.value},
 
-    /* XP Bar */    
+    /* XP Bar */
     {"pdf": "Copy of Text91 (47)", "foundry": 1 <= @system.general.xp.value},
     {"pdf": "Copy of Text91 (48)", "foundry": 2 <= @system.general.xp.value},
     {"pdf": "Copy of Text91 (49)", "foundry": 3 <= @system.general.xp.value},
@@ -175,7 +175,7 @@
     {"pdf": "12", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;})[11]?.name || ""},
     {"pdf": "13", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;})[12]?.name || ""},
     {"pdf": "14", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;})[13]?.name || ""},
-    
+
     /* Weights */
     {"pdf": "Copy of Text223 (39)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;}).map(i => i.system.attributes.weight.value).map(w => w != "undefined" ? String(w) : "")[0] || ""},
     {"pdf": "Copy of Text223 (40)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;}).map(i => i.system.attributes.weight.value).map(w => w != "undefined" ? String(w) : "")[1] || ""},
@@ -191,7 +191,7 @@
     {"pdf": "Copy of Text223 (30)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;}).map(i => i.system.attributes.weight.value).map(w => w != "undefined" ? String(w) : "")[11] || ""},
     {"pdf": "Copy of Text223 (31)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;}).map(i => i.system.attributes.weight.value).map(w => w != "undefined" ? String(w) : "")[12] || ""},
     {"pdf": "Copy of Text223 (32)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;}).map(i => i.system.attributes.weight.value).map(w => w != "undefined" ? String(w) : "")[13] || ""},
-    
+
     /* Power */
     {"pdf": "Copy of Text223 (53)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;})[0]?.system.attributes.power.value || ""},
     {"pdf": "Copy of Text223 (54)", "foundry": @collections?.items?.filter(i => i.type == "item").sort((a, b) => {let x = a.system.header.active == true ? 0 : a.system.header.active == false ? 1 : 2;let y = b.system.header.active == true ? 0 : b.system.header.active == false ? 1 : 2;return x < y ? -1 : x > y ? 1 : 0;})[1]?.system.attributes.power.value || ""},

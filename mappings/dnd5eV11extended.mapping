@@ -474,7 +474,7 @@
       d.innerHTML = h;
       return d.textContent || d.innerText || "";
     })(i.system.description.value.substring(0,1499))}${(i.system.description.value.length>1500)?'...':''}\n`).join("\n") },
-  
+
   /* Spells Detail */
   /* spell 1 */
   { "pdf": "spell_name_01", "foundry": @items.filter(i => i.type === 'spell').sort((a,b)=>{return (a.system.level - b.system.level || a.name.localeCompare(b.name)) }).map(x => x.name + ((typeof x.flags['items-with-spells-5e'] !== 'undefined') ? '[' +fromUuidSync(x.flags['items-with-spells-5e']['parent-item']).name + ']' : '') )[0] || "" },
