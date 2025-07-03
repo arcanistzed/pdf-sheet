@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.15](https://github.com/arcanistzed/pdf-sheet/tree/0.24.15) (2025-07-02)
+
+[Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.14...0.24.15)
+
+* feat(dnd5e mapping): remove merge conflict markers
+* fix: line endings and whitespace for all mappings
+
 ## [0.24.14](https://github.com/arcanistzed/pdf-sheet/tree/0.24.14) (2025-06-21)
 
 [Full Changelog](https://github.com/arcanistzed/pdf-sheet/compare/0.24.13...0.24.14)
